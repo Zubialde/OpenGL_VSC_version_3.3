@@ -6,6 +6,12 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
+float vertices[] = {
+    -0.5f, -0.5f, 0.0f,
+     0.5f, -0.5f, 0.0f, 
+     0.0f,  0.5f, 0.0f
+};
+
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
 
@@ -17,7 +23,7 @@ int main() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //Crea la ventana (ventana != OpenGl)*
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Window :)" , NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Window :)"  , NULL, NULL);
 
     //Se asegura de que se han iniciado tanto la ventana como GLAD
     if(window == NULL)
@@ -37,6 +43,12 @@ int main() {
         std::cout << "Failed to load Glad" << std::endl;
         return -1;
     }
+
+    unsigned int VBO, VAO;
+    //Genera un VBO(Vertex Array Objecy) y lo bincula a 
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     //Render loop 
     while(!glfwWindowShouldClose(window))

@@ -1,3 +1,0 @@
-C:/LearnOpengl/OpenGL_App/build/CMakeFiles/OpenGL_App.dir
-C:/LearnOpengl/OpenGL_App/build/CMakeFiles/ALL_BUILD.dir
-C:/LearnOpengl/OpenGL_App/build/CMakeFiles/ZERO_CHECK.dir

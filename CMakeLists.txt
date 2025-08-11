@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Genera unas varliables con la ruta de los Includes y las Librerias
 set(GLFW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
 set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
+set(GLFW_SHADERS_DIR"${CMAKE_SOURCE_DIR}/Shaders")
 
 #Añade las librerias de GLFW
 include_directories(${GLFW_INCLUDE_DIR})

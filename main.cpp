@@ -127,7 +127,7 @@ int main() {
         glUseProgram(programShader);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        
+
         //Comprueban eventos y cambian el Back por el Front buffer
         glfwSwapBuffers(window);
         glfwPollEvents();

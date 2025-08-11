@@ -12,7 +12,7 @@ include_directories(${GLFW_INCLUDE_DIR})
 
 link_directories(${GLFW_LIBRARY_DIR})
 
-# Adñado los src (Source Files)
+# Añado los src (Source Files)
 add_executable(OpenGL_App main.cpp glad.c)
 
 target_compile_definitions(OpenGL_App PRIVATE GLFW_STATIC)

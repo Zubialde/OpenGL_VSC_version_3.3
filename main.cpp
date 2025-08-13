@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <Shaders/Shader.h>
+#include <Shaders/ShaderClass.h>
 
 #include <iostream>
 
@@ -20,8 +20,16 @@ unsigned int indices[] = {
     1, 2, 3  // second triangle
 };
 
+float texcords[] = {
+    0.0f, 0.0f,  // lower-left corner  
+    1.0f, 0.0f,  // lower-right corner
+    0.5f, 1.0f // top-center corner
+};
+
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
+
+double mouseX, mouseY;
 
 int main() {
     //Inicia glfw y lo configura mediante WindowHint
@@ -52,7 +60,7 @@ int main() {
         return -1;
     }
 
-    Shader ourShader("Vertex.vs", "Fragment.fs");
+    ShaderClass ourShader("C:/LearnOpengl/OpenGL_App/Includes/Shaders/Vertex.vs", "C:/LearnOpengl/OpenGL_App/Includes/Shaders/Fragment.fs");
 
     unsigned int VBO, VAO, EBO;
     //Genera un VBO(Vertex Buffer Objecy), lo bincula al tipo de Buffer GL_ARRAY_BUFFER y le asigna los datos de los vertices
@@ -76,13 +84,13 @@ int main() {
 
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
+    
 
     //Render loop 
     while(!glfwWindowShouldClose(window))
     {
         //Comandos de Renderizado 
-                processInput(window);
+        processInput(window);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -104,7 +112,7 @@ int main() {
     return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height )
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0,0, width, height);
 }
@@ -113,8 +121,6 @@ void processInput(GLFWwindow* window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
     
-
-
     if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }

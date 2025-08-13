@@ -9,9 +9,12 @@ set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
 set(GLFW_SHADERS_DIR"${CMAKE_SOURCE_DIR}/Shaders")
 
 # Añade las rutas de las librerias en un solo lugar
-set(SOURCE ${GLFW_LIBRARY_DIR}/glad.c)
+#-------------------------------------------------------------------
+set(SOURCE ${GLFW_LIBRARY_DIR}/glad.c )
 
-set(HEADER ${GLFW_INCLUDE_DIR}/Shaders/ShaderClass.cpp)
+set(HEADER ${GLFW_INCLUDE_DIR}/Shaders/ShaderClass.cpp 
+            ${GLFW_INCLUDE_DIR}/Stb_Image/stb_image.h)
+#-------------------------------------------------------------------
 
 #Añade las librerias de GLFW
 include_directories(${GLFW_INCLUDE_DIR})

@@ -3,16 +3,23 @@
 
 #include <Shaders/ShaderClass.h>
 
+#include <Stb_Image/stb_image.h>
+
 #include <iostream>
+
+#define STB_IMAGE_IMPLEMENTATION
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
+
 
 float vertices[] = {
     // positions         // colors
      0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
     -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top  // top left
+    -0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,    // top  // top left
+     0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 1.0f    // top  // top left     
 };
 
 unsigned int indices[] = {
@@ -23,11 +30,13 @@ unsigned int indices[] = {
 float texcords[] = {
     0.0f, 0.0f,  // lower-left corner  
     1.0f, 0.0f,  // lower-right corner
-    0.5f, 1.0f // top-center corner
+    0.0f, 1.0f, // top-center corner
+    1.0f, 1.0f   // top-right corner
 };
 
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
+
 
 double mouseX, mouseY;
 
@@ -38,8 +47,12 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    ShaderClass::SetShaderPath("C:/LearnOpengl/OpenGL_App/Shaders");
+
     //Crea la ventana (ventana != OpenGl)*
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Window :)"  , NULL, NULL);
+
+
 
     //Se asegura de que se han iniciado tanto la ventana como GLAD
     if(window == NULL)
@@ -60,7 +73,31 @@ int main() {
         return -1;
     }
 
-    ShaderClass ourShader("C:/LearnOpengl/OpenGL_App/Includes/Shaders/Vertex.vs", "C:/LearnOpengl/OpenGL_App/Includes/Shaders/Fragment.fs");
+    ShaderClass ourShader("Vertex.vs", "Fragment.fs");
+    unsigned int texture;
+    glGenTextures(1, &texture);
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("C:/LearnOpengl/OpenGL_App/Textures/container.jpg", &width, &height, &nrChannels, 0);
+
+    if(data == NULL)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Faield to load texture" << std::endl;
+        return -1;
+    }
+    stbi_image_free(data);
 
     unsigned int VBO, VAO, EBO;
     //Genera un VBO(Vertex Buffer Objecy), lo bincula al tipo de Buffer GL_ARRAY_BUFFER y le asigna los datos de los vertices
@@ -72,12 +109,12 @@ int main() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    /*#pragma region EBO
+    #pragma region EBO
     //Gemera un EBO(Element Buffer Object), lo bincula con el VBO y le asgina indices.
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    #pragma endregion*/
+    #pragma endregion
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -85,7 +122,6 @@ int main() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
     
-
     //Render loop 
     while(!glfwWindowShouldClose(window))
     {
@@ -94,10 +130,11 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
+
         ourShader.use();
 
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         //Comprueban eventos y cambian el Back por el Front buffer
         glfwSwapBuffers(window);
@@ -120,6 +157,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void processInput(GLFWwindow* window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
+
+    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) glfwGetCurrentContext();
     
     if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

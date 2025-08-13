@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iostream>
 
+std::string ShaderClass::ShadersPath = "";
+
 // Constructor
 ShaderClass::ShaderClass(const char* vertexPath, const char* fragmentPath)
 {
@@ -18,8 +20,8 @@ ShaderClass::ShaderClass(const char* vertexPath, const char* fragmentPath)
 
     try
     {
-        vShaderFile.open(vertexPath);
-        fShaderFile.open(fragmentPath);
+        vShaderFile.open(ShadersPath + vertexPath);
+        fShaderFile.open(ShadersPath + fragmentPath);
         std::stringstream vShaderStream, fShaderStream;
         vShaderStream << vShaderFile.rdbuf();
         fShaderStream << fShaderFile.rdbuf();
@@ -78,6 +80,13 @@ void ShaderClass::setInt(const std::string &name, int value) const
 void ShaderClass::setFloat(const std::string &name, float value) const
 {
     glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+void ShaderClass::SetShaderPath(const std::string& path) {
+    ShadersPath = path;
+    // Ensure path ends with '/'
+    if (!ShadersPath.empty() && ShadersPath.back() != '/') 
+        ShadersPath += '/';
 }
 
 void ShaderClass::checkCompileErrors(unsigned int shader, std::string type)

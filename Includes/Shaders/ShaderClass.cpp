@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 std::string ShaderClass::ShadersPath = "";
 
@@ -89,6 +91,14 @@ void ShaderClass::SetShaderPath(const std::string& path) {
         ShadersPath += '/';
 }
 
+void ShaderClass::setMat4(const std::string &name, glm::mat4 matrix) const
+{
+    int model = glGetUniformLocation(ID, name.c_str());
+    glUniformMatrix4fv(model, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+
+//Check if shaders compiled correctly
 void ShaderClass::checkCompileErrors(unsigned int shader, std::string type)
 {
     int success;

@@ -18,7 +18,9 @@
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void MathCheck();
 void processInput(GLFWwindow *window);
-
+    
+float i {0};
+float z {45};
 
 float vertices[] = {
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -208,15 +210,7 @@ int main() {
 
 
 
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-    glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(45.0f), SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-
-    ourShader.setMat4("view", view);
-    ourShader.setMat4("projection", projection);
-
+   
     glEnable(GL_DEPTH_TEST);
 
     //Render loop 
@@ -233,20 +227,30 @@ int main() {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+        //View Matrix ||Model -> View|| 1. Camera Position, 2. Camera Orientation
+        glm::mat4 view = glm::mat4(1.0f);
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        view = glm::rotate(view, glm::radians(i), glm::vec3(0.0f, 1.0f, 0.0f));
+        view = glm::rotate(view, glm::radians(z), glm::vec3(1.0f, 0.0f, 0.0f));
+        ourShader.setMat4("view", view);
 
+    //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
+        glm::mat4 projection = glm::mat4(1.0f);
+        projection = glm::perspective(glm::radians(90.0f), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
+
+    
+        ourShader.setMat4("projection", projection);
 
         ourShader.use();
         glBindVertexArray(VAO);
-        for (unsigned int i = 0; i <= sizeof(cubePositions); i++)
+        for (unsigned int i = 0; i < 10; i++)
         {        
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
-            model = glm::rotate(model,  (float)glfwGetTime() * glm::radians(20.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+            if(int(i / 3) == 0)  model = glm::rotate(model,  (float)glfwGetTime() * glm::radians(20.0f), glm::vec3(1.0f, 0.3f, 0.5f));
             ourShader.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
-        
-
 
         //Comprueban eventos y cambian el Back por el Front buffer
         glfwSwapBuffers(window);
@@ -269,12 +273,19 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow* window)
 {
+
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
 
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) glfwGetCurrentContext();
     
     if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)    i -= 1;
+    else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) i += 1;
+
+    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)    z += 1;
+    else if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) z -= 1;
 }
 
 /// @brief  Function to check if glm is working (warining: only uncomment this function if you are using glm)

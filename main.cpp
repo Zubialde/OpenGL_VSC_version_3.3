@@ -18,6 +18,8 @@
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void MathCheck();
 void processInput(GLFWwindow *window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+
     
 float i {0};
 float z {45};
@@ -84,10 +86,22 @@ unsigned int indices[] = {
     1, 2, 3  // second triangle
 };
 
+glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+float deltaTime {0.0};
+float lastFrame {0.0};
+
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
+
+float lastX = 600.0f, lastY = 400.0f;
         
 double mouseX, mouseY;
+
+float yaw {-90.0f};
+float pitch {0.0f};
 
 int main() {
     //Inicia glfw y lo configura mediante WindowHint
@@ -96,7 +110,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    ShaderClass::SetShaderPath("C:/LearnOpengl/OpenGL_App/Shaders");
+    ShaderClass::SetShaderPath(SHADER_DIR);
 
     //Crea la ventana (ventana != OpenGl)*
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Window :)"  , NULL, NULL);
@@ -122,6 +136,7 @@ int main() {
 
     ShaderClass ourShader("Vertex.vs", "Fragment.fs");
 
+    #pragma region VBO, VAO, EBO
     unsigned int VBO, VAO, EBO;
     //Genera un VBO(Vertex Buffer Objecy), lo bincula al tipo de Buffer GL_ARRAY_BUFFER y le asigna los datos de los vertices
     glGenBuffers(1, &VBO);
@@ -132,12 +147,10 @@ int main() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    #pragma region EBO
     //Genera un EBO(Element Buffer Object), lo bincula con el VBO y le asgina indices.
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    #pragma endregion
 
     //Posicion de los vertices
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -146,7 +159,9 @@ int main() {
     //UV
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(2);
+    #pragma endregion
 
+    #pragma region Textures
     //Texture 1
     unsigned int texture, texture2;
     glGenTextures(1, &texture);
@@ -175,7 +190,7 @@ int main() {
         return -1;
     }
     stbi_image_free(data);
-
+    
     //Texture 2
     glGenTextures(1, &texture2);
     glBindTexture(GL_TEXTURE_2D, texture2);
@@ -207,15 +222,27 @@ int main() {
     
     glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture"), 0);
     ourShader.setInt("ourTexture2", 1);
+    #pragma endregion
+    //Camera Coordinates (Gram-Schimdt)
+    /*    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
+    glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+    glm::vec3 cameraRight = glm::cross(cameraDirection, up);
+    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);*/
 
-
-   
+    
     glEnable(GL_DEPTH_TEST);
 
-    //Render loop 
+    #pragma region Render loop 
     while(!glfwWindowShouldClose(window))
     {
+        
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
         //Comandos de Renderizado 
         processInput(window);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -227,19 +254,26 @@ int main() {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+
         //View Matrix ||Model -> View|| 1. Camera Position, 2. Camera Orientation
         glm::mat4 view = glm::mat4(1.0f);
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        view = glm::rotate(view, glm::radians(i), glm::vec3(0.0f, 1.0f, 0.0f));
-        view = glm::rotate(view, glm::radians(z), glm::vec3(1.0f, 0.0f, 0.0f));
+
+        view = glm::lookAt(cameraPos, cameraFront + cameraPos, cameraUp);
+
         ourShader.setMat4("view", view);
 
-    //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
+        //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(90.0f), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
 
-    
         ourShader.setMat4("projection", projection);
+        
+        glm::vec3 direction;
+
+
+        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+        direction.y = sin(glm::radians(pitch));
+        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
         ourShader.use();
         glBindVertexArray(VAO);
@@ -247,7 +281,7 @@ int main() {
         {        
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
-            if(int(i / 3) == 0)  model = glm::rotate(model,  (float)glfwGetTime() * glm::radians(20.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+            if(int(i % 3) == 0)  model = glm::rotate(model,  (float)glfwGetTime() * glm::radians(20.0f), glm::vec3(1.0f, 0.3f, 0.5f));
             ourShader.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
@@ -256,6 +290,7 @@ int main() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    #pragma endregion
 
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
@@ -271,36 +306,56 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0,0, width, height);
 }
 
+    #pragma region Input
 void processInput(GLFWwindow* window)
 {
-
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
-
-    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) glfwGetCurrentContext();
-    
+        
     if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    if(glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)    i -= 1;
-    else if(glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) i += 1;
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    if(glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)    z += 1;
-    else if(glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) z -= 1;
+    float cameraSpeed = 2.5f * deltaTime; // 2.5 unidades por segundo
+    
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) cameraSpeed *= 3.0f;
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        cameraPos += cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        cameraPos -= cameraSpeed * cameraFront;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+
+    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) glfwSetCursorPosCallback(window, mouse_callback);
+    else glfwSetCursorPosCallback(window, NULL);
+
+    
 }
 
-/// @brief  Function to check if glm is working (warining: only uncomment this function if you are using glm)
-/// @author Gabriel Valverde
-//------------------------------------------------------------------------------
-/*
-void MathCheck()
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-    vec = trans * vec;
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
+    lastX = xpos;
+    lastY = ypos;
 
-    std::cout << vec.x << vec.y << vec.z << std::endl;
+    const float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += xoffset;
+    pitch += yoffset;
+
+    if(pitch > 89.0f)   pitch =  89.0f;
+    if(pitch < -89.0f)  pitch = -89.0f;
+
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+    direction.y = sin(glm::radians(pitch));
+    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+    cameraFront = glm::normalize(direction);
+
+
 }
-*/
-//------------------------------------------------------------------------------
-

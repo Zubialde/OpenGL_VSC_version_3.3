@@ -8,6 +8,8 @@ set(GLFW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
 set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
 set(GLFW_SHADERS_DIR"${CMAKE_SOURCE_DIR}/Shaders")
 
+add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/Shaders")
+
 # Añade las rutas de las librerias en un solo lugar
 #-------------------------------------------------------------------
 set(SOURCE ${GLFW_LIBRARY_DIR}/glad.c )

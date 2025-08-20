@@ -1,3 +1,4 @@
+//Salvaguarda para evitar redefiniciones
 #ifndef SHADERCLASS_H
 #define SHADERCLASS_H
 

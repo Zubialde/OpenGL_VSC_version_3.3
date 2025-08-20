@@ -19,6 +19,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void MathCheck();
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
     
 float i {0};
@@ -102,6 +103,7 @@ double mouseX, mouseY;
 
 float yaw {-90.0f};
 float pitch {0.0f};
+float fov {45.0f};
 
 int main() {
     //Inicia glfw y lo configura mediante WindowHint
@@ -264,7 +266,7 @@ int main() {
 
         //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
         glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(90.0f), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(fov), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
 
         ourShader.setMat4("projection", projection);
         
@@ -331,11 +333,12 @@ void processInput(GLFWwindow* window)
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) glfwSetCursorPosCallback(window, mouse_callback);
     else glfwSetCursorPosCallback(window, NULL);
 
-    
+    glfwSetScrollCallback(window, scroll_callback);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+    
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
     lastX = xpos;
@@ -356,6 +359,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     direction.y = sin(glm::radians(pitch));
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
     cameraFront = glm::normalize(direction);
+}
 
-
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+        fov -= (float)yoffset;
+    if (fov < 1.0f)
+        fov = 1.0f;
+    if (fov > 180.0f)
+        fov = 180.0f; 
 }

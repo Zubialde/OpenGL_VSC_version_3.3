@@ -15,7 +15,8 @@ add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/Shaders")
 set(SOURCE ${GLFW_LIBRARY_DIR}/glad.c )
 
 set(HEADER ${GLFW_INCLUDE_DIR}/Shaders/ShaderClass.cpp 
-            ${GLFW_INCLUDE_DIR}/Stb_Image/stb_image.h)
+            ${GLFW_INCLUDE_DIR}/Stb_Image/stb_image.h
+            ${GLFW_INCLUDE_DIR}/Camera/CameraClass.cpp)
 #-------------------------------------------------------------------
 
 #Añade las librerias de GLFW

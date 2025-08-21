@@ -6,6 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <Shaders/ShaderClass.h>
+#include <Camera/CameraClass.h>
 
 #include <iostream>
 
@@ -91,13 +92,17 @@ glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
+//Camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastX = 600.0f, lastY = 400.0f;
+
 float deltaTime {0.0};
 float lastFrame {0.0};
 
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
 
-float lastX = 600.0f, lastY = 400.0f;
+
         
 double mouseX, mouseY;
 
@@ -225,15 +230,6 @@ int main() {
     glUniform1i(glGetUniformLocation(ourShader.ID, "ourTexture"), 0);
     ourShader.setInt("ourTexture2", 1);
     #pragma endregion
-    //Camera Coordinates (Gram-Schimdt)
-    /*    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-
-    glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-    glm::vec3 cameraRight = glm::cross(cameraDirection, up);
-    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);*/
-
     
     glEnable(GL_DEPTH_TEST);
 
@@ -259,23 +255,15 @@ int main() {
 
         //View Matrix ||Model -> View|| 1. Camera Position, 2. Camera Orientation
         glm::mat4 view = glm::mat4(1.0f);
-
-        view = glm::lookAt(cameraPos, cameraFront + cameraPos, cameraUp);
+        view = camera.GetViewMatrix();
 
         ourShader.setMat4("view", view);
 
         //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
         glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(fov), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(camera.Zoom), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
 
         ourShader.setMat4("projection", projection);
-        
-        glm::vec3 direction;
-
-
-        direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-        direction.y = sin(glm::radians(pitch));
-        direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
         ourShader.use();
         glBindVertexArray(VAO);
@@ -322,13 +310,13 @@ void processInput(GLFWwindow* window)
     
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) cameraSpeed *= 3.0f;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
+        camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+        camera.ProcessKeyboard(RIGHT, deltaTime);
 
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) glfwSetCursorPosCallback(window, mouse_callback);
     else glfwSetCursorPosCallback(window, NULL);
@@ -336,36 +324,30 @@ void processInput(GLFWwindow* window)
     glfwSetScrollCallback(window, scroll_callback);
 }
 
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
-    
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
     float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
     lastX = xpos;
     lastY = ypos;
 
-    const float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    yaw += xoffset;
-    pitch += yoffset;
-
-    if(pitch > 89.0f)   pitch =  89.0f;
-    if(pitch < -89.0f)  pitch = -89.0f;
-
-    glm::vec3 direction;
-    direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    direction.y = sin(glm::radians(pitch));
-    direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(direction);
+    camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-        fov -= (float)yoffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 180.0f)
-        fov = 180.0f; 
-}
+    camera.ProcessMouseScroll(yoffset);
+}    
+
+//Camera Coordinates (Gram-Schimdt)
+    /*    glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+
+    glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
+    glm::vec3 cameraRight = glm::cross(cameraDirection, up);
+    glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);*/

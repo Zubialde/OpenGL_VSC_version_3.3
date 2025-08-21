@@ -1,5 +1,5 @@
-#ifndef CAMEACLASS_H
-#define CAMEACLASS_H
+#ifndef CAMERACLASS_H
+#define CAMERACLASS_H
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -15,7 +15,7 @@ enum Camera_Movement{
 const float YAW {-90.0f};
 const float PITCH {0.0f};
 const float FOV {45.0f};
-const float SPEED = 2.5f;
+const float SPEED = 25.5f;
 const float SENSITIVITY = 0.1f;
 
 class Camera
@@ -29,13 +29,13 @@ class Camera
     glm::vec3 WorldUp;
 
     // euler Angles
-    float Yaw;
-    float Pitch;
+    float Yaw {YAW};
+    float Pitch {PITCH};
     
     // camera options
-    float MovementSpeed;
-    float MouseSensitivity;
-    float Zoom;
+    float MovementSpeed {SPEED};
+    float MouseSensitivity {SENSITIVITY};
+    float Zoom {FOV};
 
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),float yaw = YAW,float pitch = PITCH);
 
@@ -51,23 +51,4 @@ class Camera
 
         void updateCameraVectors();
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif

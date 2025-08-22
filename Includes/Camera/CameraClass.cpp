@@ -35,6 +35,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
         Position -= Right * velocity;
     if (direction == RIGHT)
         Position += Right * velocity;
+
 }
 
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
@@ -77,4 +78,39 @@ void Camera::updateCameraVectors()
 
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up    = glm::normalize(glm::cross(Right, Front));
+}
+
+glm::mat4 Camera::CalculateViewMatrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)
+{
+    glm::vec3 front;
+    glm::vec3 up;
+    glm::vec3 right;
+
+    front = glm::normalize(position - target);
+    right = glm::normalize(glm::cross(WorldUp, front));
+    up = glm::normalize(glm::cross(front, right));
+
+    glm::mat4 translation = glm::mat4(1.0f);
+
+    translation[3][0] = -position.x;
+    translation[3][1] = -position.y;
+    translation[3][2] = -position.z;
+
+    glm::mat4 rotation = glm::mat4(1.0f);
+
+    rotation[0][0] = right.x;
+    rotation[1][0] = right.y;
+    rotation[2][0] = right.z;
+
+    rotation[0][1] = up.x;
+    rotation[1][1] = up.y;
+    rotation[2][1] = up.z;
+
+    rotation[0][2] = front.x;
+    rotation[1][2] = front.y;
+    rotation[2][2] = front.z;
+
+    return rotation * translation;
+
+
 }

@@ -205,8 +205,8 @@ int main() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // or GL_CLAMP_TO_EDGE
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT); // or GL_CLAMP_TO_EDGE
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // or GL_NEAREST
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // or GL_NEAREST
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     data = stbi_load("C:/LearnOpengl/OpenGL_App/Textures/awesomeface.png", &width, &height, &nrChannels, 0);
 
@@ -256,7 +256,7 @@ int main() {
         //View Matrix ||Model -> View|| 1. Camera Position, 2. Camera Orientation
         glm::mat4 view = glm::mat4(1.0f);
         view = camera.GetViewMatrix();
-
+        
         ourShader.setMat4("view", view);
 
         //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
@@ -296,7 +296,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0,0, width, height);
 }
 
-    #pragma region Input
+#pragma region Input
 void processInput(GLFWwindow* window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
@@ -306,7 +306,7 @@ void processInput(GLFWwindow* window)
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    float cameraSpeed = 2.5f * deltaTime; // 2.5 unidades por segundo
+    /*    float cameraSpeed = 2.5f * deltaTime; // 2.5 unidades por segundo
     
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) cameraSpeed *= 3.0f;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -321,7 +321,8 @@ void processInput(GLFWwindow* window)
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) glfwSetCursorPosCallback(window, mouse_callback);
     else glfwSetCursorPosCallback(window, NULL);
 
-    glfwSetScrollCallback(window, scroll_callback);
+    glfwSetScrollCallback(window, scroll_callback);*/
+
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)

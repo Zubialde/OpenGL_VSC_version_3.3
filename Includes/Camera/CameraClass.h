@@ -43,6 +43,7 @@ class Camera
 
     // Functions
     glm::mat4 GetViewMatrix();
+    glm::mat4 CalculateViewMatrix(glm::vec3 position, glm::vec3 target, glm::vec3 up);
     void ProcessKeyboard(Camera_Movement direction, float deltaTime);
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessMouseScroll(float yoffset);

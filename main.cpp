@@ -7,6 +7,7 @@
 
 #include <Shaders/ShaderClass.h>
 #include <Camera/CameraClass.h>
+#include <Textures/TextureClass.h>
 
 #include <iostream>
 
@@ -17,6 +18,7 @@
 #pragma endregion
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+void Init();
 void MathCheck();
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -98,10 +100,8 @@ float lastX = 600.0f, lastY = 400.0f;
 float deltaTime {0.0};
 float lastFrame {0.0};
 
-const unsigned int SCR_WIDTH = 1200;
-const unsigned int SCR_HEIGHT = 800;
-
-
+const unsigned int SCR_WIDTH = 1920;
+const unsigned int SCR_HEIGHT = 1080;
         
 double mouseX, mouseY;
 
@@ -110,11 +110,7 @@ float pitch {0.0f};
 float fov {45.0f};
 
 int main() {
-    //Inicia glfw y lo configura mediante WindowHint
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    Init();
 
     ShaderClass::SetShaderPath(SHADER_DIR);
 
@@ -153,10 +149,11 @@ int main() {
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
-    //Genera un EBO(Element Buffer Object), lo bincula con el VBO y le asgina indices.
+    /*    //Genera un EBO(Element Buffer Object), lo bincula con el VBO y le asgina indices.
     glGenBuffers(1, &EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
+
 
     //Posicion de los vertices
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -169,11 +166,15 @@ int main() {
 
     #pragma region Textures
 
-    
+    TextureClass texture1(TEXTURE_DIR"/container.jpg", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    TextureClass texture2(TEXTURE_DIR"/awesomeface.png", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+
     //Assign Units
     
     ourShader.use();
     
+    ourShader.setInt("ourTexture", 1);
+    ourShader.setInt("ourTexture2", 2);
     #pragma endregion
     
     glEnable(GL_DEPTH_TEST);
@@ -188,10 +189,11 @@ int main() {
 
         //Comandos de Renderizado 
         processInput(window);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        texture1.use(GL_TEXTURE1);
+        texture2.use(GL_TEXTURE2);
 
         //View Matrix ||Model -> View|| 1. Camera Position, 2. Camera Orientation
         glm::mat4 view = glm::mat4(1.0f);
@@ -231,6 +233,17 @@ int main() {
     return 0;
 }
 
+void Init()
+{
+    // Inicia glfw y lo configura mediante WindowHint
+    glfwInit();
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    
+}
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0,0, width, height);
@@ -246,7 +259,7 @@ void processInput(GLFWwindow* window)
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    /*    float cameraSpeed = 2.5f * deltaTime; // 2.5 unidades por segundo
+      float cameraSpeed = 2.5f * deltaTime; // 2.5 unidades por segundo
     
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) cameraSpeed *= 3.0f;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -261,7 +274,7 @@ void processInput(GLFWwindow* window)
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) glfwSetCursorPosCallback(window, mouse_callback);
     else glfwSetCursorPosCallback(window, NULL);
 
-    glfwSetScrollCallback(window, scroll_callback);*/
+    glfwSetScrollCallback(window, scroll_callback);
 
 }
 

@@ -5,22 +5,16 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <glad/glad.h>
+#include <Stb_Image/stb_image.h>
 
 class TextureClass
 {
     public:
     unsigned int ID;
-    TextureClass(const char* path);
-    void usePng();
-    void useJpg();
+    unsigned int texture;
+    TextureClass(const char* path ,GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
+    void use(GLenum textureUnit);
     private:
 };
-
-
-
-
-
-
-
-
 #endif

@@ -11,7 +11,8 @@ enum ObjectType
 	Cube,
 	Sphere,
 	Cylinder,
-	triangle
+	triangle,
+    Pyramid
 };
 
 class VBO

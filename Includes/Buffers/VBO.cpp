@@ -28,8 +28,18 @@ void VBO::unbind()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void VBO::update(enum ObjectType type)
+void VBO::update(ObjectType type)
 {
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Geometry::CubeVertices), Geometry::CubeVertices, GL_STATIC_DRAW);
+    switch(type)
+    {
+        case Cube:
+            glBufferData(GL_ARRAY_BUFFER, Geometry::CubeVertexCount * sizeof(float), Geometry::CubeVertices, GL_STATIC_DRAW);
+            break;
+        case Sphere:
+            glBufferData(GL_ARRAY_BUFFER, Geometry::SphereVertexCount * sizeof(float), Geometry::SphereVertices, GL_STATIC_DRAW);
+            break;
+        case Pyramid:
+            glBufferData(GL_ARRAY_BUFFER, Geometry::PyramidVertexCount * sizeof(float), Geometry::PyramidVertices, GL_STATIC_DRAW);
+            break;
+    }   
 }

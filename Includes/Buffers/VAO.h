@@ -5,16 +5,6 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-    
-
-enum ObjectType
-{
-	Cube,
-	Sphere,
-	Cylinder,
-	triangle
-};
-
 
 class VAO
 {
@@ -25,7 +15,7 @@ public:
 	void bind();
 	void unbind();
 	void draw();
-	void update( ObjectType type);
+	void update();
 	void clean();
 
 private:

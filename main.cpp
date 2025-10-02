@@ -8,6 +8,8 @@
 #include <Shaders/ShaderClass.h>
 #include <Camera/CameraClass.h>
 #include <Textures/TextureClass.h>
+#include <Buffers/VAO.h>
+#include <Buffers/VBO.h>
 
 #include <iostream>
 
@@ -139,15 +141,16 @@ int main() {
     ShaderClass ourShader("Vertex.vs", "Fragment.fs");
 
     #pragma region VBO, VAO, EBO
-    unsigned int VBO, VAO, EBO;
+    unsigned int VBO, EBO;
     //Genera un VBO(Vertex Buffer Objecy), lo bincula al tipo de Buffer GL_ARRAY_BUFFER y le asigna los datos de los vertices
     glGenBuffers(1, &VBO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     //Genera un VAO(Vertex Array Object), lo vincula y le asigna los atributos de los vertices
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    VAO vao;
+    vao.create();
+    vao.bind();
 
     /*    //Genera un EBO(Element Buffer Object), lo bincula con el VBO y le asgina indices.
     glGenBuffers(1, &EBO);
@@ -167,7 +170,7 @@ int main() {
     #pragma region Textures
 
     TextureClass texture1(TEXTURE_DIR"/container.jpg", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
-    TextureClass texture2(TEXTURE_DIR"/awesomeface.png", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_LINEAR);
+    TextureClass texture2(TEXTURE_DIR"/awesomeface.png", GL_REPEAT, GL_REPEAT, GL_LINEAR_MIPMAP_LINEAR, GL_NEAREST);
 
     //Assign Units
     
@@ -208,14 +211,14 @@ int main() {
         ourShader.setMat4("projection", projection);
 
         ourShader.use();
-        glBindVertexArray(VAO);
+        vao.bind();        
         for (unsigned int i = 0; i < 10; i++)
         {        
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
             if(int(i % 3) == 0)  model = glm::rotate(model,  (float)glfwGetTime() * glm::radians(20.0f), glm::vec3(1.0f, 0.3f, 0.5f));
             ourShader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            vao.draw();
         }
 
         //Comprueban eventos y cambian el Back por el Front buffer
@@ -225,7 +228,7 @@ int main() {
     #pragma endregion
 
     glDeleteBuffers(1, &VBO);
-    glDeleteVertexArrays(1, &VAO);
+    vao.clean();
     glDeleteBuffers(1, &EBO);
     
     //Cierra la ventan
@@ -240,8 +243,6 @@ void Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

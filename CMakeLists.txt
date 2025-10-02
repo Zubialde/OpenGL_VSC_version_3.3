@@ -18,7 +18,10 @@ set(SOURCE ${GLFW_LIBRARY_DIR}/glad.c )
 set(HEADER ${GLFW_INCLUDE_DIR}/Shaders/ShaderClass.cpp 
             ${GLFW_INCLUDE_DIR}/Stb_Image/stb_image.h
             ${GLFW_INCLUDE_DIR}/Camera/CameraClass.cpp
-            ${GLFW_INCLUDE_DIR}/Textures/TextureClass.cpp)
+            ${GLFW_INCLUDE_DIR}/Textures/TextureClass.cpp
+            ${GLFW_INCLUDE_DIR}/Buffers/VAO.cpp
+            ${GLFW_INCLUDE_DIR}/Buffers/VBO.cpp
+            ${GLFW_INCLUDE_DIR}/Buffers/Geometry.cpp)
 #-------------------------------------------------------------------
 
 #Añade las librerias de GLFW

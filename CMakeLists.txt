@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Genera unas varliables con la ruta de los Includes y las Librerias
 set(GLFW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
 set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
-set(GLFW_SHADERS_DIR"${CMAKE_SOURCE_DIR}/Shaders")
+set(GLFW_SHADERS_DIR "${CMAKE_SOURCE_DIR}/Shaders")
 
 add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/Shaders")
 add_compile_definitions(TEXTURE_DIR="${CMAKE_SOURCE_DIR}/Textures")
@@ -21,6 +21,7 @@ set(HEADER ${GLFW_INCLUDE_DIR}/Shaders/ShaderClass.cpp
             ${GLFW_INCLUDE_DIR}/Textures/TextureClass.cpp
             ${GLFW_INCLUDE_DIR}/Buffers/VAO.cpp
             ${GLFW_INCLUDE_DIR}/Buffers/VBO.cpp
+            ${GLFW_INCLUDE_DIR}/Buffers/EBO.cpp
             ${GLFW_INCLUDE_DIR}/Buffers/Geometry.cpp)
 #-------------------------------------------------------------------
 

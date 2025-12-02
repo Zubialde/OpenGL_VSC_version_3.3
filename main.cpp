@@ -10,7 +10,7 @@
 #include <Textures/TextureClass.h>
 #include <Buffers/VAO.h>
 #include <Buffers/VBO.h>
-
+#include <Buffers/EBO.h>
 #include <iostream>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -102,13 +102,19 @@ int main() {
     VBO vbo;
     vbo.create();
     vbo.bind();
-    vbo.update(Pyramid);
+    vbo.update(CubeEBO);
 
     //Genera un VAO(Vertex Array Object), lo vincula y le asigna los atributos de los vertices
     VAO vao;
     vao.create();
     vao.bind();
     vao.update();
+
+    EBO ebo;
+    ebo.create();
+    ebo.bind();
+    ebo.update();
+
     
     /*    //Genera un EBO(Element Buffer Object), lo bincula con el VBO y le asgina indices.
     glGenBuffers(1, &EBO);
@@ -162,14 +168,14 @@ int main() {
         ourShader.setMat4("projection", projection);
 
         ourShader.use();
-        vao.bind();        
+        
         for (unsigned int i = 0; i < 10; i++)
         {        
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
             if(int(i % 3) == 0)  model = glm::rotate(model,  (float)glfwGetTime() * glm::radians(20.0f), glm::vec3(1.0f, 0.3f, 0.5f));
             ourShader.setMat4("model", model);
-            vao.draw();
+            ebo.draw();
         }
 
         //Comprueban eventos y cambian el Back por el Front buffer

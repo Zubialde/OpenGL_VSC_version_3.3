@@ -41,5 +41,8 @@ void VBO::update(ObjectType type)
         case Pyramid:
             glBufferData(GL_ARRAY_BUFFER, Geometry::PyramidVertexCount * sizeof(float), Geometry::PyramidVertices, GL_STATIC_DRAW);
             break;
+        case CubeEBO:
+            glBufferData(GL_ARRAY_BUFFER, Geometry::CubeVertexEBOCount * sizeof(float), Geometry::vertices, GL_STATIC_DRAW);
+            break;
     }   
 }

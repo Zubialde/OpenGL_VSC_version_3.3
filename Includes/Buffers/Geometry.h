@@ -2,13 +2,18 @@
 #define GEOMETRY_H
 
 namespace Geometry {
+
+
     extern float CubeVertices[];
     extern const unsigned int CubeVertexCount;
     extern float SphereVertices[];
     extern const unsigned int SphereVertexCount;
     extern float PyramidVertices[];
     extern const unsigned int PyramidVertexCount;
-}
+    extern float vertices[];
+    extern int indices[6];
+    extern const unsigned int CubeVertexEBOCount;
+};
 
 
 #endif

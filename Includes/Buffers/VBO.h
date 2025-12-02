@@ -5,16 +5,15 @@
 #include <iostream>
 #include <Buffers/Geometry.h>
 #include <GLFW/glfw3.h>
-
 enum ObjectType
 {
 	Cube,
 	Sphere,
 	Cylinder,
 	triangle,
-    Pyramid
+    Pyramid,
+    CubeEBO
 };
-
 class VBO
 {
     public:

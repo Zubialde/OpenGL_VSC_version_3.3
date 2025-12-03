@@ -37,5 +37,5 @@ void EBO::update()
 void EBO::draw()
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, Geometry::indexCount, GL_UNSIGNED_INT, 0);
 }

@@ -44,10 +44,10 @@ void VBO::update(ObjectType type)
         case CubeEBO:
             glBufferData(GL_ARRAY_BUFFER, Geometry::CubeVertexEBOCount * sizeof(float), Geometry::vertices, GL_STATIC_DRAW);
             break;
-    }   
+    } 
 }
 
-void VBO::clean()
+void VBO::clear()
 {
     if(id != 0)
     {

@@ -11,7 +11,8 @@ namespace Geometry {
     extern float PyramidVertices[];
     extern const unsigned int PyramidVertexCount;
     extern float vertices[];
-    extern int indices[6];
+    extern int indices[36];
+    extern const unsigned int indexCount;
     extern const unsigned int CubeVertexEBOCount;
 };
 

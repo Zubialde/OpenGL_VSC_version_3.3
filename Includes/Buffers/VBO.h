@@ -23,7 +23,7 @@ class VBO
     void bind();
     void unbind();
     void update(enum ObjectType type);
-
+    void clean();
     
     private:
 

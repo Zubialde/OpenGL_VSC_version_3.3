@@ -46,3 +46,12 @@ void VBO::update(ObjectType type)
             break;
     }   
 }
+
+void VBO::clean()
+{
+    if(id != 0)
+    {
+        glDeleteBuffers(1, &id);
+        id = 0;
+    }
+}

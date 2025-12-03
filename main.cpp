@@ -184,7 +184,7 @@ int main() {
     }
     #pragma endregion
 
-    vbo.~VBO();
+    vbo.clear();
     vao.clean();
     
     //Cierra la ventan

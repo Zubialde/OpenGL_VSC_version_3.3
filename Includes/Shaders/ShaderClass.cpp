@@ -97,6 +97,10 @@ void ShaderClass::setMat4(const std::string &name, glm::mat4 matrix) const
     glUniformMatrix4fv(model, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
+void ShaderClass::setVec3(const std::string &name, const glm::vec3 &vec)const
+{
+    glUniform3fv(glGetUniformLocation(ID, name.c_str()),1, &vec[0]);
+}
 
 //Check if shaders compiled correctly
 void ShaderClass::checkCompileErrors(unsigned int shader, std::string type)

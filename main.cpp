@@ -19,6 +19,7 @@
 
 #pragma endregion
 
+#pragma region Global variables
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void Init();
 void MathCheck();
@@ -29,7 +30,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 float i {0};
 float z {45};
 
-glm::vec3 lightPos = glm::vec3(1.0f, 3.0f, 4.0f);
+glm::vec3 lightPos = glm::vec3(3.0f, 2.0f, 4.0f);
 
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -52,6 +53,7 @@ float pitch {0.0f};
 float fov {45.0f};
 
 bool firstMouse = true;
+#pragma endregion
 
 int main() {
     Init();
@@ -89,12 +91,7 @@ int main() {
     VBO vbo;
     vbo.create();
     vbo.bind();
-    vbo.update(CubeEBO);
-
-    EBO ebo;
-    ebo.create();
-    ebo.bind();
-    ebo.update();
+    vbo.update(Cube);
 
     //Genera un VAO(Vertex Array Object), lo vincula y le asigna los atributos de los vertices
     VAO vao;
@@ -111,7 +108,9 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     #pragma endregion
-    
+    float ambientpower = 0.5f;
+
+
     glEnable(GL_DEPTH_TEST);
 
     #pragma region Render loop 
@@ -122,9 +121,12 @@ int main() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+
+        glm::vec3 lightPos2 = glm::vec3(0.0f,0.0f,0.0f)  +(glm::vec3(sin(currentFrame),sin(-currentFrame),cos(-currentFrame)) * 0.5f) * 5.0f;
+
         //RenderComands 
         processInput(window);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //Camera and World Matrixes
@@ -139,26 +141,32 @@ int main() {
         ourShader.use();
         
         //Light affected objects
-        ourShader.setVec3("objectColor", glm::vec3(1.0f,1.0f,0.0f));
-        ourShader.setVec3("lightColor", glm::vec3(0.0f,1.0f,1.0f));
         ourShader.setMat4("projection", projection);
-        ourShader.setMat4("view", view);    
-
+        ourShader.setMat4("view", view);
         glm::mat4 model = glm::mat4(1.0f);
-        ourShader.setMat4("model", model);
-        vao.bind();
-        ebo.draw();
+        ourShader.setMat4("model", model);        
+        ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
+        ourShader.setVec3("lightColor", glm::vec3(0.3f,0.3f,0.3f));
+        ourShader.setVec3("cameraPosition", camera.Position);
+        ourShader.setVec3("lightPos", lightPos2);
 
+        ourShader.setVec3("material.ambient", glm::vec3(0.4f,0.4f,0.4f));
+        ourShader.setVec3("material.diffuse", glm::vec3(0.8f,0.8f,0.8f));
+        ourShader.setVec3("material.specular", glm::vec3(0.2f,0.2f,0.2f));
+        ourShader.setFloat("material.shininess", 256.0f);
+        vao.draw();
+
+        //Lighting Object
         lightingShader.use();
         lightingShader.setMat4("view", view);
-        lightingShader.setMat4("view", view);
         lightingShader.setMat4("projection", projection);
-
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f));
-        lightingShader.setMat4("model", model);
+        lightingShader.setVec3("lightColor", glm::vec3(1.0f,1.0f,1.0f));
+        glm::mat4 lightModel = glm::mat4(1.0f);
+        lightModel = glm::translate(lightModel, lightPos2);
+        lightModel = glm::scale(lightModel, glm::vec3(0.2f));
+        lightingShader.setMat4("model", lightModel);
         lightCubeVao.bind();
-        ebo.draw();
+        vao.draw();
 
         //Comprueban eventos y cambian el Back por el Front buffer
         glfwSwapBuffers(window);

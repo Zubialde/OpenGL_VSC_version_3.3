@@ -3,6 +3,8 @@ layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aColor;
 layout (location = 2) in vec2 aTexCoord;
 
+uniform vec3 lightColor;
+
 out vec3 ourColor;
 uniform float offsetX;
 uniform float offsetY;
@@ -16,6 +18,6 @@ uniform mat4 projection;
 void main()
 {
     gl_Position =projection * view * model * vec4(aPos, 1.0);
-    ourColor = aColor;
-    TexCoord = aTexCoord;
+    ourColor = lightColor;
+    vertexPos = aPos;
 }

@@ -13,7 +13,7 @@ class ShaderClass
 {
     public:
         static std::string ShadersPath;
-        unsigned int ID;
+        GLuint ID;
 
     ShaderClass(const char* vertexPath, const char* fragmentPath);
 

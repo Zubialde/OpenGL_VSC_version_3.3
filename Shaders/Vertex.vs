@@ -1,19 +1,29 @@
 #version 330 core
+// Input vertex data, different for all executions of this shader.
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 aTexCoord;
+layout (location = 1) in vec3 aNormal;
 
 uniform float offsetX;
 uniform float offsetY;
 
+//Uniforms
 uniform vec3 objectColor;
+uniform vec3 ambient;
+uniform vec3 lightPos;
 uniform vec3 lightColor;
+uniform vec3 cameraPosition;
 
+//Outputs
+out vec3 lpos;
 out vec3 baseColor;
 out vec3 ambientColor;
-out vec3 vertexPos;
-out vec2 TexCoord;
+out vec3 fragmentPos;
+out vec3 Normal;
+out vec3 LightColor;
+out vec3 cameraPos;
 
+
+//Matrices
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -22,5 +32,12 @@ void main()
 {
     gl_Position =projection * view * model * vec4(aPos, 1.0);
     baseColor = objectColor;
-    ambientColor = lightColor;
+    ambientColor = ambient;
+
+    fragmentPos = vec3(model * vec4(aPos, 1.0));
+
+    Normal = mat3(transpose(inverse(model))) * aNormal;
+    lpos = lightPos;
+    cameraPos = cameraPosition;
+    LightColor = lightColor;
 }

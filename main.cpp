@@ -110,6 +110,9 @@ int main() {
     #pragma endregion
     float ambientpower = 0.5f;
 
+    //Load Textures
+    TextureClass ourTexture("Textures/container2.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
+    ourTexture.use(0);
 
     glEnable(GL_DEPTH_TEST);
 
@@ -130,7 +133,7 @@ int main() {
         lightColor.z = sin(glfwGetTime() * 1.3f);
 
         glm::vec3 diffuse = lightColor * glm::vec3(0.5f);
-        glm::vec3 ambient =  diffuse * glm::vec3(0.2f);
+        glm::vec3 ambient =  glm::vec3(0.8f);
 
         //RenderComands 
         processInput(window);
@@ -152,6 +155,7 @@ int main() {
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
         glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
         ourShader.setMat4("model", model);        
         ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
         ourShader.setVec3("cameraPosition", camera.Position);
@@ -165,6 +169,7 @@ int main() {
         ourShader.setVec3("light.ambient", ambient);
         ourShader.setVec3("light.diffuse", diffuse);
         ourShader.setVec3("light.specular", glm::vec3(1.0f,1.0f,1.0f));
+        
         vao.draw();
 
         //Lighting Object
@@ -211,15 +216,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 void processInput(GLFWwindow* window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
-        
     if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-      float cameraSpeed = 1.25f * deltaTime; // 2.5 unidades por segundo
+      
     
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) cameraSpeed *= 3.0f;
+    float cameraSpeed = 1.25f * deltaTime;         
+
+
+// 2.5 unidades por segundo
+    
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.MovementSpeed = 10.0f;
+    else     camera.MovementSpeed = 3.0f;
+    
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)

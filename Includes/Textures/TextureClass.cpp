@@ -4,8 +4,8 @@
 /// @param internalFormat |1 = JPG, 2 =  PNG|
 TextureClass::TextureClass(const char* path,GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter)
 {
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenTextures(1, &ID);
+    glBindTexture(GL_TEXTURE_2D, ID);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
@@ -31,19 +31,18 @@ TextureClass::TextureClass(const char* path,GLint wrapS, GLint wrapT, GLint minF
         // Generate texture
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        stbi_image_free(data);
     }    
     else
     {
         std::cerr << "Failed to load texture" << std::endl;
+        stbi_image_free(data);
     }
-
-
-
-    stbi_image_free(data);
 }
 
 void TextureClass::use(GLenum textureUnit)
 {
     glActiveTexture(textureUnit);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, ID);
 }

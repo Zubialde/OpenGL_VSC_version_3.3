@@ -20,9 +20,8 @@
 #pragma endregion
 
 #pragma region Global variables
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void Init();
-void MathCheck();
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -111,9 +110,13 @@ int main() {
     float ambientpower = 0.5f;
 
     //Load Textures
-    TextureClass ourTexture("Textures/container2.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
+    TextureClass ourTexture(TEXTURE_DIR"/container2.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
+    TextureClass ourTexture2(TEXTURE_DIR"/container2_specular.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
     ourTexture.use(0);
 
+
+    ourShader.setInt("material.diffuse", 0);
+    ourShader.setInt("material.specular", 1);
     glEnable(GL_DEPTH_TEST);
 
     #pragma region Render loop 
@@ -128,12 +131,12 @@ int main() {
         glm::vec3 lightPos2 = lightPos  /*+ (glm::vec3(sin(currentFrame),sin(-currentFrame),cos(-currentFrame)) * 0.5f) * 5.0f*/;
 
         glm::vec3 lightColor;
-        lightColor.x = sin(glfwGetTime() * 2.0f);
-        lightColor.y = sin(glfwGetTime() * 0.7f);
-        lightColor.z = sin(glfwGetTime() * 1.3f);
+        lightColor.x = static_cast<float>(sin(glfwGetTime() * 2.0f));
+        lightColor.y = static_cast<float>(sin(glfwGetTime() * 0.7f));
+        lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3f));
 
-        glm::vec3 diffuse = lightColor * glm::vec3(0.5f);
-        glm::vec3 ambient =  glm::vec3(0.8f);
+        glm::vec3 diffuse =  glm::vec3(0.5f);
+        glm::vec3 ambient =  glm::vec3(0.3f);
 
         //RenderComands 
         processInput(window);
@@ -160,15 +163,15 @@ int main() {
         ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
         ourShader.setVec3("cameraPosition", camera.Position);
 
-        ourShader.setVec3("material.ambient", glm::vec3(0.0f,0.1f,0.06f));
-        ourShader.setVec3("material.diffuse", glm::vec3(0.0f,0.509f,0.501f));
-        ourShader.setVec3("material.specular", glm::vec3(0.501f,0.509f,0.501f));
-        ourShader.setFloat("material.shininess", 32.0f);
+        ourShader.setVec3("material.diffuse", glm::vec3(1.0f));
+        ourShader.setVec3("material.specular", glm::vec3(1.0f));
+        ourShader.setFloat("material.shininess", 64.0f);
 
         ourShader.setVec3("light.position", lightPos2);
         ourShader.setVec3("light.ambient", ambient);
         ourShader.setVec3("light.diffuse", diffuse);
         ourShader.setVec3("light.specular", glm::vec3(1.0f,1.0f,1.0f));
+
         
         vao.draw();
 

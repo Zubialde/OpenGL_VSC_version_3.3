@@ -19,6 +19,7 @@ out vec3 ambientColor;
 out vec3 fragmentPos;
 out vec3 Normal;
 out vec3 cameraPos;
+out vec2 uv;
 
 //Matrices
 uniform mat4 model;
@@ -34,5 +35,5 @@ void main()
 
     Normal = mat3(transpose(inverse(model))) * aNormal;
     cameraPos = cameraPosition;
-
+    uv = aTexCoord;
 }

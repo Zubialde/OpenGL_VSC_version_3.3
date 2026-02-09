@@ -12,7 +12,6 @@ class TextureClass
 {
     public:
     unsigned int ID;
-    unsigned int texture;
     TextureClass(const char* path ,GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
     void use(GLenum textureUnit);
     private:

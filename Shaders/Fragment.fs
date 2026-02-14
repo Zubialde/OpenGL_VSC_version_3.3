@@ -48,9 +48,11 @@ void main()
     vec3 ambient =  light.ambient * vec3(texture(material.diffuse, uv));
     vec3 diffuse = diff * light.diffuse * vec3(texture(material.diffuse, uv));
     vec3 specular = light.specular * spec * vec3(texture(material.specular, uv));
-    vec3 emission = vec3(texture(material.emission, uv * vec2(time,time))) * (vec3(1.0) - vec3(texture(material.specular, uv)));
 
-    vec3 result = ambient + diffuse + specular +emission; 
+    float clampValue = clamp(vec3(texture(material.specular, uv)), 0.0, 1.0).r < 0.05? 1.0 : 0.0;
+    vec3 emission = vec3(texture(material.emission, uv + vec2(0.0, time))) * clampValue;
+
+    vec3 result = ambient + diffuse + specular + emission; 
 
     FragColor = vec4 (result ,1.0);
 }

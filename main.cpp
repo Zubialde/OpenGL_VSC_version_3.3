@@ -112,7 +112,7 @@ int main() {
 
     //Load Textures
     TextureClass diffuse_Map(TEXTURE_DIR"/container2.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
-    TextureClass specular_Map(TEXTURE_DIR"/container_betterSpecular.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+    TextureClass specular_Map(TEXTURE_DIR"/container2_specular.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
     TextureClass emmision_Map(TEXTURE_DIR"/Emission_Matrix.jpg", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
 
     ourShader.use();
@@ -126,10 +126,9 @@ int main() {
     {
         //Perframe variables
         Timer();
-        float currentTime =+ deltaTime;
-        ourShader.setFloat("time", currentTime);
+        float currentTime = glfwGetTime();
 
-        std::cout << glfwGetTime() << std::endl;
+        //std::cout << 1/deltaTime << std::endl;
 
         glm::vec3 lightPos2 = lightPos  /*+ (glm::vec3(sin(currentFrame),sin(-currentFrame),cos(-currentFrame)) * 0.5f) * 5.0f*/;
 
@@ -161,12 +160,12 @@ int main() {
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+        model = glm::rotate(model, static_cast<float>(glfwGetTime()), glm::vec3(0.0f, 1.0f, 1.0f));
+        ourShader.setFloat("time", currentTime);
 
         ourShader.setMat4("model", model);        
         ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
         ourShader.setVec3("cameraPosition", camera.Position);
-
         ourShader.setFloat("material.shininess", 64.0f);
 
         ourShader.setVec3("light.position", lightPos2);
@@ -211,7 +210,6 @@ void Timer()
     float currentFrame = static_cast<float>(glfwGetTime());
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
-
 }
 
 void Init()

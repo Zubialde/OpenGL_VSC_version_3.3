@@ -4,6 +4,7 @@ out vec4 FragColor;
 struct Material {
     sampler2D diffuse;
     sampler2D specular;
+    sampler2D emission;
     float shininess;
 };
 
@@ -11,6 +12,7 @@ uniform Material material;
 
 struct Light {
     vec3 position;
+
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
@@ -18,6 +20,7 @@ struct Light {
 
 uniform Light light;
 
+uniform float time;
 
 in vec3 Normal;
 in vec3 lpos;
@@ -45,8 +48,9 @@ void main()
     vec3 ambient =  light.ambient * vec3(texture(material.diffuse, uv));
     vec3 diffuse = diff * light.diffuse * vec3(texture(material.diffuse, uv));
     vec3 specular = light.specular * spec * vec3(texture(material.specular, uv));
-   
-    vec3 result = ambient + diffuse + specular; 
+    vec3 emission = vec3(texture(material.emission, uv * vec2(time,time))) * (vec3(1.0) - vec3(texture(material.specular, uv)));
+
+    vec3 result = ambient + diffuse + specular +emission; 
 
     FragColor = vec4 (result ,1.0);
 }

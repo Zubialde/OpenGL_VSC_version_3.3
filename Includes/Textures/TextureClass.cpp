@@ -41,6 +41,8 @@ TextureClass::TextureClass(const char* path,GLint wrapS, GLint wrapT, GLint minF
     }
 }
 
+/// @brief Activates and binds the desired texture
+/// @param textureUnit The texture unit to activate DISC: it has to be (eg. TEXTURE0, TEXTURE1...)
 void TextureClass::use(GLenum textureUnit)
 {
     glActiveTexture(textureUnit);

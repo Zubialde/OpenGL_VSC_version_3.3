@@ -1,5 +1,5 @@
 #pragma region Preprocessor directives
-#include <glad/glad.h>
+#include <glad/glad.h>  
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,6 +21,7 @@
 
 #pragma region Global variables
 void Init();
+void Timer();
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -60,7 +61,7 @@ int main() {
     ShaderClass::SetShaderPath(SHADER_DIR);
 
     //Crea la ventana (ventana != OpenGl)*
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hello Window :)"  , NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hola ventana :)"  , NULL, NULL);
 
     //Se asegura de que se han iniciado tanto la ventana como GLAD
     if(window == NULL)
@@ -84,7 +85,7 @@ int main() {
     ShaderClass ourShader("Vertex.vs", "Fragment.fs");
     ShaderClass lightingShader("LightCubeVertex.vs", "LightCubeFragment.fs");
 
-    #pragma region VBO, VAO, EBO
+    #pragma region VBO, VAO, EBO //TODO: Create Mesh class to handle Binding and Updating
 
     //Genera un VBO(Vertex Buffer Objecy), lo bincula al tipo de Buffer GL_ARRAY_BUFFER y le asigna los datos de los vertices
     VBO vbo;
@@ -110,23 +111,25 @@ int main() {
     float ambientpower = 0.5f;
 
     //Load Textures
-    TextureClass ourTexture(TEXTURE_DIR"/container2.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
-    TextureClass ourTexture2(TEXTURE_DIR"/container2_specular.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
-    ourTexture.use(0);
+    TextureClass diffuse_Map(TEXTURE_DIR"/container2.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
+    TextureClass specular_Map(TEXTURE_DIR"/container_betterSpecular.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
+    TextureClass emmision_Map(TEXTURE_DIR"/Emission_Matrix.jpg", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
 
-
+    ourShader.use();
     ourShader.setInt("material.diffuse", 0);
     ourShader.setInt("material.specular", 1);
+    ourShader.setInt("material.emission", 2);
     glEnable(GL_DEPTH_TEST);
 
     #pragma region Render loop 
     while(!glfwWindowShouldClose(window))
     {
         //Perframe variables
-        float currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        Timer();
+        float currentTime =+ deltaTime;
+        ourShader.setFloat("time", currentTime);
 
+        std::cout << glfwGetTime() << std::endl;
 
         glm::vec3 lightPos2 = lightPos  /*+ (glm::vec3(sin(currentFrame),sin(-currentFrame),cos(-currentFrame)) * 0.5f) * 5.0f*/;
 
@@ -159,20 +162,22 @@ int main() {
         ourShader.setMat4("view", view);
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
         ourShader.setMat4("model", model);        
         ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
         ourShader.setVec3("cameraPosition", camera.Position);
 
-        ourShader.setVec3("material.diffuse", glm::vec3(1.0f));
-        ourShader.setVec3("material.specular", glm::vec3(1.0f));
         ourShader.setFloat("material.shininess", 64.0f);
 
         ourShader.setVec3("light.position", lightPos2);
         ourShader.setVec3("light.ambient", ambient);
         ourShader.setVec3("light.diffuse", diffuse);
-        ourShader.setVec3("light.specular", glm::vec3(1.0f,1.0f,1.0f));
+        ourShader.setVec3("light.specular", diffuse);
 
-        
+        diffuse_Map.use(GL_TEXTURE0);
+        specular_Map.use(GL_TEXTURE1);
+        emmision_Map.use(GL_TEXTURE2);
+
         vao.draw();
 
         //Lighting Object
@@ -199,6 +204,14 @@ int main() {
     //Cierra la ventan
     glfwTerminate();
     return 0;
+}
+
+void Timer()
+{
+    float currentFrame = static_cast<float>(glfwGetTime());
+    deltaTime = currentFrame - lastFrame;
+    lastFrame = currentFrame;
+
 }
 
 void Init()

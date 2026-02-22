@@ -52,6 +52,17 @@ float yaw {-90.0f};
 float pitch {0.0f};
 float fov {45.0f};
 
+glm::vec3 cubePositions[10] = {
+    glm::vec3(0.0f, 0.0f, 0.0f),
+    glm::vec3(2.0f, 0.0f, 0.0f),
+    glm::vec3(-2.0f, 0.0f, 0.0f),
+    glm::vec3(0.0f, 2.0f, 0.0f),
+    glm::vec3(0.0f, -2.0f, 0.0f),
+    glm::vec3(0.0f, 0.0f, 2.0f),
+    glm::vec3(0.0f, 0.0f, -2.0f),
+    glm::vec3(2.0f, 2.0f, 0.0f),
+};
+
 bool firstMouse = true;
 #pragma endregion
 
@@ -138,7 +149,9 @@ int main() {
         lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3f));
 
         glm::vec3 diffuse =  glm::vec3(0.5f);
-        glm::vec3 ambient =  glm::vec3(0.3f);
+        glm::vec3 ambient =  glm::vec3(0.1f);
+
+        glm::vec3 lightDir = glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f));
 
         //RenderComands 
         processInput(window);
@@ -159,25 +172,39 @@ int main() {
         //Light affected objects
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, static_cast<float>(glfwGetTime()), glm::vec3(0.0f, 1.0f, 1.0f));
-        ourShader.setFloat("time", currentTime);
 
-        ourShader.setMat4("model", model);        
-        ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
-        ourShader.setVec3("cameraPosition", camera.Position);
-        ourShader.setFloat("material.shininess", 64.0f);
+        for(unsigned int i = 0; i < 10; i++)
+        {
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, cubePositions[i]);
+            //model = glm::rotate(model, static_cast<float>(glfwGetTime()), glm::vec3(0.0f, 1.0f, 1.0f));
+            ourShader.setFloat("time", currentTime);
 
-        ourShader.setVec3("light.position", lightPos2);
-        ourShader.setVec3("light.ambient", ambient);
-        ourShader.setVec3("light.diffuse", diffuse);
-        ourShader.setVec3("light.specular", diffuse);
+            ourShader.setMat4("model", model);               
+            ourShader.setVec3("cameraPosition", camera.Position);     
+            
+            ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
+            ourShader.setFloat("material.shininess", 64.0f);
 
-        diffuse_Map.use(GL_TEXTURE0);
-        specular_Map.use(GL_TEXTURE1);
-        emmision_Map.use(GL_TEXTURE2);
+            ourShader.setVec3("light.direction", camera.Front);
+            ourShader.setVec3("light.position", camera.Position);
+            ourShader.setVec3("light.ambient", ambient);
+            ourShader.setVec3("light.diffuse", diffuse);
+            ourShader.setVec3("light.specular", diffuse);
 
-        vao.draw();
+            ourShader.setFloat("light.constant", 1.0f);
+            ourShader.setFloat("light.linear", 0.12f);
+            ourShader.setFloat("light.quadratic", 0.032f);
+
+            ourShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+            ourShader.setFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+
+            diffuse_Map.use(GL_TEXTURE0);
+            specular_Map.use(GL_TEXTURE1);
+            emmision_Map.use(GL_TEXTURE2);
+
+            vao.draw();
+        }
 
         //Lighting Object
         lightingShader.use();
@@ -186,6 +213,7 @@ int main() {
         lightingShader.setVec3("lightMaterial.ambient", lightColor);
         glm::mat4 lightModel = glm::mat4(1.0f);
         lightModel = glm::translate(lightModel, lightPos2);
+        lightModel = glm::rotate(lightModel, 360.0f, lightDir);
         lightModel = glm::scale(lightModel, glm::vec3(0.2f));
         lightingShader.setMat4("model", lightModel);
         lightCubeVao.bind();

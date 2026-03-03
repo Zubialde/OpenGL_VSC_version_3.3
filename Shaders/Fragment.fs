@@ -31,7 +31,7 @@ struct PointLight{
     float linear;
     float quadratic;
 };
-#define n_point_lights 3
+#define n_point_lights 1
 uniform PointLight pointLight[n_point_lights];
 
 struct SpotLight{
@@ -68,7 +68,7 @@ void main()
     vec3 viewDir = normalize(cameraPos - fragmentPos);
     vec3 outputer = vec3(0.0);
 
-    outputer += DirLightCalc(dirLight, Normal, viewDir);
+    //outputer += DirLightCalc(dirLight, Normal, viewDir);
     for(int i = 0; i < n_point_lights; i++) outputer += PointLightCalc(pointLight[i], Normal, viewDir, fragmentPos);
 
     outputer += SpotLightCalc(spotLight, Normal, viewDir, fragmentPos);

@@ -1,6 +1,7 @@
 #pragma region Preprocessor directives
 #include <glad/glad.h>  
 #include <GLFW/glfw3.h>
+#include <assimp/importer.hpp>      // C++ importer
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -52,6 +53,8 @@ float yaw {-90.0f};
 float pitch {0.0f};
 float fov {45.0f};
 
+float lanternAngle {12.5f};
+
 glm::vec3 cubePositions[10] = {
     glm::vec3(0.0f, 0.0f, 0.0f),
     glm::vec3(2.0f, 0.0f, 0.0f),
@@ -64,13 +67,16 @@ glm::vec3 cubePositions[10] = {
 };
 
 glm::vec3 pointLightPos[4] = {
-    glm::vec3(0.0f, 0.0f, 2.0f),
+    glm::vec3(0.0f, 0.0f, 1.0f),
     glm::vec3(2.0f, 0.0f, 2.0f),
     glm::vec3(-2.0f, 0.0f, 2.0f),
     glm::vec3(0.0f, 2.0f, 2.0f)
 };
 
 bool firstMouse = true;
+// Previous key states to detect single key-press events (edge detection)
+bool prevUpPressed = false;
+bool prevDownPressed = false;
 #pragma endregion
 
 int main() {
@@ -208,38 +214,15 @@ int main() {
             ourShader.setFloat("pointLight[0].constant", 1.0f);
             ourShader.setFloat("pointLight[0].linear", 0.09f);
             ourShader.setFloat("pointLight[0].quadratic", 0.032f);
-            
-            ourShader.setVec3("pointLight[1].position", pointLightPos[1]);
-            ourShader.setVec3("pointLight[1].ambient", glm::vec3(0.2f));
-            ourShader.setVec3("pointLight[1].diffuse", glm::vec3(0.5f));
-            ourShader.setVec3("pointLight[1].specular", glm::vec3(0.2f));
-            ourShader.setFloat("pointLight[1].constant", 1.0f);
-            ourShader.setFloat("pointLight[1].linear", 0.09f);
-            ourShader.setFloat("pointLight[1].quadratic", 0.032f);
-            
-            ourShader.setVec3("pointLight[2].position", pointLightPos[2]);
-            ourShader.setVec3("pointLight[2].ambient", glm::vec3(0.2f));
-            ourShader.setVec3("pointLight[2].diffuse", glm::vec3(0.5f));
-            ourShader.setVec3("pointLight[2].specular", glm::vec3(0.2f));
-            ourShader.setFloat("pointLight[2].constant", 1.0f);
-            ourShader.setFloat("pointLight[2].linear", 0.09f);
-            ourShader.setFloat("pointLight[2].quadratic", 0.032f);
-            
-            ourShader.setVec3("pointLight[3].position", pointLightPos[3]);
-            ourShader.setVec3("pointLight[3].ambient", glm::vec3(0.2f));
-            ourShader.setVec3("pointLight[3].diffuse", glm::vec3(0.5f));
-            ourShader.setVec3("pointLight[3].specular", glm::vec3(0.2f));
-            ourShader.setFloat("pointLight[3].constant", 1.0f);
-            ourShader.setFloat("pointLight[3].linear", 0.09f);            
-            ourShader.setFloat("pointLight[3].quadratic", 0.032f);  
+
 
             ourShader.setVec3("spotLight.position", camera.Position);
             ourShader.setVec3("spotLight.direction", camera.Front);
             ourShader.setVec3("spotLight.ambient", glm::vec3(0.2f));
             ourShader.setVec3("spotLight.diffuse", glm::vec3(0.5f));
             ourShader.setVec3("spotLight.specular", glm::vec3(0.2f));
-            ourShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
-            ourShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
+            ourShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(lanternAngle)));
+            ourShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(lanternAngle + 5.0f)));
 
             #pragma endregion
             diffuse_Map.use(GL_TEXTURE0);
@@ -309,11 +292,19 @@ void processInput(GLFWwindow* window)
     else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-      
-    
-    float cameraSpeed = 1.25f * deltaTime;         
 
+    // Edge-detect UP/DOWN so the angle changes once per key press
+    int downState = glfwGetKey(window, GLFW_KEY_DOWN);
+    int upState = glfwGetKey(window, GLFW_KEY_UP);
 
+    if (downState == GLFW_PRESS && !prevDownPressed)
+        lanternAngle--;
+    if (upState == GLFW_PRESS && !prevUpPressed)
+        lanternAngle++;
+
+    // update previous-state flags
+    prevDownPressed = (downState == GLFW_PRESS);
+    prevUpPressed = (upState == GLFW_PRESS);
 // 2.5 unidades por segundo
     
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.MovementSpeed = 10.0f;

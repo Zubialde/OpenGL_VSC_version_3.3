@@ -1,4 +1,4 @@
-#include "TextureClass.h"
+#include "Textures/TextureClass.h"
 
 
 /// @param internalFormat |1 = JPG, 2 =  PNG|

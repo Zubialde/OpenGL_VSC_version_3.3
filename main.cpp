@@ -14,7 +14,6 @@
 #include <Buffers/EBO.h>
 #include <iostream>
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <Stb_Image/stb_image.h>
 
 
@@ -150,7 +149,7 @@ int main() {
     {
         //Perframe variables
         Timer();
-        float currentTime = glfwGetTime();
+        float currentTime = static_cast<float>(glfwGetTime());
 
         //std::cout << 1/deltaTime << std::endl;
 

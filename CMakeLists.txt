@@ -1,37 +1,34 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.11)
 project(OpenGL_App)
 
 set(CMAKE_CXX_STANDARD 17)
 
 # Genera unas varliables con la ruta de los Includes y las Librerias
-set(GLFW_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
+set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
 set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
-set(GLFW_SHADERS_DIR "${CMAKE_SOURCE_DIR}/Shaders")
+set(SHADERS_DIR "${CMAKE_SOURCE_DIR}/assets/Shaders")
+set(TEXTURE_DIR "${CMAKE_SOURCE_DIR}/assets/Textures")
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
+set(THP_DIR "${CMAKE_SOURCE_DIR}/third_party")
 
-add_compile_definitions(SHADER_DIR="${CMAKE_SOURCE_DIR}/Shaders")
-add_compile_definitions(TEXTURE_DIR="${CMAKE_SOURCE_DIR}/Textures")
+add_compile_definitions(SHADER_DIR="${SHADERS_DIR}")
+add_compile_definitions(TEXTURE_DIR="${TEXTURE_DIR}")
 
 # Añade las rutas de las librerias en un solo lugar
 #-------------------------------------------------------------------
-set(SOURCE ${GLFW_LIBRARY_DIR}/glad.c)
 
-set(HEADER ${GLFW_INCLUDE_DIR}/Shaders/ShaderClass.cpp 
-            ${GLFW_INCLUDE_DIR}/Stb_Image/stb_image.h
-            ${GLFW_INCLUDE_DIR}/Camera/CameraClass.cpp
-            ${GLFW_INCLUDE_DIR}/Textures/TextureClass.cpp
-            ${GLFW_INCLUDE_DIR}/Buffers/VAO.cpp
-            ${GLFW_INCLUDE_DIR}/Buffers/VBO.cpp
-            ${GLFW_INCLUDE_DIR}/Buffers/EBO.cpp
-            ${GLFW_INCLUDE_DIR}/Buffers/Geometry.cpp)
+file(GLOB_RECURSE SOURCE ${SOURCE_DIR}/*.cpp
+    ${THP_DIR}/*.c
+    ${THP_DIR}/*.cpp)
 #-------------------------------------------------------------------
 
 #Añade las librerias de GLFW
-include_directories(${GLFW_INCLUDE_DIR})
+include_directories(${INCLUDE_DIR} ${THP_DIR} )
 
 link_directories(${GLFW_LIBRARY_DIR})   
 
 # Adñado los src (Source Files)
-add_executable(OpenGL_App main.cpp ${SOURCE} ${HEADER})
+add_executable(OpenGL_App main.cpp ${SOURCE})
 
 target_compile_definitions(OpenGL_App PRIVATE GLFW_STATIC)
 

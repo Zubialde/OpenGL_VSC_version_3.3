@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
-project(OpenGL_App)
+project(WhiteBox_Engine)
 
 set(CMAKE_CXX_STANDARD 17)
+
 
 # Genera unas varliables con la ruta de los Includes y las Librerias
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
@@ -17,9 +18,9 @@ add_compile_definitions(TEXTURE_DIR="${TEXTURE_DIR}")
 # Añade las rutas de las librerias en un solo lugar
 #-------------------------------------------------------------------
 
-file(GLOB_RECURSE SOURCE ${SOURCE_DIR}/*.cpp
-    ${THP_DIR}/*.c
-    ${THP_DIR}/*.cpp)
+file(GLOB_RECURSE SOURCE ${SOURCE_DIR}/*.cpp)
+
+set(GLAD ${THP_DIR}/glad/glad.c)
 #-------------------------------------------------------------------
 
 #Añade las librerias de GLFW
@@ -27,12 +28,14 @@ include_directories(${INCLUDE_DIR} ${THP_DIR} )
 
 link_directories(${GLFW_LIBRARY_DIR})   
 
-# Adñado los src (Source Files)
-add_executable(OpenGL_App main.cpp ${SOURCE})
+# Añade los src (Source Files)
+add_executable(WhiteBox ${SOURCE_DIR}/main.cpp ${SOURCE} ${GLAD})
 
-target_compile_definitions(OpenGL_App PRIVATE GLFW_STATIC)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_SOURCE_DIR}/bin)
+
+target_compile_definitions(WhiteBox PRIVATE GLFW_STATIC)
 
 # Link GLFW + OpenGL
-target_link_libraries(OpenGL_App glfw3 opengl32 assimp-vc143-mtd)
+target_link_libraries(WhiteBox glfw3 opengl32 assimp-vc143-mtd)
 
 

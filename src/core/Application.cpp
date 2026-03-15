@@ -1,0 +1,16 @@
+#include "core/Application.h"
+
+Application::Application()
+{
+
+}
+
+Application::~Application()
+{
+    
+}
+
+void Application::run()
+{
+    
+}

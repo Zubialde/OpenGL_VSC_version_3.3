@@ -1,7 +1,7 @@
 #pragma region Preprocessor directives
 #include <glad/glad.h>  
 #include <GLFW/glfw3.h>
-#include <assimp/importer.hpp>      // C++ importer
+#include <assimp/importer.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -23,18 +23,14 @@
 void Init();
 void Timer();
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+
+//Refocator to a Input class for better management
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-    
-float i {0};
-float z {45};
+
 
 glm::vec3 lightPos = glm::vec3(4.0f, 2.0f,4.0f);
-
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
 //Camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -47,10 +43,6 @@ const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
         
 double mouseX, mouseY;
-
-float yaw {-90.0f};
-float pitch {0.0f};
-float fov {45.0f};
 
 float lanternAngle {12.5f};
 
@@ -247,7 +239,6 @@ int main() {
             vao.draw();
         }
 
-
         //Comprueban eventos y cambian el Back por el Front buffer
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -280,7 +271,7 @@ void Init()
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    glViewport(0,0, width, height);
+     glViewport(0,0, width, height);
 }
 
 #pragma region Input
@@ -325,7 +316,6 @@ void processInput(GLFWwindow* window)
         firstMouse = true;
     }
     glfwSetScrollCallback(window, scroll_callback);
-
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)

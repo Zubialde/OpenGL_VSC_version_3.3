@@ -1,11 +1,5 @@
 #include "renderer/ShaderClass.h"
 
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 std::string ShaderClass::ShadersPath = "";
 
 // Constructor

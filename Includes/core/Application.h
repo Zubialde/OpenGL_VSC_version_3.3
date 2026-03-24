@@ -15,33 +15,26 @@
 #include <scene/Mesh.h>
 #include <renderer/VBO.h>
 #include <renderer/VAO.h>
+#include <core/Window.h>
 #include <iostream>
 
 #include <Stb_Image/stb_image.h>
 
 class Application
 {
-    public:    
-        
-        int SCR_WIDTH;
-        int SCR_HEIGHT;
-
+    public:
         Application();
         ~Application();
 
         void Run();
-
-        std::unique_ptr<Camera> camera;
     private:
-    
+    int SCR_WIDTH = 1920;
+    int SCR_HEIGHT = 1080;
+
     #pragma region Global variables
-    GLFWwindow* window;
 
     #pragma endregion
-
-    GLFWwindow* Init(int SCR_WIDTH, int SCR_HEIGHT);
-    void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-    
+    GLFWwindow* window;    
 };
 
 #endif

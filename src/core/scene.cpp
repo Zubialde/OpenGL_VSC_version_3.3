@@ -22,6 +22,7 @@ void Scene::AddGameObject(std::shared_ptr<GameObject>& gameObject)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = std::make_shared<GameObject>();
+    object->AddComponent<Transform>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
     AddGameObject(object);
 }

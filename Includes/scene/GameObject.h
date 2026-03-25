@@ -1,23 +1,41 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include <utils/Components.h>
+#include <utils/Component.h>
 
 #include <iostream>
 #include <vector>
 
+#include <type_traits>
+
 class GameObject{
     public:
+    std::string name;
 
-    std::vector<std::shared_ptr<Components>> components;
+    std::vector<std::unique_ptr<Component>> components;
 
     GameObject();
 
+    void Instantiate(std::string name);
+
     void Update(float deltaTime);
 
-    void AddComponent(std::shared_ptr<Components> component);
-
+    // This function is used to add a component to the gameObject
+    template<typename T, typename... Args>
+    requires std::is_base_of_v<Component, T>
+    inline T* AddComponent(Args&&... args)
+    {
+        std::unique_ptr<T> component = std::make_unique<T>(std::forward<Args>(args)...);
+        
+        component->GetParent() = this;
+        
+        T* newComponent = component.get();
+        
+        components.push_back(std::move(component));
+        
+        return newComponent;
+    }
     private:
-};
+};  
 
 #endif

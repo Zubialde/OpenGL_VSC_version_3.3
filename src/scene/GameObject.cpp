@@ -2,18 +2,18 @@
 
 GameObject::GameObject()
 {
+    
+}
+
+void GameObject::Instantiate(std::string name)
+{
 
 }
 
 void GameObject::Update(float deltaTime)
 {
-    for(unsigned int i = 0; i < components.size(); i++)
+    for(const std::unique_ptr<Component>& i : components)
     {
-        components[i]->Update(deltaTime);
+        i->Update(deltaTime);
     }
-}
-
-void GameObject::AddComponent(std::shared_ptr<Components> component)
-{
-    components.push_back(component);
 }

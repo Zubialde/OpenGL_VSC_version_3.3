@@ -4,6 +4,7 @@
 #include <scene/Mesh.h>
 #include <scene/CameraClass.h>
 #include <scene/GameObject.h>
+#include <utils/Transform.h>
 
 #include <iostream>
 #include <vector>

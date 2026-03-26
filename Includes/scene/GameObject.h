@@ -18,6 +18,7 @@ class GameObject{
 
     void Instantiate(std::string name);
 
+    //Calls for the Update inside of every component passes the deltaTime
     void Update(float deltaTime);
 
     // This function is used to add a component to the gameObject
@@ -26,9 +27,7 @@ class GameObject{
     inline T* AddComponent(Args&&... args)
     {
         std::unique_ptr<T> component = std::make_unique<T>(std::forward<Args>(args)...);
-        
-        component->GetParent() = this;
-        
+                
         T* newComponent = component.get();
         
         components.push_back(std::move(component));

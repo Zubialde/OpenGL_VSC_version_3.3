@@ -11,7 +11,11 @@ public:
     glm::vec3 scale;
     glm::vec3 rotation;
 
-    Transform(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) : Component(parent){};
+    Transform(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) : Component(parent){ 
+        this->position = position;
+        this->scale = scale;
+        this->rotation = rotation;
+    std::cout << this->parent << std::endl;};
     
     void Start() override;
     void Update(float deltaTime) override;

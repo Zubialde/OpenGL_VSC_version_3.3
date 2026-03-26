@@ -13,10 +13,11 @@ class GameObject{
     std::string name;
 
     std::vector<std::unique_ptr<Component>> components;
+    
 
     GameObject();
 
-    void Instantiate(std::string name);
+    GameObject* Instantiate(std::string name);
 
     //Calls for the Update inside of every component passes the deltaTime
     void Update(float deltaTime);

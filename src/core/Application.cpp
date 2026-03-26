@@ -2,8 +2,8 @@
 
 Application::Application()
 {
-    Window window;
-    
+    //Window window;
+    newscene.Load();
 
 }
 
@@ -18,6 +18,7 @@ void Application::Run()
     {
         
     }
+        newscene.Update(1.0f);
 
     Application::~Application();
 }

@@ -19,6 +19,8 @@
 #include <iostream>
 
 #include <Stb_Image/stb_image.h>
+#include <core/Scene.h>
+
 
 class Application
 {
@@ -34,7 +36,9 @@ class Application
     #pragma region Global variables
 
     #pragma endregion
-    GLFWwindow* window;    
+    private:
+    GLFWwindow* window;
+    Scene newscene = Scene("New Scene");
 };
 
 #endif

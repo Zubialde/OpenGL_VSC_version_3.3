@@ -16,6 +16,7 @@
 #include <iostream>
 
 #include <Stb_Image/stb_image.h>
+#include <core/Application.h>
 
 #pragma endregion
 
@@ -136,6 +137,7 @@ int main() {
     ourShader.setInt("material.emission", 2);
     glEnable(GL_DEPTH_TEST);
 
+    Application app;
     #pragma region Render loop 
     while(!glfwWindowShouldClose(window))
     {
@@ -221,6 +223,7 @@ int main() {
             emmision_Map.use(GL_TEXTURE2);
 
             vao.draw();
+
         }
 
         for(unsigned int i = 0; i < 4; i++)

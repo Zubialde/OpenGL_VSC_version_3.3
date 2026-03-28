@@ -19,7 +19,7 @@
 #include <iostream>
 
 #include <Stb_Image/stb_image.h>
-#include <core/Scene.h>
+#include <ECS/Scene.h>
 
 
 class Application

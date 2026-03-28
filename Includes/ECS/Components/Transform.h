@@ -1,6 +1,6 @@
 #pragma once
 
-#include <utils/Component.h>
+#include <ECS/Components/Component.h>
 
 #include <glm/glm.hpp>
 
@@ -14,8 +14,7 @@ public:
     Transform(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) : Component(parent){ 
         this->position = position;
         this->scale = scale;
-        this->rotation = rotation;
-    std::cout << this->parent << std::endl;};
+        this->rotation = rotation;};
     
     void Start() override;
     void Update(float deltaTime) override;

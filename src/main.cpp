@@ -161,7 +161,7 @@ int main() {
 
         //RenderComands 
         processInput(window);
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //Camera and World Matrixes
@@ -178,7 +178,7 @@ int main() {
         //Light affected objects
         ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
-
+        /*
         for(unsigned int i = 0; i < 10; i++)
         {
             glm::mat4 model = glm::mat4(1.0f);
@@ -224,9 +224,10 @@ int main() {
 
             vao.draw();
 
-        }
+        }*/
 
-        for(unsigned int i = 0; i < 4; i++)
+        app.Run();
+        /*        for(unsigned int i = 0; i < 4; i++)
         {
             //Lighting Object
             lightingShader.use();
@@ -241,6 +242,7 @@ int main() {
             lightCubeVao.bind();
             vao.draw();
         }
+*/
 
         //Comprueban eventos y cambian el Back por el Front buffer
         glfwSwapBuffers(window);

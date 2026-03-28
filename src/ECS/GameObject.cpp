@@ -1,13 +1,8 @@
-#include "scene/GameObject.h"
+#include "ECS/GameObject.h"
 
 GameObject::GameObject()
 {
     
-}
-
-GameObject* GameObject::Instantiate(std::string name)
-{
-    return new GameObject();
 }
 
 void GameObject::Update(float deltaTime)

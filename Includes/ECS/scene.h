@@ -3,9 +3,10 @@
 
 #include <scene/Mesh.h>
 #include <scene/CameraClass.h>
-#include <scene/GameObject.h>
-#include <utils/Transform.h>
-#include <ECS/Model.h>
+#include <ECS/GameObject.h>
+#include <ECS/Components/Transform.h>
+#include <ECS/Components/Model.h>
+#include <ECS/Components/DirectionalLight.h>
 
 #include <iostream>
 #include <vector>
@@ -24,6 +25,8 @@ class Scene{
 
     void AddGameObject(std::shared_ptr<GameObject>& gameObject);
 
+    std::shared_ptr<GameObject> Instantiate(std::string name);
+    
     void Load();
 
     void Unload();

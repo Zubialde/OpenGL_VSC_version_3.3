@@ -14,11 +14,5 @@ Application::~Application()
 
 void Application::Run()
 {
-    while(!glfwWindowShouldClose(window))
-    {
-        
-    }
-        newscene.Update(1.0f);
-
-    Application::~Application();
+    newscene.Update(static_cast<float>(glfwGetTime()));
 }

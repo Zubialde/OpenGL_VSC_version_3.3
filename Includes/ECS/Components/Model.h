@@ -1,36 +1,45 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <ECS/Components/Component.h>
+#include <assimp/Importer.hpp>      // C++ importer
+#include <assimp/scene.h>           // Output data structure
+#include <assimp/postprocess.h>     // Post processing flags
 
-#include <ECS/Components/Transform.h>
-
-#include <renderer/VBO.h>
-#include <renderer/VAO.h>
-#include <renderer/EBO.h>
 #include <renderer/ShaderClass.h>
-#include <scene/CameraClass.h>
+#include <ECS/Components/MeshLoader.h>
+#include <Stb_Image/stb_image.h>
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <filesystem>
+
+
 
 class Model : public Component{
-  public:
+    public:
 
-  Model();
+    Model(char* path) : Component(parent) {
+        LoadModel(path);
+    };
 
-  void Start() override;
+    void Draw(ShaderClass& shader);
 
-  void Update(float deltaTime) override;
+    private:
+    
+    std::vector<MeshLoader> meshes;
+    std::vector<Texture> textures_loaded; 
 
-  void OnDestroy() override;
+    std::string directory;
 
+    void LoadModel(std::string path);
+    void processNode(aiNode* node,  aiScene* scene);
+    MeshLoader processMesh(aiMesh* mesh, aiScene* scene);
+    std::vector<Texture> procesMaterial(aiMaterial* material);
+    std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+    unsigned int TextureFromFile(const char *path, const std::string &directory);
 
-  private:
-
-  VBO vbo;
-  VAO vao;
-  EBO ebo;
-
-  ShaderClass ourShader = ShaderClass("SimpleShader.vs", "SimpleShader.fs");
-
-  Camera camera = Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 };
+
 #endif

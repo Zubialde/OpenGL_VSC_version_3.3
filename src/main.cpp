@@ -10,7 +10,6 @@
 #include <scene/CameraClass.h>
 #include <renderer/TextureClass.h>
 #include <renderer/Geometry.h>
-#include <scene/Mesh.h>
 #include <renderer/VBO.h>
 #include <renderer/VAO.h>
 #include <iostream>

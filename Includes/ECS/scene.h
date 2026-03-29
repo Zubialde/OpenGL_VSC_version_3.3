@@ -1,7 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <scene/Mesh.h>
 #include <scene/CameraClass.h>
 #include <ECS/GameObject.h>
 #include <ECS/Components/Transform.h>

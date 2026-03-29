@@ -1,17 +1,13 @@
 #include "ECS/Components/Transform.h"
 
-void Transform::Start()
-{
-    
+void Transform::Translate(glm::vec3 translation){
+    this->position += translation;
 }
 
-void Transform::Update(float deltaTime)
-{
-
+void Transform::Rotate(glm::vec3 rotation){
+    this->rotation += rotation;
 }
 
-
-void Transform::OnDestroy()
-{
-    
+void Transform::Scale(glm::vec3 scale){
+    this->scale += scale;
 }

@@ -32,7 +32,7 @@ class GameObject{
                 return nullptr;
             }
         }
-        
+
         std::unique_ptr<T> component = std::make_unique<T>(std::forward<Args>(args)...);
         
         //Makes sure the component has a reference to the gameObject

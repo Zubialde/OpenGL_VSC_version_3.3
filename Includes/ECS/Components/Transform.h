@@ -16,10 +16,14 @@ public:
         this->scale = scale;
         this->rotation = rotation;};
     
-    void Start() override;
-    void Update(float deltaTime) override;
-    void OnDestroy() override;
+    void Start() override {};
+    void Update(float deltaTime) override{};
+    void OnDestroy() override{};
+    
+    void Translate(glm::vec3 translation);
 
-private:
+    void Rotate(glm::vec3 rotation);
+
+    void Scale(glm::vec3 scale);
 
 };

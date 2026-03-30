@@ -3,7 +3,7 @@
 void Model::Draw(ShaderClass& shader)
 {
     for(unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i].Draw(shader);
+        meshes[i]->Draw(shader);
 }
 
 void Model::LoadModel(std::string path)
@@ -17,9 +17,11 @@ void Model::LoadModel(std::string path)
         return;
     }
     directory = path.substr(0, path.find_last_of('/'));
+
+    processNode(scene->mRootNode, scene);
 }
 
-void Model::processNode(aiNode* node,  aiScene* scene)
+void Model::processNode(aiNode* node,  const aiScene* scene)
 {
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
@@ -34,7 +36,7 @@ void Model::processNode(aiNode* node,  aiScene* scene)
 }
 
 
-MeshLoader Model::processMesh(aiMesh* mesh, aiScene* scene)
+std::unique_ptr<MeshLoader> Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -92,7 +94,7 @@ MeshLoader Model::processMesh(aiMesh* mesh, aiScene* scene)
         }  
     }
 
-    return MeshLoader(vertices, indices, textures);
+    return std::make_unique<MeshLoader>(vertices, indices, textures);
 }
 
 std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)

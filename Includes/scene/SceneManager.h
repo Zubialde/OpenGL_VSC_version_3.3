@@ -2,7 +2,6 @@
 #define SCENEMANAGER_H
 
 
-#include <ECS/Scene.h>
 #include <ECS/GameObject.h>
 
 #include <ECS/Components/DirectionalLight.h>
@@ -12,6 +11,8 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+
+#include <ECS/Scene.h>
 
 class SceneManager
 {
@@ -26,6 +27,6 @@ class SceneManager
     void CheckLights();
 
     private:
-    std::shared_ptr<Scene> currentScene;
+    std::unique_ptr<Scene> currentScene;
 };
 #endif

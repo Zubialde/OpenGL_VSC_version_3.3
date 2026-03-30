@@ -1,6 +1,6 @@
 #include "ECS/Components/MeshLoader.h"
 
-MeshLoader::MeshLoader(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+MeshLoader::MeshLoader(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<PropTextures> textures)
 {
     this->vertices = vertices;
     this->indices = indices;

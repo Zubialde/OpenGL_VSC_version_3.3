@@ -4,9 +4,19 @@
 
 #include <glm/glm.hpp>
 
+
+
+struct TransformData{
+    glm::vec3 position;
+    glm::vec3 scale;
+    glm::vec3 rotation;
+};
+
 class Transform : public Component{
    
 public:
+    TransformData data;
+
     glm::vec3 position;
     glm::vec3 scale;
     glm::vec3 rotation;

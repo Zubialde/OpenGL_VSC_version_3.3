@@ -22,11 +22,10 @@ struct Vertex{
     glm::vec2 texCoords;
 };
 
-struct Texture{
+struct PropTextures{
     unsigned int id;
     std::string type;
-    std::string path; // We store the 
-
+    std::string path; // We store the path to check if its already loaded
 };
 
 
@@ -35,9 +34,9 @@ class MeshLoader{
 
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
+    std::vector<PropTextures> textures;
 
-    MeshLoader(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
+    MeshLoader(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<PropTextures> textures);
     
     void Draw(ShaderClass& shader);
 

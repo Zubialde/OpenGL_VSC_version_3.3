@@ -29,15 +29,6 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
-    object->AddComponent<Transform>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-
-    AddGameObject(object);
-
-    std::shared_ptr<GameObject> object2 = Instantiate("Cube");
-    object2->AddComponent<Transform>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    object2->AddComponent<DirectionalLight>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
-    
-
 }
 
 //Unload all the gameObjects (this is probably not needed since the gameObject will be destroyed when the program ends anyway)

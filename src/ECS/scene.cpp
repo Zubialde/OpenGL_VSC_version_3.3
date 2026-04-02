@@ -29,7 +29,7 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
-    object->AddComponent<Model>("../assets/models/cube.obj", "Vertex.vs", "Fragment.fs");
+    object->AddComponent<Model>("backpack/backpack.obj", "Vertex.vs", "Fragment.fs");
 }
 
 //Unload all the gameObjects (this is probably not needed since the gameObject will be destroyed when the program ends anyway)

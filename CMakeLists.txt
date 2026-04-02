@@ -9,11 +9,13 @@ set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
 set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
 set(SHADERS_DIR "${CMAKE_SOURCE_DIR}/assets/Shaders")
 set(TEXTURE_DIR "${CMAKE_SOURCE_DIR}/assets/Textures")
+set(MODEL_DIR "${CMAKE_SOURCE_DIR}/assets/Model")
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
 set(THP_DIR "${CMAKE_SOURCE_DIR}/third_party")
 
 add_compile_definitions(SHADER_DIR="${SHADERS_DIR}")
 add_compile_definitions(TEXTURE_DIR="${TEXTURE_DIR}")
+add_compile_definitions(MODEL_DIR="${MODEL_DIR}")
 
 # Añade las rutas de las librerias en un solo lugar
 file(GLOB_RECURSE SOURCE ${SOURCE_DIR}/*.cpp)

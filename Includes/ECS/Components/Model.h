@@ -18,34 +18,40 @@
 
 struct ModelData{
     std::unique_ptr<MeshLoader> mesh;
-    std::vector<Material> materials;
+    std::unique_ptr<Material> materials;
 };
-
-
-
 class Model : public Component{
     public:
 
-    Model(char* path, ShaderClass& shader) : Component(parent) {
+    /// @brief Initializes the model component
+    /// @param path Model path
+    /// @param vertexPath Vertex shader path
+    /// @param fragmentPath Fragment shader path
+    Model(const char* path, const char* vertexPath, const char* fragmentPath) : Component(parent), shader(vertexPath, fragmentPath){
         LoadModel(path);
     };
 
-    void Draw(ShaderClass& shader);
+
+    void Start() override {};
+    void Update(float deltaTime) override;
+    void OnDestroy() override {};
 
     private:
     
     std::vector<ModelData> models;
 
-    std::vector<std::unique_ptr<MeshLoader>> meshes;
-    std::vector<Texture> textures_loaded; 
+    std::vector<TextureData> textures_loaded; 
 
     std::string directory;
 
+    ShaderClass shader;
+
+
     void LoadModel(std::string path);
     void processNode(aiNode* node,  const aiScene* scene);
-    std::unique_ptr<MeshLoader> processMesh(aiMesh* mesh, const aiScene* scene);
-    std::vector<Texture> procesMaterial(aiMaterial* material);
-    std::vector<Texture> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
+    ModelData processMesh(aiMesh* mesh, const aiScene* scene);
+    std::vector<TextureData> procesMaterial(aiMaterial* material);
+    std::vector<TextureData> loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName);
     unsigned int TextureFromFile(const char *path, const std::string &directory);
 
 };

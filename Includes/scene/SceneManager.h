@@ -8,11 +8,11 @@
 #include <ECS/Components/PointLight.h>
 #include <ECS/Components/SpotLight.h>
 
+#include <ECS/scene.h>
+
 #include <iostream>
 #include <vector>
 #include <memory>
-
-#include <ECS/Scene.h>
 
 class SceneManager
 {

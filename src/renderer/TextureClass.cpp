@@ -1,5 +1,6 @@
 #include "renderer/TextureClass.h"
 
+std::string TextureClass::texturePath = "";
 
 /// @param internalFormat |1 = JPG, 2 =  PNG|
 TextureClass::TextureClass(const char* path,GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter)
@@ -16,7 +17,7 @@ TextureClass::TextureClass(const char* path,GLint wrapS, GLint wrapT, GLint minF
 
     // Load texture data
     int width, height, nrChannels;
-    unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+    unsigned char* data = stbi_load((texturePath+ path).c_str(), &width, &height, &nrChannels, 0);
     
     if (data)
     {
@@ -39,6 +40,13 @@ TextureClass::TextureClass(const char* path,GLint wrapS, GLint wrapT, GLint minF
         std::cerr << "Failed to load texture" << std::endl;
         stbi_image_free(data);
     }
+}
+
+void TextureClass::SetTexturePath(const std::string& path)
+{
+    texturePath = path;
+    if (!texturePath.empty() && texturePath.back() != '/') 
+        texturePath += '/';
 }
 
 /// @brief Activates and binds the desired texture

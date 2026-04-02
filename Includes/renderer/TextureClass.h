@@ -13,7 +13,10 @@ class TextureClass
     public:
     unsigned int ID;
     TextureClass(const char* path ,GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
+    static void SetTexturePath(const std::string& path);
     void use(GLenum textureUnit);
     private:
+
+    static std::string texturePath;
 };
 #endif

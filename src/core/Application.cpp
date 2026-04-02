@@ -5,6 +5,7 @@ Application::Application()
     //Window window;
     newscene.Load();
 
+
 }
 
 Application::~Application()

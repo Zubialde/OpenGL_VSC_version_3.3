@@ -10,14 +10,10 @@
 
 #include <renderer/ShaderClass.h>
 #include <scene/CameraClass.h>
-#include <renderer/TextureClass.h>
-#include <renderer/Geometry.h>
-#include <renderer/VBO.h>
-#include <renderer/VAO.h>
 #include <core/Window.h>
 #include <iostream>
 
-#include <Stb_Image/stb_image.h>
+#include <core/Initialicer.h>
 #include <ECS/Scene.h>
 
 
@@ -38,6 +34,7 @@ class Application
     private:
     GLFWwindow* window;
     Scene newscene = Scene("New Scene");
+    Initialicer init;
 };
 
 #endif

@@ -1,9 +1,12 @@
 #include "ECS/Components/Model.h"
+#include <ECS/GameObject.h>
 
-void Model::Draw(ShaderClass& shader)
+void Model::Update(float deltaTime)
 {
-    for(unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i]->Draw(shader);
+    for(unsigned int i = 0; i < models.size(); i++){        
+        models[i].mesh->Draw();
+        models[i].materials->Draw();
+    }
 }
 
 void Model::LoadModel(std::string path)
@@ -26,7 +29,7 @@ void Model::processNode(aiNode* node,  const aiScene* scene)
     for(unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh *mesh = scene->mMeshes[node->mMeshes[i]]; 
-        meshes.push_back(processMesh(mesh, scene));			
+        models.push_back(processMesh(mesh, scene));			
     }
     // then do the same for each of its children
     for(unsigned int i = 0; i < node->mNumChildren; i++)
@@ -36,11 +39,11 @@ void Model::processNode(aiNode* node,  const aiScene* scene)
 }
 
 
-std::unique_ptr<MeshLoader> Model::processMesh(aiMesh* mesh, const aiScene* scene)
+ModelData Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
+    std::vector<TextureData> textures;
 
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -85,21 +88,31 @@ std::unique_ptr<MeshLoader> Model::processMesh(aiMesh* mesh, const aiScene* scen
         if(mesh->mMaterialIndex >= 0)
         {
             aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-            std::vector<Texture> diffuseMaps = loadMaterialTextures(material, 
+            std::vector<TextureData> diffuseMaps = loadMaterialTextures(material, 
                                                 aiTextureType_DIFFUSE, "texture_diffuse");
             textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-           std::vector<Texture> specularMaps = loadMaterialTextures(material, 
+           std::vector<TextureData> specularMaps = loadMaterialTextures(material, 
                                                 aiTextureType_SPECULAR, "texture_specular");
             textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
         }  
     }
 
-    return std::make_unique<MeshLoader>(vertices, indices, textures);
+    std::unique_ptr<MeshLoader> meshLoader = std::make_unique<MeshLoader>(vertices, indices);
+    std::unique_ptr<Material> material = std::make_unique<Material>(shader);
+    material->textures = textures;
+
+    ModelData modelData = ModelData{
+        .mesh = std::move(meshLoader),
+        .materials = std::move(material)
+    };
+
+    return modelData;
+
 }
 
-std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
+std::vector<TextureData> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType type, std::string typeName)
 {
-   std::vector<Texture> textures;
+   std::vector<TextureData> textures;
     for(unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
         aiString str;
@@ -116,7 +129,7 @@ std::vector<Texture> Model::loadMaterialTextures(aiMaterial *mat, aiTextureType 
         }
         if(!skip)
         {   // if texture hasn't been loaded already, load it
-            Texture texture;
+            TextureData texture;
             texture.id = TextureFromFile(str.C_Str(), directory);
             texture.type = typeName;
             texture.path = str.C_Str();

@@ -1,11 +1,9 @@
 #include "core/Application.h"
 
-Application::Application()
+Application::Application() : init()
 {
     //Window window;
     newscene.Load();
-
-
 }
 
 Application::~Application()

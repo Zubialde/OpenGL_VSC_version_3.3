@@ -11,7 +11,6 @@ void Scene::Update(float deltaTime)
     {
         i->Update(deltaTime);
     }
-
 }
 
 void Scene::AddGameObject(std::shared_ptr<GameObject>& gameObject)
@@ -29,7 +28,11 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
-    object->AddComponent<Model>("backpack/backpack.obj", "Vertex.vs", "Fragment.fs");
+    object->AddComponent<Transform>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    object->AddComponent<Material>("Vertex.vs", "Fragment.fs");
+    object->AddComponent<Model>("/backpack/backpack.obj");
+
+    AddGameObject(object);
 }
 
 //Unload all the gameObjects (this is probably not needed since the gameObject will be destroyed when the program ends anyway)

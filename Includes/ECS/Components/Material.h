@@ -5,12 +5,14 @@
 
 #include <ECS/Components/Component.h>
 #include <renderer/ShaderClass.h>
-#include <renderer/TextureClass.h>
+#include <ECS/Components/Transform.h>
+
 
 #include <string>
 #include <vector>
 #include <string>
 #include <type_traits>
+#include <unordered_map>
 
 /// @brief  Holds the material data, if u want to add a new variable just add it here
 struct MaterialData{
@@ -19,37 +21,30 @@ struct MaterialData{
     glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f);
     float shininess = 32.0f;
 };
-    
 
-struct TextureData{ 
-    std::string path; //We store the path to check if its already loaded
-    unsigned int id;
-    std::string type;
-};
-
-class Material{
+class Material : public Component{
     public:
 
     MaterialData data;
-    std::vector <TextureData> textures;
-    std::vector <TextureData> loaded_textures;
+    std::shared_ptr<ShaderClass> shader;
+    MaterialData materialData;
 
-    Material(ShaderClass& shader){
-        this->shader = shader;
-    }
-
-
-    void LoadTextures(ShaderClass& shader);
-    void LoadVariables(ShaderClass& shader);
+    Material(const char* vertexPath, const char* fragmentPath);
+    
+    void Start() override {};
+    void Update(float deltaTime) override{};
+    void OnDestroy() override {};
 
     void Draw();
 
+    std::shared_ptr<ShaderClass> GetShader(std::string type, std::string path);
+
     private:
 
-    const char* vertexPath;
-    const char* fragmentPath;
+    std::vector<std::shared_ptr<ShaderClass>> shaders;
 
-    ShaderClass shader = ShaderClass("vertexPath", "fragmentPath");
+    std::unordered_map<std::string, std::shared_ptr<ShaderClass>> shaderCache;
+
 };
 
 #endif

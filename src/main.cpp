@@ -73,7 +73,6 @@ bool prevDownPressed = false;
 int main() {
     Init();
 
-    ShaderClass::SetShaderPath(SHADER_DIR);
 
     //Crea la ventana (ventana != OpenGl)*
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hola ventana :)"  , NULL, NULL);
@@ -96,6 +95,7 @@ int main() {
         std::cout << "Failed to load Glad" << std::endl;
         return -1;
     }
+    Application app;
 
     ShaderClass ourShader("Vertex.vs", "Fragment.fs");
     ShaderClass lightingShader("LightCubeVertex.vs", "LightCubeFragment.fs");
@@ -125,18 +125,8 @@ int main() {
     #pragma endregion
     float ambientpower = 0.5f;
 
-    //Load Textures
-    TextureClass diffuse_Map(TEXTURE_DIR"/container2.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
-    TextureClass specular_Map(TEXTURE_DIR"/container2_specular.png", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR_MIPMAP_LINEAR);
-    TextureClass emmision_Map(TEXTURE_DIR"/Emission_Matrix.jpg", GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
-
-    ourShader.use();
-    ourShader.setInt("material.diffuse", 0);
-    ourShader.setInt("material.specular", 1);
-    ourShader.setInt("material.emission", 2);
     glEnable(GL_DEPTH_TEST);
 
-    Application app;
     #pragma region Render loop 
     while(!glfwWindowShouldClose(window))
     {

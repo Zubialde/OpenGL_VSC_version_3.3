@@ -8,13 +8,14 @@
 
 #include <type_traits>
 
+
 class GameObject{
     public:
     std::string name;
 
     std::vector<std::unique_ptr<Component>> components;
     
-    GameObject();
+    GameObject(){};
 
     //Calls for the Update inside of every component passes the deltaTime
     void Update(float deltaTime);
@@ -36,6 +37,7 @@ class GameObject{
         std::unique_ptr<T> component = std::make_unique<T>(std::forward<Args>(args)...);
         
         //Makes sure the component has a reference to the gameObject
+        //IMPORTANT: Sinec the parent is a nullptr by default if u acces it befor the start the game will crash
         component->SetParent(this);
 
         component->Start();
@@ -59,7 +61,7 @@ class GameObject{
             }
         }
         // If the component is not found, return nullptr
-        //std::cout << "Component "  typeid(T).name() " not found" << std::endl;
+        std::cout << "Component " << typeid(T).name() << " not found" << std::endl;
         return nullptr;
     }
     private:

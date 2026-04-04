@@ -8,8 +8,7 @@ class GameObject;
 
 class Component
 {
-    public:    
-    Component(GameObject* parent) {this->parent = parent;}
+    public:   
     
     //Virtual destructor so the function can be overloaded
     virtual ~Component() = default;

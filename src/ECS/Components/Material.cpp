@@ -1,38 +1,29 @@
 #include <ECS/Components/Material.h>
+#include <ECS/GameObject.h>
+
+Material::Material(const char* vertexPath, const char* fragmentPath)
+{
+    shader = GetShader(vertexPath, fragmentPath);
+}
+
 
 void Material::Draw()
 {
-    LoadTextures(shader);
-    LoadVariables(shader);
+
 }
 
-void Material::LoadTextures(ShaderClass& shader)
+std::shared_ptr<ShaderClass> Material::GetShader(std::string vertexPath, std::string fragmentPath)  
 {
-    unsigned int diffuseNr = 1;
-    unsigned int specularNr = 1;
-
-    for(unsigned int i = 0; i < textures.size(); i++)
-    {
-        glActiveTexture(GL_TEXTURE0 + i);
-        // retrieve texture number (the N in diffuse_textureN)s
-        std::string number;
-        std::string name = textures[i].type;
-        if(name == "texture_diffuse")
-            number = std::to_string(diffuseNr++);
-        else if(name == "texture_specular")
-            number = std::to_string(specularNr++);
-
-        shader.setInt(("material." + name + number).c_str(), i);
-        glBindTexture(GL_TEXTURE_2D, textures[i].id);
+    std::string cacheKey = vertexPath + "_" + fragmentPath;
+    auto it = shaderCache.find(cacheKey);
+    if (it != shaderCache.end()) {
+        return it->second;
     }
-    glActiveTexture(GL_TEXTURE0);
+
+    shaders.push_back(std::make_shared<ShaderClass>(vertexPath.c_str(), fragmentPath.c_str()));
+    shaderCache[cacheKey] = shaders.back();
+    return shaders.back();
 }
 
-void Material::LoadVariables(ShaderClass& shader)
-{
-    shader.setVec3("material.ambient", data.ambient);
-    shader.setVec3("material.diffuse", data.diffuse);
-    shader.setVec3("material.specular", data.specular);
-    shader.setFloat("material.shininess", data.shininess);
-}
+
 

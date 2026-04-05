@@ -1,7 +1,12 @@
-#include "scene/sceneManager.h"
+#include "scene/ResourceManager.h"
 #include "ECS/Components/DirectionalLight.h"
 
-SceneManager::SceneManager()
+ResourceManager::ResourceManager(std::unique_ptr<Scene> scene)
+{
+    currentScene = std::move(scene);
+}
+
+void ResourceManager::CheckLights()
 {
     for(int i = 0; i < currentScene->gameObjects.size(); i++)
     {
@@ -20,7 +25,7 @@ SceneManager::SceneManager()
     }
 }
 
-void CheckLights()
+void ResourceManager::CheckCamera()
 {
-
+    this->cameras = camera.info;
 }

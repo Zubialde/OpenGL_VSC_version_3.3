@@ -24,7 +24,6 @@ class Scene{
 
     Scene(std::string name);
 
-
     void Update(float deltaTime);
 
     void AddGameObject(std::shared_ptr<GameObject>& gameObject);

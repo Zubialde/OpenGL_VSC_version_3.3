@@ -22,6 +22,12 @@ struct MaterialData{
     float shininess = 32.0f;
 };
 
+struct MatrixData{
+    glm::mat4 model;
+    glm::mat4 view;
+    glm::mat4 projection;
+};
+
 class Material : public Component{
     public:
 

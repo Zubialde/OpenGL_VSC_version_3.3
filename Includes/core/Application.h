@@ -20,10 +20,12 @@
 class Application
 {
     public:
-        Application();
-        ~Application();
 
-        void Run();
+    Application();
+    ~Application();
+
+    void Run();
+
     private:
     int SCR_WIDTH = 1920;
     int SCR_HEIGHT = 1080;
@@ -31,7 +33,7 @@ class Application
     #pragma region Global variables
 
     #pragma endregion
-    private:
+    
     GLFWwindow* window;
     Scene newscene = Scene("New Scene");
     Initialicer init;

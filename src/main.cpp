@@ -160,7 +160,7 @@ int main() {
         
         //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
         glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(camera.Zoom), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(camera.info.Zoom), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
 
         ourShader.use();
         
@@ -291,8 +291,8 @@ void processInput(GLFWwindow* window)
     prevUpPressed = (upState == GLFW_PRESS);
 // 2.5 unidades por segundo
     
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.MovementSpeed = 10.0f;
-    else     camera.MovementSpeed = 3.0f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.info.MovementSpeed = 10.0f;
+    else     camera.info.MovementSpeed = 3.0f;
     
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, deltaTime);

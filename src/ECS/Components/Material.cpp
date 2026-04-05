@@ -6,7 +6,6 @@ Material::Material(const char* vertexPath, const char* fragmentPath)
     shader = GetShader(vertexPath, fragmentPath);
 }
 
-
 void Material::Draw()
 {
 

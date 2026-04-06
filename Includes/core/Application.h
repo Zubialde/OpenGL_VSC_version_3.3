@@ -11,11 +11,10 @@
 #include <renderer/ShaderClass.h>
 #include <scene/CameraClass.h>
 #include <core/Window.h>
-#include <iostream>
-
 #include <core/Initialicer.h>
 #include <ECS/Scene.h>
 
+#include <iostream>
 
 class Application
 {
@@ -35,7 +34,7 @@ class Application
     #pragma endregion
     
     GLFWwindow* window;
-    Scene newscene = Scene("New Scene");
+    std::shared_ptr<Scene> newscene = std::shared_ptr<Scene>(new Scene("New Scene"));
     Initialicer init;
 };
 

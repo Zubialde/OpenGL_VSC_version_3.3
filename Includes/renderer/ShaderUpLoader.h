@@ -1,7 +1,7 @@
 #ifndef SHADERUPLOADER_H
 #define SHADERUPLOADER_H
 
-
+#include <scene/ResourceManager.h>
 #include <renderer/ShaderClass.h>
 #include <renderer/TextureClass.h>
 #include <ECS/Components/Material.h>
@@ -30,8 +30,9 @@ class ShaderUploader
     std::vector<TextureData> textures_loaded;
 
     MaterialData material;
-    
-    ShaderUploader(TextureData texture, MaterialData material, ShaderClass& shader);
+    glm::mat4 model;
+
+    ShaderUploader(TextureData texture, MaterialData material, ShaderClass& shader, glm::mat4 model = glm::mat4(1.0f));
     ~ShaderUploader();
 
     void Draw(ShaderClass& shader);
@@ -40,6 +41,7 @@ class ShaderUploader
 
     void LoadTextures(ShaderClass& shader);
     void LoadVariables(ShaderClass& shader);
+    void LoadMatrices(ShaderClass& shader);
 };
 
 #endif

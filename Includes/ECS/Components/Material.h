@@ -21,13 +21,6 @@ struct MaterialData{
     glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f);
     float shininess = 32.0f;
 };
-
-struct MatrixData{
-    glm::mat4 model;
-    glm::mat4 view;
-    glm::mat4 projection;
-};
-
 class Material : public Component{
     public:
 

@@ -10,7 +10,6 @@
 #include <ECS/Components/PointLight.h>
 #include <ECS/Components/SpotLight.h>
 
-
 #include <iostream>
 #include <vector>
 

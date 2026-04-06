@@ -98,7 +98,7 @@ ModelData Model::processMesh(aiMesh* mesh, const aiScene* scene)
     }
 
     std::unique_ptr<MeshLoader> meshLoader = std::make_unique<MeshLoader>(vertices, indices);
-    std::unique_ptr<ShaderUploader> shaderUploader = std::make_unique<ShaderUploader>(textures[0], parent->GetComponent<Material>()->materialData, *shader);
+    std::unique_ptr<ShaderUploader> shaderUploader = std::make_unique<ShaderUploader>(textures[0], parent->GetComponent<Material>()->materialData, *shader, parent->GetComponent<Transform>()->model);
 
     ModelData modelData = ModelData{
         .mesh = std::move(meshLoader),

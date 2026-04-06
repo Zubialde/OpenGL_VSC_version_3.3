@@ -9,31 +9,37 @@
 
 #include <scene/CameraClass.h>
 
-#include <ECS/scene.h>
-
 #include <iostream>
 #include <vector>
 #include <memory>
+
+class Scene;
 
 /// @brief ResourceManager holds global information of the scene, this includes lights, cameras...
 class ResourceManager
 {
     public:
+
     std::vector<SpotLightInfo> SpotLights;
     std::vector<DirectionaLightInfo> directionalLights;
-    std::vector<PointLightInfo> pointLights;
+    std::vector<PointLightInfo> pointLights;    
+    CameraInfo cameras;    
 
-    CameraInfo cameras;
+    void SetScene(std::shared_ptr<Scene> scene);
 
-    ResourceManager(std::unique_ptr<Scene> scene);
+    static ResourceManager& GetInstance();
 
+    private:
+
+    std::shared_ptr<Scene> currentScene;
+
+    Camera camera;   
+
+    ResourceManager(){};
+    
     void CheckLights();
 
     void CheckCamera();
 
-    private:
-    std::unique_ptr<Scene> currentScene;
-
-     Camera camera;
 };
 #endif

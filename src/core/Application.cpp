@@ -3,7 +3,8 @@
 Application::Application() : init()
 {
     //Window window;
-    newscene.Load();
+    newscene->Load();
+    ResourceManager::GetInstance().SetScene(newscene);
 }
 
 Application::~Application()
@@ -13,5 +14,5 @@ Application::~Application()
 
 void Application::Run()
 {
-    newscene.Update(static_cast<float>(glfwGetTime()));
+    newscene->Update(static_cast<float>(glfwGetTime()));
 }

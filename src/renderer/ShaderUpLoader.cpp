@@ -1,9 +1,10 @@
 #include "renderer/ShaderUpLoader.h"
 
-ShaderUploader::ShaderUploader(TextureData texture, MaterialData material, ShaderClass& shader)
+ShaderUploader::ShaderUploader(TextureData texture, MaterialData material, ShaderClass& shader, glm::mat4 model)
 {
     this->textures = texture;
     this->material = material;
+    this->model = model;
 }
 
 ShaderUploader::~ShaderUploader()
@@ -13,10 +14,11 @@ ShaderUploader::~ShaderUploader()
 
 void ShaderUploader::Draw(ShaderClass& shader)
 {
+    shader.use();
     LoadTextures(shader);
     LoadVariables(shader);
+    LoadMatrices(shader);
 
-    shader.use();
 }
 
 void ShaderUploader::LoadTextures(ShaderClass& shader)
@@ -47,4 +49,11 @@ void ShaderUploader::LoadVariables(ShaderClass& shader)
     shader.setVec3("material.ambient", material.ambient);
     shader.setVec3("material.diffuse", material.diffuse);
     shader.setVec3("material.specular", material.specular);
+}
+
+void ShaderUploader::LoadMatrices(ShaderClass& shader)
+{
+    shader.setMat4("view", ResourceManager::GetInstance().cameras.view);
+    shader.setMat4("projection", ResourceManager::GetInstance().cameras.projection);
+    shader.setMat4("model", model);
 }

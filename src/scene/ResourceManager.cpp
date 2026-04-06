@@ -1,9 +1,19 @@
 #include "scene/ResourceManager.h"
-#include "ECS/Components/DirectionalLight.h"
+#include "ECS/scene.h"
 
-ResourceManager::ResourceManager(std::unique_ptr<Scene> scene)
+
+
+ResourceManager& ResourceManager::GetInstance()
 {
-    currentScene = std::move(scene);
+    static ResourceManager instance;
+    return instance;
+}
+
+void ResourceManager::SetScene(std::shared_ptr<Scene> scene)
+{
+    currentScene = scene;
+    CheckLights();
+    CheckCamera();
 }
 
 void ResourceManager::CheckLights()
@@ -28,4 +38,5 @@ void ResourceManager::CheckLights()
 void ResourceManager::CheckCamera()
 {
     this->cameras = camera.info;
+    cameras.position = glm::vec3(0.0f, 0.0f, 3.0f);
 }

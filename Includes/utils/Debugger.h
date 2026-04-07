@@ -8,6 +8,7 @@
 
 class Debugger : public Singleton<Debugger>
 {
+    friend class Singleton<Debugger>;
     public:
 
     static void Log(const char* message){

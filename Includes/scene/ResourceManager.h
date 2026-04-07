@@ -19,7 +19,10 @@ class Scene;
 
 /// @brief ResourceManager holds global information of the scene, this includes lights, cameras...
 class ResourceManager : public Singleton<ResourceManager>
-{
+{    
+    
+    friend class Singleton<ResourceManager>;
+
     public:
     
     std::vector<SpotLightInfo> SpotLights;
@@ -32,7 +35,6 @@ class ResourceManager : public Singleton<ResourceManager>
 
     private:
     
-    friend class Singleton<ResourceManager>;
 
     ResourceManager() = default;
     

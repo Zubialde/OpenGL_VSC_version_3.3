@@ -5,6 +5,7 @@ Application::Application() : init()
     //Window window;
     newscene->Load();
     ResourceManager::GetInstance().SetScene(newscene);
+
 }
 
 Application::~Application()

@@ -1,5 +1,20 @@
 #include "scene/CameraClass.h"
 
+void Camera::Start()
+{
+
+}
+
+void Camera::Update(float deltaTime)
+{
+
+}
+
+void Camera::OnDestroy()
+{
+
+}
+
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
 {
     info.position = position;

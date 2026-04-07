@@ -1,6 +1,10 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include <utils/Input.h>
+#include <utils/Debugger.h>
+
+
 #include <memory>
 #include <iostream>
 
@@ -26,7 +30,6 @@ class Component
 
     //Sets the Parennt Object pointer
     void SetParent(GameObject* newparent){parent = newparent;}
-    
 
     protected:
     

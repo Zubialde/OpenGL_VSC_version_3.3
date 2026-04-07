@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <ECS/Components/Component.h>
 
 
 enum Camera_Movement{
@@ -38,7 +39,7 @@ struct CameraInfo{
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection = glm::mat4(1.0f);
 };
-class Camera
+class Camera : public Component
 {
     public:
     // camera Attributes
@@ -53,6 +54,10 @@ class Camera
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),float yaw = YAW,float pitch = PITCH);
 
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ,float yaw, float pitch);
+    
+    void Start() override;
+    void Update(float deltaTime) override;
+    void OnDestroy() override;
 
     // Functions
     glm::mat4 GetViewMatrix();

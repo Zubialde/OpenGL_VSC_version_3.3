@@ -1,14 +1,6 @@
 #include "scene/ResourceManager.h"
 #include "ECS/scene.h"
 
-
-
-ResourceManager& ResourceManager::GetInstance()
-{
-    static ResourceManager instance;
-    return instance;
-}
-
 void ResourceManager::SetScene(std::shared_ptr<Scene> scene)
 {
     currentScene = scene;

@@ -17,6 +17,11 @@ glm::vec2 Input::MousePos()
     return glm::vec2(static_cast<float>(xpos), static_cast<float>(ypos));
 }
 
+void Input::setCursorMode(CursorMode mode)
+{
+    glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, mode);
+}
+
 static void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
     static float lastX = 600.0f, lastY = 400.0f;

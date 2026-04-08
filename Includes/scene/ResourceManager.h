@@ -2,6 +2,7 @@
 #define RESOURCEMANAGER_H
 
 #include <utils/Singleton.h>
+#include <utils/Debugger.h>
 
 #include <ECS/GameObject.h>
 
@@ -32,17 +33,13 @@ class ResourceManager : public Singleton<ResourceManager>
 
     void SetScene(std::shared_ptr<Scene> scene);
 
-
     private:
     
-
     ResourceManager() = default;
     
-
     std::shared_ptr<Scene> currentScene;
 
     Camera camera;   
-    
     
     void CheckLights();
 

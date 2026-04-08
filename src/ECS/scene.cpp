@@ -28,15 +28,15 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
-    object->AddComponent<Transform>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(-30.0f, 120.0f, 0.0f));
+    
     object->AddComponent<Material>("Vertex.vs", "Fragment.fs");
     object->AddComponent<Model>("/backpack/backpack.obj");
 
     AddGameObject(object);
 
-
-    std::shared_ptr<GameObject> object2 = Instantiate("Cube");
-    object2->AddComponent<Transform>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    std::shared_ptr<GameObject> object2 = Instantiate("Mochila");
+    object2->transform.info.position = glm::vec3(0.0f, 0.0f, 0.0f);
+    object2->transform.info.scale = glm::vec3(0.2f);
     object2->AddComponent<DirectionalLight>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
     AddGameObject(object2);
 }

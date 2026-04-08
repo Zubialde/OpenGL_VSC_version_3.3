@@ -1,13 +1,18 @@
 #include "scene/CameraClass.h"
+#include "ECS/GameObject.h"
 
 void Camera::Start()
 {
-
+    info.position = parent->transform.info.position;
+    info.up = glm::vec3(0.0f, 1.0f, 0.0f);
+    info.front = glm::vec3(0.0f, 0.0f, -1.0f);
+    updateCameraVectors();
 }
 
 void Camera::Update(float deltaTime)
 {
-
+    info.position = parent->transform.info.position;
+    updateCameraVectors();
 }
 
 void Camera::OnDestroy()
@@ -15,13 +20,9 @@ void Camera::OnDestroy()
 
 }
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+Camera::Camera()
 {
-    info.position = position;
-    info.up = up;
-    info.Yaw = yaw;
-    info.Pitch = pitch;
-    updateCameraVectors();
+
 }
 
 Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
@@ -48,13 +49,13 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
     float velocity = info.MovementSpeed * deltaTime;
 
     if (direction == FORWARD)
-        Position += Front * velocity;
+        info.position += info.front * velocity;
     if (direction == BACKWARD)
-        Position -= Front * velocity;
+        info.position -= info.front * velocity;
     if (direction == LEFT)
-        Position -= Right * velocity;
+        info.position -= info.right * velocity;
     if (direction == RIGHT)
-        Position += Right * velocity;
+        info.position += info.right * velocity;
 }
 
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
@@ -93,8 +94,8 @@ void Camera::updateCameraVectors()
     front.x = cos(glm::radians(info.Yaw)) * cos(glm::radians(info.Pitch));
     front.y = sin(glm::radians(info.Pitch));
     front.z = sin(glm::radians(info.Yaw)) * cos(glm::radians(info.Pitch));
-    Front = glm::normalize(front);
+    info.front = glm::normalize(front);
 
-    Right = glm::normalize(glm::cross(Front, WorldUp));
-    Up    = glm::normalize(glm::cross(Right, Front));
+    info.right = glm::normalize(glm::cross(info.front, info.up));
+    info.up = glm::normalize(glm::cross(info.right, info.front));
 }

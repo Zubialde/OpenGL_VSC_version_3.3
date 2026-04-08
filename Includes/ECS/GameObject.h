@@ -2,6 +2,9 @@
 #define GAMEOBJECT_H
 
 #include <ECS/Components/Component.h>
+#include <ECS/Components/Transform.h>
+
+#include <glm/glm.hpp>
 
 #include <iostream>
 #include <vector>
@@ -13,9 +16,12 @@ class GameObject{
     public:
     std::string name;
 
+    Transform transform;
+
     std::vector<std::unique_ptr<Component>> components;
     
-    GameObject(){};
+    GameObject(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f) , glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotation = glm::vec3(0.0f)) 
+    : transform(position, scale, rotation){};
 
     //Calls for the Update inside of every component passes the deltaTime
     void Update(float deltaTime);

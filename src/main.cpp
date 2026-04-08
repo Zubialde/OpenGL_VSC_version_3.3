@@ -33,7 +33,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 glm::vec3 lightPos = glm::vec3(4.0f, 2.0f,4.0f);
 
 //Camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = 600.0f, lastY = 400.0f;
 
 float deltaTime {0.0};
@@ -152,21 +151,8 @@ int main() {
         processInput(window);
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        //Camera and World Matrixes
-        //View Matrix ||Model -> View|| 1. Camera Position, 2. Camera Orientation
-        glm::mat4 view = glm::mat4(1.0f);
-        view = camera.GetViewMatrix();
-        
-        //Perspective Matrix ||View -> Projection|| 1. FOV, 2. Aspect Ratio, 3. Near, 4. Far
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(camera.info.Zoom), SCR_WIDTH / (float)SCR_HEIGHT , 0.1f, 100.0f);
-
-        ourShader.use();
         
         //Light affected objects
-        ourShader.setMat4("projection", projection);
-        ourShader.setMat4("view", view);
         /*
         for(unsigned int i = 0; i < 10; i++)
         {
@@ -290,8 +276,7 @@ void processInput(GLFWwindow* window)
     prevDownPressed = (downState == GLFW_PRESS);
     prevUpPressed = (upState == GLFW_PRESS);
 // 2.5 unidades por segundo
-    
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.info.MovementSpeed = 10.0f;
+    /*    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) camera.info.MovementSpeed = 10.0f;
     else     camera.info.MovementSpeed = 3.0f;
     
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -301,7 +286,8 @@ void processInput(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         camera.ProcessKeyboard(LEFT, deltaTime);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+        camera.ProcessKeyboard(RIGHT, deltaTime);*/
+
 
     if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) glfwSetCursorPosCallback(window, mouse_callback);
     else 
@@ -329,10 +315,10 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     lastX = xpos;
     lastY = ypos;
 
-    camera.ProcessMouseMovement(xoffset, yoffset);
+    //camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    camera.ProcessMouseScroll(static_cast<float>(yoffset));
+    //camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }   

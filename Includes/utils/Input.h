@@ -77,7 +77,7 @@ enum CursorMode
 class Input : public Singleton<Input>
 {
     friend class Singleton<Input>;
-    
+
     public:
     static bool GetKey(Key key);
 
@@ -87,10 +87,7 @@ class Input : public Singleton<Input>
 
     static glm::vec2 MousePos();
 
-    static void setCursorMode(CursorMode mode)
-    {
-        glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, mode);
-    }
+    static void setCursorMode(CursorMode mode);
 
     private:
 

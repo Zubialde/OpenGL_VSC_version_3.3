@@ -1,7 +1,7 @@
 #ifndef SHADERUPLOADER_H
 #define SHADERUPLOADER_H
 
-#include <scene/ResourceManager.h>
+#include <ECS/Systems/RenderingSystem.h>
 #include <renderer/ShaderClass.h>
 #include <renderer/TextureClass.h>
 #include <ECS/Components/Material.h>

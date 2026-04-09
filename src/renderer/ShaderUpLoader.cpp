@@ -53,7 +53,7 @@ void ShaderUploader::LoadVariables(ShaderClass& shader)
 
 void ShaderUploader::LoadMatrices(ShaderClass& shader)
 {
-    shader.setMat4("view", ResourceManager::GetInstance().cameras.view);
-    shader.setMat4("projection", ResourceManager::GetInstance().cameras.projection);
+    shader.setMat4("view", RenderingSystem::GetInstance().cameras.view);
+    shader.setMat4("projection", RenderingSystem::GetInstance().cameras.projection);
     shader.setMat4("model", model);
 }

@@ -1,5 +1,5 @@
-#ifndef RESOURCEMANAGER_H
-#define RESOURCEMANAGER_H
+#ifndef RENDERINGSYSTEM_H
+#define RENDERINGSYSTEM_H
 
 #include <utils/Singleton.h>
 #include <utils/Debugger.h>
@@ -18,11 +18,11 @@
 
 class Scene;
 
-/// @brief ResourceManager holds global information of the scene, this includes lights, cameras...
-class ResourceManager : public Singleton<ResourceManager>
+/// @brief RenderingSystem holds global information of the scene, this includes lights, cameras...
+class RenderingSystem : public Singleton<RenderingSystem>
 {    
     
-    friend class Singleton<ResourceManager>;
+    friend class Singleton<RenderingSystem>;
 
     public:
     
@@ -35,7 +35,7 @@ class ResourceManager : public Singleton<ResourceManager>
 
     private:
     
-    ResourceManager() = default;
+    RenderingSystem() = default;
     
     std::shared_ptr<Scene> currentScene;
 

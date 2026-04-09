@@ -4,7 +4,7 @@ Application::Application() : init()
 {
     //Window window;
     newscene->Load();
-    ResourceManager::GetInstance().SetScene(newscene);
+    RenderingSystem::GetInstance().SetScene(newscene);
 
 }
 

@@ -2,7 +2,6 @@
 #define CAMERAFLIGHTCONTROL_H
 
 #include <ECS/Components/Component.h>
-#include <scene/ResourceManager.h>
 
 enum Camera_Movement{
     FORWARD,

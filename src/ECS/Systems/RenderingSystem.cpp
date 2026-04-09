@@ -1,14 +1,15 @@
-#include "scene/ResourceManager.h"
+#include "ECS/Systems/RenderingSystem.h"
+#include "ECS/GameObject.h"
 #include "ECS/scene.h"
 
-void ResourceManager::SetScene(std::shared_ptr<Scene> scene)
+void RenderingSystem::SetScene(std::shared_ptr<Scene> scene)
 {
     currentScene = scene;
     CheckLights();
     CheckCamera();
 }
 
-void ResourceManager::CheckLights()
+void RenderingSystem::CheckLights()
 {
     for(int i = 0; i < currentScene->gameObjects.size(); i++)
     {
@@ -27,7 +28,7 @@ void ResourceManager::CheckLights()
     }
 }
 
-void ResourceManager::CheckCamera()
+void RenderingSystem::CheckCamera()
 {
     this->cameras = camera.info;
     cameras.position = glm::vec3(0.0f, 0.0f, 3.0f);

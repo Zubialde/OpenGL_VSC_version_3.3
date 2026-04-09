@@ -33,6 +33,9 @@ class RenderingSystem : public Singleton<RenderingSystem>
 
     void SetScene(std::shared_ptr<Scene> scene);
 
+    
+
+
     private:
     
     RenderingSystem() = default;

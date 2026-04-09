@@ -7,15 +7,17 @@ set(CMAKE_CXX_STANDARD 20)
 # Genera unas varliables con la ruta de los Includes y las Librerias
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
 set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
+set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/assets")
 set(SHADERS_DIR "${CMAKE_SOURCE_DIR}/assets/Shaders")
 set(TEXTURE_DIR "${CMAKE_SOURCE_DIR}/assets/Texture")
-set(MODEL_DIR "${CMAKE_SOURCE_DIR}/assets/Model")
+set(MODEL_DIR "${CMAKE_SOURCE_DIR}/assets")
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
 set(THP_DIR "${CMAKE_SOURCE_DIR}/third_party")
 
 add_compile_definitions(SHADER_DIR="${SHADERS_DIR}")
 add_compile_definitions(TEXTURE_DIR="${TEXTURE_DIR}")
 add_compile_definitions(MODEL_DIR="${MODEL_DIR}")
+add_compile_definitions(ASSETS_DIR="${ASSETS_DIR}")
 
 # Añade las rutas de las librerias en un solo lugar
 file(GLOB_RECURSE SOURCE ${SOURCE_DIR}/*.cpp)

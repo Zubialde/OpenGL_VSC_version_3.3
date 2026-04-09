@@ -2,6 +2,8 @@
 
 Application::Application() : init()
 {
+    ResourceManager::GetInstance().searchDirectory(ASSETS_DIR);
+
     //Window window;
     newscene->Load();
     RenderingSystem::GetInstance().SetScene(newscene);

@@ -13,6 +13,7 @@
 #include <core/Window.h>
 #include <core/Initialicer.h>
 #include <ECS/Scene.h>
+#include <core/ResourceManager.h>
 
 #include <iostream>
 

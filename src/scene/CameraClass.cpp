@@ -44,20 +44,6 @@ glm::mat4 Camera::GetProjectionMatrix()
     return glm::perspective(glm::radians(info.Zoom), 1920 / (float)1080 , 0.1f, 100.0f);
 }
 
-void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
-{
-    float velocity = info.MovementSpeed * deltaTime;
-
-    if (direction == FORWARD)
-        info.position += info.front * velocity;
-    if (direction == BACKWARD)
-        info.position -= info.front * velocity;
-    if (direction == LEFT)
-        info.position -= info.right * velocity;
-    if (direction == RIGHT)
-        info.position += info.right * velocity;
-}
-
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {
     xoffset *= info.MouseSensitivity;

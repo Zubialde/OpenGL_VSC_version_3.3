@@ -4,6 +4,8 @@
 #include <iostream>
 #include <memory>
 
+/// @brief When we use the calss we define it has friend class Singleton<T> so we can access the private constructor
+/// @tparam T Every class that inherits from Singleton must have a template parameter that is the class type
 template <typename T>
 class Singleton
 {

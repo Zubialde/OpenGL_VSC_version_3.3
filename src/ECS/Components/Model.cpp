@@ -1,47 +1,7 @@
 #include "ECS/Components/Model.h"
 #include <ECS/GameObject.h>
 
-void Model::Update(float deltaTime)
-{
-    for(unsigned int i = 0; i < models.size(); i++){        
-        models[i].materials->Draw(*shader);
-        models[i].mesh->Draw();
-    }
-}
-
-void Model::LoadModel(std::string path)
-{
-    Assimp::Importer import;
-    const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);	
-	
-    if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
-    {
-        std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
-        return;
-    }
-    directory = std::filesystem::path(path).parent_path().string();
-
-
-    shader = parent->GetComponent<Material>()->shader;
-
-    processNode(scene->mRootNode, scene);
-}
-
-void Model::processNode(aiNode* node,  const aiScene* scene)
-{
-    for(unsigned int i = 0; i < node->mNumMeshes; i++)
-    {
-        aiMesh *mesh = scene->mMeshes[node->mMeshes[i]]; 
-        models.push_back(processMesh(mesh, scene));			
-    }
-    // then do the same for each of its children
-    for(unsigned int i = 0; i < node->mNumChildren; i++)
-    {
-        processNode(node->mChildren[i], scene);
-    }
-}
-
-
+/*
 ModelData Model::processMesh(aiMesh* mesh, const aiScene* scene)
 {
     std::vector<Vertex> vertices;
@@ -176,5 +136,5 @@ unsigned int Model::TextureFromFile(const char *path, const std::string &directo
     }
 
     return textureID;
-}
+}*/
 

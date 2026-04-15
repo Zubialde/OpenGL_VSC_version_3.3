@@ -1,0 +1,16 @@
+#ifndef RENDERQUEUE_H
+#define RENDERQUEUE_H
+
+#include <utils/Singleton.h>
+
+class RenderQueue : public Singleton<RenderQueue>
+{
+    friend class Singleton<RenderQueue>;
+    public:
+
+    private:
+    RenderQueue() = default;
+
+};
+
+#endif

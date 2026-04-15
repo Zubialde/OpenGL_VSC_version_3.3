@@ -16,7 +16,7 @@
 #include <string>
 
 
-struct Vertex{
+struct Vertexx{
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 texCoords;
@@ -25,10 +25,10 @@ struct Vertex{
 class MeshLoader{
     public:
 
-    std::vector<Vertex> vertices;
+    std::vector<Vertexx> vertices;
     std::vector<unsigned int> indices;
 
-    MeshLoader(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
+    MeshLoader(std::vector<Vertexx> vertices, std::vector<unsigned int> indices);
     
     void Draw();
 

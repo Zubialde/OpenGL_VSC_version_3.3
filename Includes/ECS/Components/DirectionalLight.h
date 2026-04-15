@@ -5,7 +5,7 @@
 
 #include <ECS/Components/Component.h>
 
- struct DirectionaLightInfo{
+ struct DirectionalLightInfo{
     glm::vec3 direction;
     glm::vec3 color;
     float intensity;
@@ -15,7 +15,7 @@ class DirectionalLight : public Component
 {
     public:
     
-    DirectionaLightInfo info;
+    DirectionalLightInfo info;
 
     DirectionalLight(glm::vec3 direction, glm::vec3 color, float intensity);
 

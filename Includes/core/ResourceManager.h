@@ -26,12 +26,19 @@ struct Vertex{
     glm::vec2 texCoords;
 };
 
-struct ModelData{
+struct Meshes{
     std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+};
+
+struct ModelData{
+    std::vector<Meshes> mesh;
     std::vector<unsigned int> indices;
     std::string path;
 };
 
+/// @brief ResourceManager stores the paths of all resources in a double lazy map to prevent loading resources that are not used, 
+/// and to prevent loading the same resource multiple times. It also has functions to load resources when needed.
 class ResourceManager: public Singleton<ResourceManager>{
     
     friend class Singleton<ResourceManager>;

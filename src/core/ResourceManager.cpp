@@ -107,7 +107,50 @@ void ResourceManager::processNode(aiNode* node, const aiScene* scene, std::share
     processNode(node->mChildren[i], scene, modelData);
 }
 
+// FIXME: This function dosent support materials and loses data.
 void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<ModelData> modelData)
 {
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
     
+    for(unsigned int i = 0; i < mesh->mNumVertices; i++)
+    {
+        glm:: vec3 vec;
+        vec.x = mesh->mVertices[i].x;
+        vec.y = mesh->mVertices[i].y;
+        vec.z = mesh->mVertices[i].z;
+        vertices.push_back(Vertex{vec, glm::vec3(0.0f), glm::vec2(0.0f)});
+
+        if(mesh->HasNormals())
+        {
+            glm:: vec3 vec;
+            vec.x = mesh->mNormals[i].x;
+            vec.y = mesh->mNormals[i].y;
+            vec.z = mesh->mNormals[i].z;
+            vertices.back().normal = vec;
+        }
+        else
+            vertices.back().normal = glm::vec3(0.0f);
+        
+        if(mesh->HasTextureCoords(0))
+        {
+            glm::vec2 vec;
+            vec.x = mesh->mTextureCoords[0][i].x;
+            vec.y = mesh->mTextureCoords[0][i].y;
+            vertices.back().texCoords = vec;
+        }
+        else
+            vertices.back().texCoords = glm::vec2(0.0f);
+    }
+
+    for(unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+        aiFace face = mesh->mFaces[i];
+        for(unsigned int j = 0; j < face.mNumIndices; j++)
+        {
+            indices.push_back(face.mIndices[j]);
+        }
+    }
+
+    modelData->mesh.push_back(Meshes{vertices, indices});
 }

@@ -1,5 +1,7 @@
 #include "ECS/GameObject.h"
 
+int GameObject::n_Components = 0;
+
 void GameObject::Update(float deltaTime)
 {
     transform.Update(deltaTime);

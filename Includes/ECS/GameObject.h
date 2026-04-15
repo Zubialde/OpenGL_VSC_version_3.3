@@ -1,6 +1,7 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+
 #include <ECS/Components/Component.h>
 #include <ECS/Components/Transform.h>
 
@@ -10,7 +11,10 @@
 #include <vector>
 
 #include <type_traits>
+#include <memory>
+#include <array>
 
+constexpr std::size_t MAX_COMPONENTS = 100;
 
 class GameObject{
     public:
@@ -18,7 +22,9 @@ class GameObject{
 
     Transform transform;
 
-    std::vector<std::unique_ptr<Component>> components;
+    std::array<std::unique_ptr<Component>, MAX_COMPONENTS> components;
+    
+    static int n_Components;
     
     GameObject(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f) , glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotation = glm::vec3(0.0f)) 
     : transform(position, scale, rotation){};
@@ -31,26 +37,21 @@ class GameObject{
     requires std::is_base_of_v<Component, T>
     inline T* AddComponent(Args&&... args)
     {
-        for (const std::unique_ptr<Component>& i : components)
-        {
-            if (typeid(T) == typeid(*i))
-            {
-                std::cout << "Component " << typeid(T).name() << " already exists in the gameObject" << std::endl;
-                return nullptr;
-            }
-        }
+
+        if(components[GetID<T>()] != nullptr)
+            return nullptr;
 
         std::unique_ptr<T> component = std::make_unique<T>(std::forward<Args>(args)...);
         
-        //Makes sure the component has a reference to the gameObject
-        //IMPORTANT: Sinec the parent is a nullptr by default if u acces it befor the start the game will crash
+        //Makes sure the component has a reference to the gameObject.
+        //IMPORTANT: Since the parent is a nullptr by default if you access it before the start, the game will crash
         component->SetParent(this);
 
         component->Start();
 
         T* newComponent = component.get();
-        
-        components.push_back(std::move(component));
+
+        components[GetID<T>()] = std::move(component);
         
         return newComponent;
     }
@@ -59,18 +60,22 @@ class GameObject{
     requires std::is_base_of_v<Component, T>
     inline T* GetComponent()
     {
-        for(const std::unique_ptr<Component>& i : components)
-        {
-            if(typeid(T) == typeid(*i))
-            {
-                return static_cast<T*>(i.get());
-            }
-        }
-        // If the component is not found, return nullptr
-        std::cout << "Component " << typeid(T).name() << " not found" << std::endl;
-        return nullptr;
+        if(components[GetID<T>()] != nullptr)
+            return static_cast<T*>(components[GetID<T>()].get());
+        else            
+            return nullptr;            
     }
+
     private:
+
+    template<typename T>
+    requires std::is_base_of_v<Component, T>
+    inline int GetID()
+    {
+        static const int typeId = n_Components++;
+        return typeId;
+    }
+
 };  
 
 #endif

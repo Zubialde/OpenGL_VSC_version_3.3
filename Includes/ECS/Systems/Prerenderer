@@ -1,0 +1,21 @@
+#ifndef PRERENDERER_H
+#define PRERENDERER_H
+
+#include <unordered_map>
+#include <memory>
+
+#include <utils/Singleton.h>
+
+//TODO: Fetch scene resources and pack them for sorting system.
+class Prerenderer : public Singleton<Prerenderer>
+{
+
+    friend class Singleton<Prerenderer>;
+
+    public:
+    
+    private:
+
+};
+
+#endif

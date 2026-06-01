@@ -3,9 +3,16 @@
 
 #include <glad/glad.h>  
 #include <GLFW/glfw3.h>
+
+#include <utils/Singleton.h>
+
+
 #include <iostream>
 
-class Window{
+class Window : public Singleton<Window>
+{
+    friend class Singleton<Window>;
+    
     public: 
     int SCR_WIDTH {1920};
     int SCR_HEIGHT {1080};

@@ -3,14 +3,13 @@ project(WhiteBox_Engine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-
 # Genera unas varliables con la ruta de los Includes y las Librerias
 set(INCLUDE_DIR "${CMAKE_SOURCE_DIR}/Includes")
 set(GLFW_LIBRARY_DIR "${CMAKE_SOURCE_DIR}/Lib")
 set(ASSETS_DIR "${CMAKE_SOURCE_DIR}/assets")
 set(SHADERS_DIR "${CMAKE_SOURCE_DIR}/assets/Shaders")
 set(TEXTURE_DIR "${CMAKE_SOURCE_DIR}/assets/Texture")
-set(MODEL_DIR "${CMAKE_SOURCE_DIR}/assets")
+set(MODEL_DIR "${CMAKE_SOURCE_DIR}/assets/Model/")
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
 set(THP_DIR "${CMAKE_SOURCE_DIR}/third_party")
 

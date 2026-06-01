@@ -9,15 +9,15 @@ void ResourceManager::searchDirectory(const std::string& directory)
             std::string file = entry.path().string();
             std::string extension = entry.path().extension().string();
             
-            if(extension == "obj" || extension == "fbx" || extension == "gltf")
+            if(extension == ".obj" || extension == ".fbx" || extension == ".gltf")
             {
                 modelPaths[file] = file;
             }
-            else if(extension == "png" || extension == "jpg" || extension == "jpeg")
+            else if(extension == ".png" || extension == ".jpg" || extension == ".jpeg")
             {
                 texturePaths[file] = file;
             }
-            else if(extension == "vs" || extension == "fs" || extension == "geo")
+            else if(extension == ".vs" || extension == ".fs" || extension == ".geo")
             {
                 shaderPaths[file] = file;
             }
@@ -76,10 +76,12 @@ std::shared_ptr<ModelData>ResourceManager::GetModel(const std::string& path)
             return modelData;
     }
 
+    std::string finalPath = path;
+
     Assimp::Importer import;
 
     const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
-
+    
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
         std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
@@ -151,6 +153,6 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
             indices.push_back(face.mIndices[j]);
         }
     }
-
+    
     modelData->mesh.push_back(Meshes{vertices, indices});
 }

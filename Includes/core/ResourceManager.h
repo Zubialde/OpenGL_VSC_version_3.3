@@ -1,6 +1,15 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
+// CPP native
+#include <iostream>
+#include <vector>
+#include <string>
+#include <filesystem>
+#include <unordered_map>
+#include <memory>
+
+// Third party
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -9,16 +18,10 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
+//Own
 #include <utils/Singleton.h>
 #include "renderer/ShaderClass.h"
 #include "renderer/TextureClass.h"
-
-#include <iostream>
-#include <vector>
-#include <string>
-#include <filesystem>
-#include <unordered_map>
-#include <memory>
 
 struct Vertex{
     glm::vec3 position;
@@ -37,8 +40,7 @@ struct ModelData{
     std::string path;
 };
 
-/// @brief ResourceManager stores the paths of all resources in a double lazy map to prevent loading resources that are not used, 
-/// and to prevent loading the same resource multiple times. It also has functions to load resources when needed.
+/// @brief ResourceManager stores the paths of all resources in a double lazy map to prevent loading resources that are not used.
 class ResourceManager: public Singleton<ResourceManager>{
     
     friend class Singleton<ResourceManager>;
@@ -57,8 +59,6 @@ class ResourceManager: public Singleton<ResourceManager>{
     TextureClass* GetTexture(const std::string& path);
     ShaderClass* GetShader(const std::string& path);
     std::shared_ptr<ModelData> GetModel(const std::string& path);
-
-
 
     private:
     ResourceManager() = default;    

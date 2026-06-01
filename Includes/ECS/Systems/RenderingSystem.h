@@ -29,7 +29,7 @@ struct SceneInfo{
 };
 
 
-/// Reads Queueu -> Loads data from ResourceManager -> Loads Buffer -> 
+/// Reads Queueu -> Loads data from ResourceManager -> Loads Buffer -> Loads Shader -> Renders
 
 // TODO: Optimize the rendering system by using a more efficient data structure for the lights and cameras, maybe a map or a set to avoid duplicates and improve lookup times.
 class RenderingSystem : public Singleton<RenderingSystem>

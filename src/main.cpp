@@ -96,34 +96,6 @@ int main() {
     }
     Application app;
 
-    ShaderClass ourShader("Vertex.vs", "Fragment.fs");
-    ShaderClass lightingShader("LightCubeVertex.vs", "LightCubeFragment.fs");
-
-    #pragma region VBO, VAO, EBO //TODO: Create Mesh class to handle Binding and Updating
-
-    //Genera un VBO(Vertex Buffer Objecy), lo bincula al tipo de Buffer GL_ARRAY_BUFFER y le asigna los datos de los vertices
-    VBO vbo;
-    vbo.create();
-    vbo.bind();
-    vbo.update(Cube);
-
-    //Genera un VAO(Vertex Array Object), lo vincula y le asigna los atributos de los vertices
-    VAO vao;
-    vao.create();
-    vao.bind();
-    vao.update();     
-
-    VAO lightCubeVao;
-    lightCubeVao.create();
-    lightCubeVao.bind();
-    lightCubeVao.update();
-
-    glBindVertexArray(0); 
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    #pragma endregion
-    float ambientpower = 0.5f;
-
     glEnable(GL_DEPTH_TEST);
 
     #pragma region Render loop 
@@ -224,9 +196,6 @@ int main() {
         glfwPollEvents();
     }
     #pragma endregion
-
-    vbo.clear();
-    vao.clean();
     
     //Cierra la ventan
     glfwTerminate();

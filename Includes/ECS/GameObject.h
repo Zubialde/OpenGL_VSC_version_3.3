@@ -14,6 +14,7 @@
 #include <memory>
 #include <array>
 
+//The maximum is just representative 
 constexpr std::size_t MAX_COMPONENTS = 100;
 
 class GameObject{
@@ -22,6 +23,7 @@ class GameObject{
 
     Transform transform;
 
+    //
     std::array<std::unique_ptr<Component>, MAX_COMPONENTS> components;
     
     static int n_Components;
@@ -45,6 +47,7 @@ class GameObject{
         
         //Makes sure the component has a reference to the gameObject.
         //IMPORTANT: Since the parent is a nullptr by default if you access it before the start, the game will crash
+        //DO NOT ACCES OTHER COMPONENTS ON THE CONSTRUCTOR
         component->SetParent(this);
 
         component->Start();

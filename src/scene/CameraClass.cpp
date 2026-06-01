@@ -3,7 +3,7 @@
 
 void Camera::Start()
 {
-    info.position = parent->transform.info.position;
+    info.position = parent->GetComponent<Transform>()->info.position;
     info.up = glm::vec3(0.0f, 1.0f, 0.0f);
     info.front = glm::vec3(0.0f, 0.0f, -1.0f);
     updateCameraVectors();
@@ -11,7 +11,7 @@ void Camera::Start()
 
 void Camera::Update(float deltaTime)
 {
-    info.position = parent->transform.info.position;
+    info.position = parent->GetComponent<Transform>()->info.position;
     updateCameraVectors();
 }
 

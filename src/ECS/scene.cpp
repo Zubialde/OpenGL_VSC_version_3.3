@@ -7,7 +7,7 @@ Scene::Scene(std::string name)
 
 void Scene::Update(float deltaTime)
 {
-    for(const std::shared_ptr<GameObject>& i : gameObjects)
+    for(const std::shared_ptr<GameObject> i : gameObjects)
     {
         i->Update(deltaTime);
     }
@@ -20,7 +20,7 @@ void Scene::AddGameObject(std::shared_ptr<GameObject>& gameObject)
 
 std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 {
-    auto newObject = std::make_shared<GameObject>();
+    std::shared_ptr<GameObject> newObject = std::make_shared<GameObject>();
     newObject->name = name;
     return newObject;
 }
@@ -28,17 +28,10 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
-    
-    object->AddComponent<Material>("Vertex.vs", "Fragment.fs");
-    object->AddComponent<Model>("/backpack/backpack.obj");
+    object->AddComponent<DirectionalLight>(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
+    object->AddComponent<Model>("backpack/backpack.obj");
 
     AddGameObject(object);
-
-    std::shared_ptr<GameObject> object2 = Instantiate("Mochila");
-    object2->transform.info.position = glm::vec3(0.0f, 0.0f, 0.0f);
-    object2->transform.info.scale = glm::vec3(0.2f);
-    object2->AddComponent<DirectionalLight>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
-    AddGameObject(object2);
 }
 
 //Unload all the gameObjects (this is probably not needed since the gameObject will be destroyed when the program ends anyway)

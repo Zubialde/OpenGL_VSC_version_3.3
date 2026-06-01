@@ -14,7 +14,7 @@ class Component
 {
     public:   
     
-    //Virtual destructor so the function can be overloaded
+    //Virtual destructor so derived destructors are called correctly
     virtual ~Component() = default;
 
     virtual void Start() = 0;    

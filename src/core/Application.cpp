@@ -6,11 +6,11 @@ Application::Application() : init()
 
     Debugger::GetInstance().Log(ResourceManager::GetInstance().modelPaths["backpack/backpack.obj"].c_str());
 
-    Window window;
-    
+    Window  mainWindow;
+    this->window = mainWindow.window;
+
     newscene->Load();
     RenderingSystem::GetInstance().SetScene(newscene);
-
 }
 
 Application::~Application()
@@ -20,7 +20,20 @@ Application::~Application()
 
 void Application::Run()
 {
-    newscene->Update(static_cast<float>(glfwGetTime()));
+    while(!glfwWindowShouldClose(window))
+    {
+        glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+
+        //Scene
+        newscene->Update(static_cast<float>(glfwGetTime()));
+
+
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
 }
 
 void Application::currentScene(std::shared_ptr<Scene> scene)

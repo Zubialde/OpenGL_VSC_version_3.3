@@ -70,137 +70,13 @@ bool prevDownPressed = false;
 #pragma endregion
 
 int main() {
-    Init();
-
-
-    //Crea la ventana (ventana != OpenGl)*
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Hola ventana :)"  , NULL, NULL);
-
-    //Se asegura de que se han iniciado tanto la ventana como GLAD
-    if(window == NULL)
-    {
-        std::cout << "Failed to create window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-
-    glfwMakeContextCurrent(window);
-
-    //Comprueba si ha cambiado el tamaño de la pantalla (especifica) y ejecuta la función
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cout << "Failed to load Glad" << std::endl;
-        return -1;
-    }
     Application app;
 
-    glEnable(GL_DEPTH_TEST);
-
-    #pragma region Render loop 
-    while(!glfwWindowShouldClose(window))
-    {
-        //Perframe variables
-        Timer();
-        float currentTime = static_cast<float>(glfwGetTime());
-
-        //std::cout << 1/deltaTime << std::endl;
-
-        glm::vec3 lightPos2 = lightPos  /*+ (glm::vec3(sin(currentFrame),sin(-currentFrame),cos(-currentFrame)) * 0.5f) * 5.0f*/;
-
-        glm::vec3 lightColor;
-        lightColor.x = static_cast<float>(sin(glfwGetTime() * 2.0f));
-        lightColor.y = static_cast<float>(sin(glfwGetTime() * 0.7f));
-        lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3f));
-
-        glm::vec3 diffuse =  glm::vec3(0.5f);
-        glm::vec3 ambient =  glm::vec3(0.1f);
-
-        glm::vec3 lightDir = glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f));
-
-        //RenderComands 
-        processInput(window);
-        glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        //Light affected objects
-        /*
-        for(unsigned int i = 0; i < 10; i++)
-        {
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
-            //model = glm::rotate(model, static_cast<float>(glfwGetTime()), glm::vec3(0.0f, 1.0f, 1.0f));
-            ourShader.setFloat("time", currentTime);
-
-            ourShader.setMat4("model", model);               
-            ourShader.setVec3("cameraPosition", camera.Position);     
-            
-            ourShader.setVec3("objectColor", glm::vec3(0.8f,0.8f,0.8f));
-            ourShader.setFloat("material.shininess", 64.0f);
-
-            //DESCRIPTION: Here we set the lights specific informatión
-            //TODO: Create a class to handle lights
-            #pragma region Lights
-            ourShader.setVec3("dirLight.direction", glm::normalize(glm::vec3(-0.2f, -1.0f, -0.3f)));
-            ourShader.setVec3("dirLight.ambient", glm::vec3(0.2f));
-            ourShader.setVec3("dirLight.diffuse", glm::vec3(0.5f));
-            ourShader.setVec3("dirLight.specular", glm::vec3(0.2f));
-            
-            ourShader.setVec3("pointLight[0].position", pointLightPos[0]);
-            ourShader.setVec3("pointLight[0].ambient", glm::vec3(0.2f));
-            ourShader.setVec3("pointLight[0].diffuse", glm::vec3(0.5f));
-            ourShader.setVec3("pointLight[0].specular", glm::vec3(0.2f));
-            ourShader.setFloat("pointLight[0].constant", 1.0f);
-            ourShader.setFloat("pointLight[0].linear", 0.09f);
-            ourShader.setFloat("pointLight[0].quadratic", 0.032f);
-
-
-            ourShader.setVec3("spotLight.position", camera.Position);
-            ourShader.setVec3("spotLight.direction", camera.Front);
-            ourShader.setVec3("spotLight.ambient", glm::vec3(0.2f));
-            ourShader.setVec3("spotLight.diffuse", glm::vec3(0.5f));
-            ourShader.setVec3("spotLight.specular", glm::vec3(0.2f));
-            ourShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(lanternAngle)));
-            ourShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(lanternAngle + 5.0f)));
-
-            #pragma endregion
-            diffuse_Map.use(GL_TEXTURE0);
-            specular_Map.use(GL_TEXTURE1);
-            emmision_Map.use(GL_TEXTURE2);
-
-            vao.draw();
-
-        }*/
-
-        app.Run();
-        /*        for(unsigned int i = 0; i < 4; i++)
-        {
-            //Lighting Object
-            lightingShader.use();
-            lightingShader.setMat4("view", view);
-            lightingShader.setMat4("projection", projection);
-            lightingShader.setVec3("lightMaterial.ambient", lightColor);
-            glm::mat4 lightModel = glm::mat4(1.0f);
-            lightModel = glm::translate(lightModel, pointLightPos[i]);
-            lightModel = glm::rotate(lightModel, 360.0f, lightDir);
-            lightModel = glm::scale(lightModel, glm::vec3(0.2f));
-            lightingShader.setMat4("model", lightModel);
-            lightCubeVao.bind();
-            vao.draw();
-        }
-*/
-
-        //Comprueban eventos y cambian el Back por el Front buffer
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-    #pragma endregion
-    
-    //Cierra la ventan
-    glfwTerminate();
+    app.Run();
     return 0;
 }
+
+#pragma region CleanUp
 
 void Timer()
 {
@@ -209,21 +85,6 @@ void Timer()
     lastFrame = currentFrame;
 }
 
-void Init()
-{
-    // Inicia glfw y lo configura mediante WindowHint
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-     glViewport(0,0, width, height);
-}
-
-#pragma region Input
 void processInput(GLFWwindow* window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
@@ -291,3 +152,4 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     //camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }   
+#pragma endregion

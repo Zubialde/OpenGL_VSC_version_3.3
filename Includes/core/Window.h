@@ -12,15 +12,15 @@
 class Window : public Singleton<Window>
 {
     friend class Singleton<Window>;
-    
+
     public: 
     int SCR_WIDTH {1920};
     int SCR_HEIGHT {1080};
 
     Window();
+    GLFWwindow* window;
 
     private:
-    GLFWwindow* window;
 
     static GLFWwindow* Init(int SCR_WIDTH, int SCR_HEIGHT);
     void Checker(GLFWwindow* window);

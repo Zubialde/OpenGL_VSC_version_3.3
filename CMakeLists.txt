@@ -35,10 +35,11 @@ add_executable(WhiteBox ${SOURCE_DIR}/main.cpp ${SOURCE} ${GLAD})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  ${CMAKE_SOURCE_DIR}/bin)
 
+#Moves the dll to the bin floder
 add_custom_command(TARGET WhiteBox POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/Lib/assimp-vc143-mtd.dll  $<TARGET_FILE_DIR:WhiteBox>)
 
 target_compile_definitions(WhiteBox PRIVATE GLFW_STATIC)
 
-# Link GLFW + OpenGL
+# Link GLFW + OpenGL + Assimp
 target_link_libraries(WhiteBox glfw3 opengl32 assimp-vc143-mtd)
 

@@ -8,9 +8,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include <core/ResourceManager.h>
-
 #include <renderer/ShaderClass.h>
+#include <core/SceneManager.h>
 #include <scene/CameraClass.h>
 #include <core/Window.h>
 #include <core/Initialicer.h>
@@ -28,15 +27,12 @@ class Application
 
     void Run();
 
-    void currentScene(std::shared_ptr<Scene> scene);
-
     private:
     int SCR_WIDTH = 1920;
     int SCR_HEIGHT = 1080;
 
-    
     GLFWwindow* window;
-    std::shared_ptr<Scene> newscene = std::shared_ptr<Scene>(new Scene("New Scene"));
+    Window mainWindow;
     Initialicer init;
 };
 

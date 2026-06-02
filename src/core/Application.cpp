@@ -2,15 +2,14 @@
 
 Application::Application() : init()
 {
-    ResourceManager::GetInstance().searchDirectory(ASSETS_DIR);
+    Debugger::Log("Initializing Application...");
 
-    Debugger::GetInstance().Log(ResourceManager::GetInstance().modelPaths["backpack/backpack.obj"].c_str());
-
-    Window  mainWindow;
     this->window = mainWindow.window;
 
-    newscene->Load();
-    RenderingSystem::GetInstance().SetScene(newscene);
+    auto newscene = std::make_unique<Scene>("New Scene");
+
+    SceneManager::GetInstance().setCurrentScene(move(newscene));
+    SceneManager::GetInstance().GetCurrentScene().Load();
 }
 
 Application::~Application()
@@ -25,18 +24,11 @@ void Application::Run()
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-
         //Scene
-        newscene->Update(static_cast<float>(glfwGetTime()));
-
+        SceneManager::GetInstance().GetCurrentScene().Update(static_cast<float>(glfwGetTime()));
 
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-}
-
-void Application::currentScene(std::shared_ptr<Scene> scene)
-{
-
 }

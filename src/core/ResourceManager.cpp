@@ -7,19 +7,20 @@ void ResourceManager::searchDirectory(const std::string& directory)
         if(entry.is_regular_file())
         {
             std::string file = entry.path().string();
+            std::string fileName = entry.path().filename().string();
             std::string extension = entry.path().extension().string();
             
             if(extension == ".obj" || extension == ".fbx" || extension == ".gltf")
             {
-                modelPaths[file] = file;
+                modelPaths[fileName] = file;
             }
             else if(extension == ".png" || extension == ".jpg" || extension == ".jpeg")
             {
-                texturePaths[file] = file;
+                texturePaths[fileName] = file;
             }
             else if(extension == ".vs" || extension == ".fs" || extension == ".geo")
             {
-                shaderPaths[file] = file;
+                shaderPaths[fileName] = file;
             }
         }
     }
@@ -39,8 +40,11 @@ TextureClass* ResourceManager::GetTexture(const std::string& path)
         loadedTextures[path] = std::make_unique<TextureClass>(it->second.c_str(), GL_REPEAT, GL_REPEAT, GL_LINEAR, GL_LINEAR);
         return loadedTextures[path].get();        
     }
-
-    return nullptr;
+    else
+    {
+        Debugger::Log("ResourceManager::GetTexture: Texture not found");
+        return nullptr;
+    }
 }
 
 ShaderClass* ResourceManager::GetShader(const std::string& path)
@@ -60,13 +64,17 @@ ShaderClass* ResourceManager::GetShader(const std::string& path)
         loadedShaders[path] = std::make_unique<ShaderClass>(vs.c_str(), fs.c_str());
         return loadedShaders[path].get();
     }
-
-    return nullptr;
+    else
+    {
+        Debugger::Log("ResourceManager::GetShader: Shader not found");
+        return nullptr;
+    }
 }
 
 
 std::shared_ptr<ModelData>ResourceManager::GetModel(const std::string& path)
 {
+    //Check if the model is already loaded
     std::unordered_map<std::string, std::weak_ptr<ModelData>>::iterator loadedIt = loadedModels.find(path);
 
     if(loadedIt != loadedModels.end())
@@ -76,11 +84,12 @@ std::shared_ptr<ModelData>ResourceManager::GetModel(const std::string& path)
             return modelData;
     }
 
-    std::string finalPath = path;
+    //If not, load the model
+    std::string finalPath = modelPaths.find(path)->second;
 
     Assimp::Importer import;
 
-    const aiScene *scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
+    const aiScene *scene = import.ReadFile(finalPath, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_OptimizeMeshes);
     
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
     {
@@ -89,7 +98,6 @@ std::shared_ptr<ModelData>ResourceManager::GetModel(const std::string& path)
     }
 
     std::shared_ptr<ModelData> modelData = std::make_shared<ModelData>();
-    modelData->path = path;
 
     processNode(scene->mRootNode, scene, modelData);
     loadedModels[path] = modelData;

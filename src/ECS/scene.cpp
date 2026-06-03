@@ -29,7 +29,7 @@ void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
     object->AddComponent<DirectionalLight>(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
-    object->AddComponent<Model>("backpack/backpack.obj");
+    object->AddComponent<Model>("backpack.obj");
 
     AddGameObject(object);
 }

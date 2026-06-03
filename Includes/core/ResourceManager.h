@@ -20,8 +20,9 @@
 
 //Own
 #include <utils/Singleton.h>
-#include "renderer/ShaderClass.h"
-#include "renderer/TextureClass.h"
+#include <renderer/ShaderClass.h>
+#include <renderer/TextureClass.h>
+#include <utils/Debugger.h>
 
 struct Vertex{
     glm::vec3 position;
@@ -31,13 +32,13 @@ struct Vertex{
 
 struct Meshes{
     std::vector<Vertex> vertices;
+    aiMatrix4x4 transform;
     std::vector<unsigned int> indices;
 };
 
 struct ModelData{
     std::vector<Meshes> mesh;
     std::vector<unsigned int> indices;
-    std::string path;
 };
 
 /// @brief ResourceManager stores the paths of all resources in a double lazy map to prevent loading resources that are not used.
@@ -50,6 +51,7 @@ class ResourceManager: public Singleton<ResourceManager>{
     std::unordered_map<std::string, std::string> shaderPaths;
     std::unordered_map<std::string, std::string> modelPaths;
 
+    //Maybe this should be a shared_ptr since the Rendering System will need it to create Texture Packages and Models
     std::unordered_map<std::string, std::unique_ptr<TextureClass>> loadedTextures;
     std::unordered_map<std::string, std::unique_ptr<ShaderClass>> loadedShaders;
     std::unordered_map<std::string, std::weak_ptr<ModelData>> loadedModels;

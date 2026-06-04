@@ -32,13 +32,13 @@ struct Vertex{
 
 struct Meshes{
     std::vector<Vertex> vertices;
-    aiMatrix4x4 transform;
+    //aiMatrix4x4 meshTransform;
     std::vector<unsigned int> indices;
 };
 
 struct ModelData{
     std::vector<Meshes> mesh;
-    std::vector<unsigned int> indices;
+    //aiMatrix4x4 modelTransform;
 };
 
 /// @brief ResourceManager stores the paths of all resources in a double lazy map to prevent loading resources that are not used.

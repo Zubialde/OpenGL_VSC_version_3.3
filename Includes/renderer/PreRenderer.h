@@ -26,7 +26,7 @@ class PreRenderer : public Singleton<PreRenderer>
     friend class Singleton<PreRenderer>;
     public:
 
-    void FilterGameObjects();
+    void FetchGameObjects();
     void CreateRenderPackages(std::vector<RenderPackage>& renderPackages);
     
 
@@ -34,8 +34,9 @@ class PreRenderer : public Singleton<PreRenderer>
     PreRenderer() = default;
     ~PreRenderer() = default;
 
-    std::vector<GameObject*> gameObjects;
+    std::vector<ModelData*> models;
 };
+
 
 
 #endif

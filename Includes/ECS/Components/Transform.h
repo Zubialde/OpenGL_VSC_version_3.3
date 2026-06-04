@@ -38,6 +38,8 @@ public:
         model = glm::scale(model, info.scale);
     };
     
+    glm::mat4 GetMatrix() const {return model;};
+
     void OnDestroy() override{};
     
     void Translate(glm::vec3 translation);

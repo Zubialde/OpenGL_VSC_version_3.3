@@ -117,7 +117,7 @@ void ResourceManager::processNode(aiNode* node, const aiScene* scene, std::share
     processNode(node->mChildren[i], scene, modelData);
 }
 
-// FIXME: This function dosent support materials and loses data.
+// FIXME: Add material adaptatión, and matrixTransform.
 void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<ModelData> modelData)
 {
     std::vector<Vertex> vertices;
@@ -162,5 +162,5 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
         }
     }
     
-    modelData->mesh.push_back(Meshes{vertices, indices});
+    modelData->mesh.push_back(Meshes{vertices});
 }

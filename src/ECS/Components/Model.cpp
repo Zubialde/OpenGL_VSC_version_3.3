@@ -1,5 +1,4 @@
 #include "ECS/Components/Model.h"
-#include <ECS/GameObject.h>
 
 /*
 ModelData Model::processMesh(aiMesh* mesh, const aiScene* scene)

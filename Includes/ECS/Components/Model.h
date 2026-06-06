@@ -23,8 +23,10 @@ class   Model : public Component{
     /// @param vertexPath Vertex shader path
     /// @param fragmentPath Fragment shader path
     Model( const std::string path){
-        ResourceManager::GetInstance().GetModel(path);
+        this->path = path;
     };
+
+    std::string path;
 
     void Start() override{};
     void Update(float deltaTime) override{};

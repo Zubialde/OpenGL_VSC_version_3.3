@@ -1,13 +1,6 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
-// CPP native
-#include <iostream>
-#include <vector>
-#include <string>
-#include <filesystem>
-#include <unordered_map>
-#include <memory>
 
 // Third party
 #include <glad/glad.h>
@@ -24,20 +17,29 @@
 #include <renderer/TextureClass.h>
 #include <utils/Debugger.h>
 
+// CPP native
+#include <iostream>
+#include <vector>
+#include <string>
+#include <filesystem>
+#include <unordered_map>
+#include <memory>
+
 struct Vertex{
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 texCoords;
 };
 
-struct Meshes{
+struct Mesh{
     std::vector<Vertex> vertices;
     //aiMatrix4x4 meshTransform;
     std::vector<unsigned int> indices;
+    aiMaterial material;
 };
 
 struct ModelData{
-    std::vector<Meshes> mesh;
+    std::vector<Mesh> mesh;
     //aiMatrix4x4 modelTransform;
 };
 
@@ -51,10 +53,12 @@ class ResourceManager: public Singleton<ResourceManager>{
     std::unordered_map<std::string, std::string> shaderPaths;
     std::unordered_map<std::string, std::string> modelPaths;
 
-    //Maybe this should be a shared_ptr since the Rendering System will need it to create Texture Packages and Models
+    //
     std::unordered_map<std::string, std::unique_ptr<TextureClass>> loadedTextures;
     std::unordered_map<std::string, std::unique_ptr<ShaderClass>> loadedShaders;
     std::unordered_map<std::string, std::weak_ptr<ModelData>> loadedModels;
+
+    //Do i add Registries? and how?
 
     void searchDirectory(const std::string& directory);
 
@@ -68,5 +72,4 @@ class ResourceManager: public Singleton<ResourceManager>{
     void processNode(aiNode* node, const aiScene* scene, std::shared_ptr<ModelData> modelData);
     void processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<ModelData> modelData);
 };
-
 #endif

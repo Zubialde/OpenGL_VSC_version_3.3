@@ -15,35 +15,32 @@
 #include <unordered_map>
 
 /// @brief  Holds the material data, if u want to add a new variable just add it here
+/// @param MaterialQueue Transparent = 0 Opaque = 1
 struct MaterialData{
-    glm::vec3 ambient = glm::vec3(0.2f, 0.2f, 0.2f);
-    glm::vec3 diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
-    glm::vec3 specular = glm::vec3(1.0f, 1.0f, 1.0f);
+    //Material Queue
+    bool MaterialQueue = true;
+    
+    //Colors
+    glm::vec3 ambient {0.2f, 0.2f, 0.2f};
+    glm::vec3 diffuse {0.8f, 0.8f, 0.8f};
+    glm::vec3 specular {1.0f, 1.0f, 1.0f};
+
     float shininess = 32.0f;
 };
 class Material : public Component{
     public:
 
-    MaterialData data;
-    std::shared_ptr<ShaderClass> shader;
-    MaterialData materialData;
+    Material(const char* vertexPath, const char* fragmentPath){
+        this->vertexPath = vertexPath;
+        this->fragmentPath = fragmentPath;
+    }
 
-    Material(const char* vertexPath, const char* fragmentPath);
+    std::string vertexPath;
+    std::string fragmentPath;
     
     void Start() override {};
     void Update(float deltaTime) override{};
     void OnDestroy() override {};
-
-    void Draw();
-
-    std::shared_ptr<ShaderClass> GetShader(std::string type, std::string path);
-
-    private:
-
-    std::vector<std::shared_ptr<ShaderClass>> shaders;
-
-    std::unordered_map<std::string, std::shared_ptr<ShaderClass>> shaderCache;
-
 };
 
 #endif

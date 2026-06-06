@@ -38,7 +38,7 @@ public:
         model = glm::scale(model, info.scale);
     };
     
-    glm::mat4 GetMatrix() const {return model;};
+    glm::mat4 GetModelMatrix() const {return model;};
 
     void OnDestroy() override{};
     

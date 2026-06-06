@@ -1,33 +1,36 @@
 #include "renderer/PreRenderer.h"
-#include "ECS/GameObject.h"
 
-/*void PreRenderer::FetchGameObjects()
+void PreRenderer::FetchGameObjects()
 {
-    //Iterador que busca todos los gameObjects en escena y guarda los que tengan el componente Model
     for(const auto& gameObject : SceneManager::GetInstance().GetCurrentScene().gameObjects)
     {
         if(gameObject->GetComponent<Model>() != nullptr)
-            gameObjects.push_back(gameObject.get());
+            renderableObjects.push_back(gameObject.get());
+    }
+
+    CreateRenderPackages();
+}
+
+void PreRenderer::CreateRenderPackages()
+{
+    //Loop through all renderable gameObjects and creates  a RenderPackage for each mesh
+    for(auto* gameObject : renderableObjects)
+    {
+        ModelData* models = ResourceManager::GetInstance().GetModel(gameObject->GetComponent<Model>()->path).get();
+
+        for(auto& model : models->mesh)
+        {
+            RenderPackage renderPackage;
+            renderPackage.mesh = &model;
+            renderPackage.shader = ResourceManager::GetInstance().GetShader(gameObject->GetComponent<Material>()->vertexPath);
+            renderPackage.material = &model.material;
+            renderPackage.modelMatrix = gameObject->transform.GetModelMatrix();
+            
+            renderPackage.viewDepth = 0;
+            renderPackage.id = 0;
+            renderPackages->push_back(renderPackage);
+        }
     }
 }
 
-void PreRenderer::CreateRenderPackages(std::vector<RenderPackage>& renderPackages)
-{
-    //Loop through all renderable gameObjects
-    for(const auto& gameObject : gameObjects)
-    {
-        std::vector<ModelData*> models = ResourceManager::GetInstance().GetModel(gameObject->GetComponent<Model>()->path);
 
-        foreach(ModelData* model in models)
-        {
-            //Pasa toda la información del RenderPackage 
-            // ModelMatrix & 
-
-            RenderPackage renderPackage;
-            renderPackage.modelMatrix = gameObject.transform.GetMatrix() * model->transform;
-            renderPackages.push_back(renderPackage);
-        }
-        ResourceManager::GetInstance().GetModel(gameObject->GetComponent<Model>()->path);
-
-    }
-}*/

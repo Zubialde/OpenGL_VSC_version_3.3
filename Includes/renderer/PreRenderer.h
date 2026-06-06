@@ -15,10 +15,13 @@
 #include <vector>
 struct RenderPackage
 {
-    glm::mat4 modelMatrix;
-    int modelID;
-    int shaderID;
-    int textureID;
+    Mesh* mesh {nullptr};
+    ShaderClass* shader {nullptr};
+    //std::array<TextureClass*, 16> textures {nullptr};
+    aiMaterial* material {nullptr};    
+    glm::mat4 modelMatrix {glm::mat4(1.0f)};
+    int viewDepth {0};
+    uint64_t id {0};    
 };
 
 class PreRenderer : public Singleton<PreRenderer>
@@ -26,15 +29,17 @@ class PreRenderer : public Singleton<PreRenderer>
     friend class Singleton<PreRenderer>;
     public:
 
+
     void FetchGameObjects();
-    void CreateRenderPackages(std::vector<RenderPackage>& renderPackages);
+    void CreateRenderPackages();
     
+    std::vector<RenderPackage>* renderPackages;
 
     private:
     PreRenderer() = default;
     ~PreRenderer() = default;
 
-    std::vector<ModelData*> models;
+    std::vector<GameObject*> renderableObjects;
 };
 
 

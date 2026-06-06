@@ -117,12 +117,13 @@ void ResourceManager::processNode(aiNode* node, const aiScene* scene, std::share
     processNode(node->mChildren[i], scene, modelData);
 }
 
-// FIXME: Add material adaptatión, and matrixTransform.
 void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<ModelData> modelData)
 {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
+    aiMaterial* material;
     
+    //VBO and VAO Variables
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         glm:: vec3 vec;
@@ -153,6 +154,7 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
             vertices.back().texCoords = glm::vec2(0.0f);
     }
 
+    //EBO Index
     for(unsigned int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
@@ -161,6 +163,21 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
             indices.push_back(face.mIndices[j]);
         }
     }
+
+    //Material variables retrieval 
+    if(mesh->mMaterialIndex > 0)
+    {
+        material = scene->mMaterials[mesh->mMaterialIndex];
+    }
+    else
+        material = nullptr;
+
     
-    modelData->mesh.push_back(Meshes{vertices});
+    //TODO: Add MeshTransform
+    if(mesh->mNumBones > 0)
+    {
+        
+    }
+    
+    modelData->mesh.push_back(Mesh{vertices, indices ,*material});
 }

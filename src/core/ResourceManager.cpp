@@ -1,4 +1,5 @@
 #include "core/ResourceManager.h"
+#include "renderer/Materials.h"
 
 void ResourceManager::searchDirectory(const std::string& directory)
 {
@@ -119,9 +120,10 @@ void ResourceManager::processNode(aiNode* node, const aiScene* scene, std::share
 
 void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<ModelData> modelData)
 {
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
-    aiMaterial* material;
+    std::vector<Vertex> vertices{0};
+    std::vector<unsigned int> indices{0};
+    aiMaterial* material {nullptr};
+    Lit litMaterial;
     
     //VBO and VAO Variables
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -165,12 +167,23 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
     }
 
     //Material variables retrieval 
-    if(mesh->mMaterialIndex > 0)
+    if(mesh->mMaterialIndex >= 0)
     {
         material = scene->mMaterials[mesh->mMaterialIndex];
+        aiColor3D diffuseColor(0.0f, 0.0f, 0.0f), specularColor(0.0f, 0.0f, 0.0f), ambientColor(0.0f, 0.0f, 0.0f);
+        material->Get(AI_MATKEY_COLOR_DIFFUSE, diffuseColor);
+        material->Get(AI_MATKEY_COLOR_SPECULAR, specularColor);
+        material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
+        // litMaterial can be populated here if needed from diffuseColor
+
+        litMaterial.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
+        litMaterial.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
+        litMaterial.ambient = glm::vec3(ambientColor.r, ambientColor.g, ambientColor.b);
     }
     else
+    {
         material = nullptr;
+    }
 
     
     //TODO: Add MeshTransform
@@ -178,6 +191,8 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
     {
         
     }
+
+
     
-    modelData->mesh.push_back(Mesh{vertices, indices ,*material});
+    modelData->mesh.push_back(Mesh{vertices, indices , litMaterial});
 }

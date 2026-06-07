@@ -24,6 +24,8 @@ void PreRenderer::CreateRenderPackages()
             renderPackage.mesh = &model;
             renderPackage.shader = ResourceManager::GetInstance().GetShader(gameObject->GetComponent<Material>()->vertexPath);
             renderPackage.material = &model.material;
+
+            //TODO: Add recursive matrix calculation for vertex offset.
             renderPackage.modelMatrix = gameObject->transform.GetModelMatrix();
             
             renderPackage.viewDepth = 0;

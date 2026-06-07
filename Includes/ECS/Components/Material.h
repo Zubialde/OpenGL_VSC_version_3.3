@@ -7,6 +7,7 @@
 #include <renderer/ShaderClass.h>
 #include <ECS/Components/Transform.h>
 
+#include <renderer/Materials.h>
 
 #include <string>
 #include <vector>
@@ -14,19 +15,7 @@
 #include <type_traits>
 #include <unordered_map>
 
-/// @brief  Holds the material data, if u want to add a new variable just add it here
-/// @param MaterialQueue Transparent = 0 Opaque = 1
-struct MaterialData{
-    //Material Queue
-    bool MaterialQueue = true;
-    
-    //Colors
-    glm::vec3 ambient {0.2f, 0.2f, 0.2f};
-    glm::vec3 diffuse {0.8f, 0.8f, 0.8f};
-    glm::vec3 specular {1.0f, 1.0f, 1.0f};
-
-    float shininess = 32.0f;
-};
+//TODO: Add acces to the materialData
 class Material : public Component{
     public:
 

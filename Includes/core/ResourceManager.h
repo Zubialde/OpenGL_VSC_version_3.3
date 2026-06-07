@@ -16,6 +16,7 @@
 #include <renderer/ShaderClass.h>
 #include <renderer/TextureClass.h>
 #include <utils/Debugger.h>
+#include <renderer/Materials.h>
 
 // CPP native
 #include <iostream>
@@ -35,7 +36,7 @@ struct Mesh{
     std::vector<Vertex> vertices;
     //aiMatrix4x4 meshTransform;
     std::vector<unsigned int> indices;
-    aiMaterial material;
+    Lit material;
 };
 
 struct ModelData{

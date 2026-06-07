@@ -8,7 +8,6 @@
 
 #include <renderer/ShaderClass.h>
 #include <ECS/Components/MeshLoader.h>
-#include <renderer/ShaderUpLoader.h>
 
 #include <iostream>
 #include <vector>

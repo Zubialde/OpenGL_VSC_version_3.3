@@ -19,13 +19,22 @@
 class Material : public Component{
     public:
 
-    Material(const char* vertexPath, const char* fragmentPath){
+    Material(const char* vertexPath, const char* fragmentPath, MaterialData materialData){
         this->vertexPath = vertexPath;
         this->fragmentPath = fragmentPath;
     }
-
+    
     std::string vertexPath;
     std::string fragmentPath;
+
+    std::unique_ptr<MaterialData> materialData;
+
+    
+    template<typename T>
+    requires std::is_base_of_v<MaterialData, T>
+    void ConstructMaterial(){
+        materialData = T();
+    }
     
     void Start() override {};
     void Update(float deltaTime) override{};

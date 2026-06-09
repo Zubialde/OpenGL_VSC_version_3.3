@@ -25,6 +25,7 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
     return newObject;
 }
 
+//IMPORTANT: DO NOT USE THIS FUNCTION FOR ANY OTHER PURPOSE THAN LOADING OBJECTS AND ADDINGCOMPONENTS
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");

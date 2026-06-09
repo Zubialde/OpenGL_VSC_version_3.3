@@ -65,8 +65,11 @@ class GameObject{
     {
         if(components[GetID<T>()] != nullptr)
             return static_cast<T*>(components[GetID<T>()].get());
-        else            
-            return nullptr;            
+        else
+        {
+            Debugger::Log("GameObject::GetComponent: Component not found");
+            return nullptr;
+        }            
     }
 
     private:

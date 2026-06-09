@@ -120,8 +120,18 @@ void ResourceManager::processNode(aiNode* node, const aiScene* scene, std::share
 
 void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<ModelData> modelData)
 {
+    //Material assimp Data
+    
+
+    //Mesh Assimp Data
+    Mesh localMesh;
+
     std::vector<Vertex> vertices{0};
     std::vector<unsigned int> indices{0};
+    unsigned int vaoID {0};
+    unsigned int vboID {0};
+    unsigned int eboID {0};
+
     aiMaterial* material {nullptr};
     Lit litMaterial;
     
@@ -150,7 +160,7 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
             glm::vec2 vec;
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;
-            vertices.back().texCoords = vec;
+            localMesh.vertices.back().texCoords = vec;
         }
         else
             vertices.back().texCoords = glm::vec2(0.0f);
@@ -185,14 +195,38 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
         material = nullptr;
     }
 
-    
     //TODO: Add MeshTransform
     if(mesh->mNumBones > 0)
     {
         
     }
 
+    //Generates the API Buffers
+    glGenVertexArrays(1, &vaoID);
+    glGenBuffers(1, &vboID);
+    glGenBuffers(1, &eboID);
 
-    
-    modelData->mesh.push_back(Mesh{vertices, indices , litMaterial});
+    glBindVertexArray(vaoID);
+    glBindBuffer(GL_ARRAY_BUFFER, vboID);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(6 * sizeof(float)));
+
+    localMesh.vertices = vertices;
+    localMesh.indices = indices;
+    localMesh.vaoID = vaoID;
+    localMesh.vboID = vboID;
+    localMesh.eboID = eboID;
+
+    modelData->mesh.push_back(std::move(localMesh));
 }

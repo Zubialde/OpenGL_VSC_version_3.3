@@ -16,7 +16,7 @@
 #include <renderer/ShaderClass.h>
 #include <renderer/TextureClass.h>
 #include <utils/Debugger.h>
-#include <renderer/Materials.h>
+#include <renderer/MaterialData.h>
 
 // CPP native
 #include <iostream>
@@ -35,13 +35,14 @@ struct Vertex{
 struct Mesh{
     std::vector<Vertex> vertices;
     //aiMatrix4x4 meshTransform;
-    std::vector<unsigned int> indices;
-    Lit material;
+    std::vector<unsigned int> indices {0};
+    unsigned int vaoID {0};
+    unsigned int vboID {0};
+    unsigned int eboID {0};
 };
 
 struct ModelData{
     std::vector<Mesh> mesh;
-    //aiMatrix4x4 modelTransform;
 };
 
 /// @brief ResourceManager stores the paths of all resources in a double lazy map to prevent loading resources that are not used.

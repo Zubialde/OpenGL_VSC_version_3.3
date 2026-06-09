@@ -14,23 +14,18 @@ void PreRenderer::FetchGameObjects()
 void PreRenderer::CreateRenderPackages()
 {
     //Loop through all renderable gameObjects and creates  a RenderPackage for each mesh
-    for(auto* gameObject : renderableObjects)
+    for(GameObject* gameObject : renderableObjects)
     {
         ModelData* models = ResourceManager::GetInstance().GetModel(gameObject->GetComponent<Model>()->path).get();
 
-        for(auto& model : models->mesh)
+        for(const Mesh& model : models->mesh)
         {
-            RenderPackage renderPackage;
-            renderPackage.mesh = &model;
-            renderPackage.shader = ResourceManager::GetInstance().GetShader(gameObject->GetComponent<Material>()->vertexPath);
-            renderPackage.material = &model.material;
-
-            //TODO: Add recursive matrix calculation for vertex offset.
-            renderPackage.modelMatrix = gameObject->transform.GetModelMatrix();
-            
-            renderPackage.viewDepth = 0;
-            renderPackage.id = 0;
-            renderPackages->push_back(renderPackage);
+            RenderPacket renderPackage;
+            renderPackage.sortKey = 0;
+            renderPackage.vaoID = model.vaoID;
+            renderPackage.indexCount = model.indices.size();
+            renderPackage.shaderID = ResourceManager::GetInstance().GetShader(gameObject->GetComponent<Material>()->vertexPath)->ID;
+            //renderPackage.textureID = gameObject->GetComponent<Material>()->textureID;
         }
     }
 }

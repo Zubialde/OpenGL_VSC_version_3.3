@@ -24,6 +24,17 @@ struct RenderPackage
     uint64_t id {0};    
 };
 
+//Should i store the information 
+struct RenderPacket
+{
+    uint64_t sortKey;
+    unsigned int vaoID;
+    unsigned int indexCount;
+    int shaderID;
+    int textureID;
+    glm::mat4 modelMatrix;
+};
+
 class PreRenderer : public Singleton<PreRenderer>
 {
     friend class Singleton<PreRenderer>;
@@ -33,7 +44,7 @@ class PreRenderer : public Singleton<PreRenderer>
     void FetchGameObjects();
     void CreateRenderPackages();
     
-    std::vector<RenderPackage>* renderPackages;
+    std::vector<RenderPacket>* renderPackages;
 
     private:
     PreRenderer() = default;

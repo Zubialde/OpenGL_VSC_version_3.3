@@ -7,7 +7,7 @@
 #include <Stb_Image/stb_image.h>
 
 #include <renderer/ShaderClass.h>
-#include <ECS/Components/MeshLoader.h>
+#include <ECS/Components/Component.h>
 
 #include <iostream>
 #include <vector>

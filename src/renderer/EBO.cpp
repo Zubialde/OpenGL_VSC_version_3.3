@@ -1,4 +1,4 @@
-#include "renderer/EBO.h"
+#include "renderer/Buffers/EBO.h"
 
 EBO::EBO()
 {

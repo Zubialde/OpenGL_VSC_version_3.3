@@ -10,8 +10,8 @@
 #include <scene/CameraClass.h>
 #include <renderer/TextureClass.h>
 #include <renderer/Geometry.h>
-#include <renderer/VBO.h>
-#include <renderer/VAO.h>
+#include <renderer/Buffers/VBO.h>
+#include <renderer/Buffers/VAO.h>
 #include <iostream>
 
 #include <Stb_Image/stb_image.h>

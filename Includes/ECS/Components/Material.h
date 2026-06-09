@@ -19,7 +19,7 @@
 class Material : public Component{
     public:
 
-    Material(const char* vertexPath, const char* fragmentPath, MaterialData materialData){
+    Material(const char* vertexPath, const char* fragmentPath){
         this->vertexPath = vertexPath;
         this->fragmentPath = fragmentPath;
     }

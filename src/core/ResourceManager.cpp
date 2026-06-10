@@ -1,5 +1,4 @@
 #include "core/ResourceManager.h"
-#include "renderer/Materials.h"
 
 void ResourceManager::searchDirectory(const std::string& directory)
 {
@@ -120,9 +119,6 @@ void ResourceManager::processNode(aiNode* node, const aiScene* scene, std::share
 
 void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::shared_ptr<ModelData> modelData)
 {
-    //Material assimp Data
-    
-
     //Mesh Assimp Data
     Mesh localMesh;
 
@@ -132,8 +128,9 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
     unsigned int vboID {0};
     unsigned int eboID {0};
 
+    //Material assimp Data
     aiMaterial* material {nullptr};
-    Lit litMaterial;
+    MaterialData litMaterial;    
     
     //VBO and VAO Variables
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -186,6 +183,8 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
         material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
         // litMaterial can be populated here if needed from diffuseColor
 
+        litMaterial.shaderID = ResourceManager::GetShader("Vertex.vs")->ID;
+
         litMaterial.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
         litMaterial.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
         litMaterial.ambient = glm::vec3(ambientColor.r, ambientColor.g, ambientColor.b);
@@ -227,6 +226,7 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
     localMesh.vaoID = vaoID;
     localMesh.vboID = vboID;
     localMesh.eboID = eboID;
+    localMesh.materialData = litMaterial;
 
     modelData->mesh.push_back(std::move(localMesh));
 }

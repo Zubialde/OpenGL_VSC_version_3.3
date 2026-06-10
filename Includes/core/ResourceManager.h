@@ -39,6 +39,8 @@ struct Mesh{
     unsigned int vaoID {0};
     unsigned int vboID {0};
     unsigned int eboID {0};
+
+    MaterialData materialData;
 };
 
 struct ModelData{

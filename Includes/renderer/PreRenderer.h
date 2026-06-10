@@ -18,7 +18,7 @@ struct RenderPackage
     Mesh* mesh {nullptr};
     ShaderClass* shader {nullptr};
     //std::array<TextureClass*, 16> textures {nullptr};
-    Lit* material {nullptr};
+    //Lit* material {nullptr};
     glm::mat4 modelMatrix {glm::mat4(1.0f)};
     int viewDepth {0};
     uint64_t id {0};    

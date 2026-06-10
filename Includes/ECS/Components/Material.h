@@ -7,7 +7,7 @@
 #include <renderer/ShaderClass.h>
 #include <ECS/Components/Transform.h>
 
-#include <renderer/Materials.h>
+#include <renderer/MaterialData.h>
 
 #include <string>
 #include <vector>
@@ -15,7 +15,7 @@
 #include <type_traits>
 #include <unordered_map>
 
-struct MaterialData{
+/*struct MaterialData{
     enum class MaterialType{LIT, UNLIT, PBR};
 
     MaterialType type { MaterialType::LIT };
@@ -28,7 +28,8 @@ struct MaterialData{
     glm::vec3 ambient {0.0f};
 
     float shininess {0.0f};
-};
+};*/
+
 
 //TODO: Add acces to the materialData
 class Material : public Component{
@@ -42,14 +43,7 @@ class Material : public Component{
     std::string vertexPath;
     std::string fragmentPath;
 
-    std::unique_ptr<MaterialData> materialData;
-
-    
-    template<typename T>
-    requires std::is_base_of_v<MaterialData, T>
-    void ConstructMaterial(){
-        materialData = T();
-    }
+    std::unique_ptr<MaterialData> instanceData;
     
     void Start() override {};
     void Update(float deltaTime) override{};

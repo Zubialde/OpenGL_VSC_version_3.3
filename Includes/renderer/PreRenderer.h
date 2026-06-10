@@ -6,33 +6,38 @@
 #include <assimp/postprocess.h>     // Post processing flags
 #include <glm/glm.hpp>
 
-
-#include <core/SceneManager.h>
 #include <core/ResourceManager.h>
 #include <ECS/GameObject.h>
+#include <ECS/Scene.h>
+
+#include <ECS/Components/DirectionalLight.h>
+#include <ECS/Components/PointLight.h>
+#include <ECS/Components/SpotLight.h>
+#include <ECS/Components/CameraFlightControl.h>
 
 #include <memory>
 #include <vector>
-struct RenderPackage
-{
-    Mesh* mesh {nullptr};
-    ShaderClass* shader {nullptr};
-    //std::array<TextureClass*, 16> textures {nullptr};
-    //Lit* material {nullptr};
-    glm::mat4 modelMatrix {glm::mat4(1.0f)};
-    int viewDepth {0};
-    uint64_t id {0};    
-};
 
-//Should i store the information 
-struct RenderPacket
+
+/// @brief RenderPackage stores the information for a renderable object
+/// @param textureID The maximum number of textures permited by OpenGL is 16
+struct RenderPackage
 {
     uint64_t sortKey;
     unsigned int vaoID;
     unsigned int indexCount;
     int shaderID;
-    int textureID;
+    std::array<unsigned int, 16> textureID;
     glm::mat4 modelMatrix;
+};
+
+struct GlobalRenderPackage
+{
+    glm::mat4 viewMatrix;
+
+    std::vector<DirectionalLightInfo> directionalLights;
+    std::vector<PointLightInfo> pointLights;
+    std::vector<SpotLightInfo> spotLights;
 };
 
 class PreRenderer : public Singleton<PreRenderer>
@@ -40,17 +45,18 @@ class PreRenderer : public Singleton<PreRenderer>
     friend class Singleton<PreRenderer>;
     public:
 
+    void FetchGlobalRenderData(Scene& scene);
 
-    void FetchGameObjects();
-    void CreateRenderPackages();
+    void FetchRenderData(Scene& scene);
+
+    void SortRenderPackages(std::vector<RenderPackage>* renderPackages);
     
-    std::vector<RenderPacket>* renderPackages;
+    std::vector<RenderPackage>* renderPackages;
+    GlobalRenderPackage* globalRenderPackage;
 
     private:
     PreRenderer() = default;
     ~PreRenderer() = default;
-
-    std::vector<GameObject*> renderableObjects;
 };
 
 

@@ -1,48 +1,52 @@
 #include "renderer/PreRenderer.h"
 
-void PreRenderer::FetchGameObjects()
+void PreRenderer::FetchGlobalRenderData(Scene& scene)
 {
-    for(const auto& gameObject : SceneManager::GetInstance().GetCurrentScene().gameObjects)
-    {
-        if(gameObject->GetComponent<Model>() != nullptr)
-            renderableObjects.push_back(gameObject.get());
-    }
 
-    CreateRenderPackages();
 }
 
-void PreRenderer::CreateRenderPackages()
+void PreRenderer::FetchRenderData(Scene& scene)
 {
-    //Loop through all renderable gameObjects and creates  a RenderPackage for each mesh
-    for(GameObject* gameObject : renderableObjects)
+    for(const std::shared_ptr<GameObject>& gameObject : scene.gameObjects)
     {
-        ModelData* models = ResourceManager::GetInstance().GetModel(gameObject->GetComponent<Model>()->path).get();
-        Material* material = gameObject->GetComponent<Material>();
-        glm::mat4 modelMatrix = gameObject->transform.GetModelMatrix();
+        if(gameObject->GetComponent<Model>() == nullptr)
+            continue;
 
-        for(const Mesh& model : models->mesh)
+        GameObject* gameObjectPtr = gameObject.get();
+        
+        ModelData* models = ResourceManager::GetInstance().GetModel(gameObjectPtr->GetComponent<Model>()->path).get();
+        Material* material = gameObjectPtr->GetComponent<Material>();
+        glm::mat4 modelMatrix = gameObjectPtr->transform.GetModelMatrix();
+
+        for(const Mesh& mesh : models->mesh)
         {
-            RenderPacket renderPackage;
+            RenderPackage renderPackage;
             
             renderPackage.sortKey = 0;
-            renderPackage.vaoID = model.vaoID;
-            renderPackage.indexCount = model.indices.size();
+            renderPackage.vaoID = mesh.vaoID;
+            renderPackage.indexCount = mesh.indices.size();
             renderPackage.modelMatrix = modelMatrix;
-            //renderPackage.textureID = gameObject->GetComponent<Material>()->textureID;
 
             if(material != nullptr)
             {
                 renderPackage.shaderID = material->instanceData->shaderID;
-                renderPackage.textureID = material->instanceData->textures[0];
+                renderPackage.textureID = material->instanceData->textures;
             }
             else
             {
-                renderPackage.shaderID = model.materialData.shaderID;
-                renderPackage.textureID = model.materialData.textures[0];
+                renderPackage.shaderID = mesh.materialData.shaderID;
+                renderPackage.textureID = mesh.materialData.textures;
             }
-            
+
+            renderPackages->push_back(renderPackage);
         }
     }
 }
 
-
+    void SortRenderPackages(std::vector<RenderPackage>* renderPackages)
+    {
+        std::sort(renderPackages->begin(), renderPackages->end(), [](const RenderPackage& a, const RenderPackage& b)
+        {
+            return a.sortKey < b.sortKey;
+        });
+    }

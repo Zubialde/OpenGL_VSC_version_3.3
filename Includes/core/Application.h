@@ -12,8 +12,8 @@
 #include <core/SceneManager.h>
 #include <scene/CameraClass.h>
 #include <core/Window.h>
-#include <core/Initialicer.h>
 #include <ECS/Scene.h>
+#include <renderer/PreRenderer.h>
 
 
 #include <iostream>
@@ -25,7 +25,11 @@ class Application
     Application();
     ~Application();
 
+    void Init();
+
     void Run();
+
+    void Exit();
 
     private:
     int SCR_WIDTH = 1920;
@@ -33,7 +37,6 @@ class Application
 
     GLFWwindow* window;
     Window mainWindow;
-    Initialicer init;
 };
 
 #endif

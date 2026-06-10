@@ -122,8 +122,8 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
     //Mesh Assimp Data
     Mesh localMesh;
 
-    std::vector<Vertex> vertices{0};
-    std::vector<unsigned int> indices{0};
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
     unsigned int vaoID {0};
     unsigned int vboID {0};
     unsigned int eboID {0};
@@ -157,7 +157,7 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
             glm::vec2 vec;
             vec.x = mesh->mTextureCoords[0][i].x;
             vec.y = mesh->mTextureCoords[0][i].y;
-            localMesh.vertices.back().texCoords = vec;
+            vertices.back().texCoords = vec;
         }
         else
             vertices.back().texCoords = glm::vec2(0.0f);
@@ -183,7 +183,7 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
         material->Get(AI_MATKEY_COLOR_AMBIENT, ambientColor);
         // litMaterial can be populated here if needed from diffuseColor
 
-        litMaterial.shaderID = ResourceManager::GetShader("Vertex.vs")->ID;
+        litMaterial.shaderID = ResourceManager::GetShader("BaseLit.vs")->ID;
 
         litMaterial.diffuse = glm::vec3(diffuseColor.r, diffuseColor.g, diffuseColor.b);
         litMaterial.specular = glm::vec3(specularColor.r, specularColor.g, specularColor.b);
@@ -192,12 +192,6 @@ void ResourceManager::processMesh(aiMesh* mesh, const aiScene* scene, std::share
     else
     {
         material = nullptr;
-    }
-
-    //TODO: Add MeshTransform
-    if(mesh->mNumBones > 0)
-    {
-        
     }
 
     //Generates the API Buffers

@@ -16,8 +16,8 @@ ShaderClass::ShaderClass(const char* vertexPath, const char* fragmentPath)
 
     try
     {
-        vShaderFile.open(ShadersPath + std::string(vertexPath));
-        fShaderFile.open(ShadersPath + std::string(fragmentPath));
+        vShaderFile.open(vertexPath);
+        fShaderFile.open(fragmentPath);
         std::stringstream vShaderStream, fShaderStream;
         vShaderStream << vShaderFile.rdbuf();
         fShaderStream << fShaderFile.rdbuf();

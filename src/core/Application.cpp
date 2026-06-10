@@ -1,10 +1,10 @@
 #include "core/Application.h"
 
-Application::Application() : init()
+Application::Application()
 {
-    Debugger::Log("Initializing Application...");
-
     this->window = mainWindow.window;
+
+    ResourceManager::GetInstance().searchDirectory(ASSETS_DIR);
 
     auto newscene = std::make_unique<Scene>("New Scene");
 
@@ -25,9 +25,11 @@ void Application::Run()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
         //Scene
-        SceneManager::GetInstance().GetCurrentScene().Update(static_cast<float>(glfwGetTime()));
+        Scene& currentScene = SceneManager::GetInstance().GetCurrentScene();
+        currentScene.Update(static_cast<float>(glfwGetTime()));
 
-
+        //Render
+        PreRenderer::GetInstance().FetchRenderData(currentScene);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

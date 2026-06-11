@@ -8,6 +8,7 @@
 
 #include <renderer/ShaderClass.h>
 #include <ECS/Components/Component.h>
+#include <core/ResourceManager.h>
 
 #include <iostream>
 #include <vector>
@@ -19,15 +20,21 @@ class   Model : public Component{
 
     /// @brief Initializes the model component
     /// @param path Model path
-    /// @param vertexPath Vertex shader path
-    /// @param fragmentPath Fragment shader path
     Model( const std::string path){
         this->path = path;
     };
 
     std::string path;
+    std::shared_ptr<ModelData> model;
 
-    void Start() override{};
+
+    void Start() override{
+    std::cout << "[DEBUG] Model Component requested: '" << path << "'" << std::endl;
+    this->model = ResourceManager::GetInstance().GetModel(path);
+
+    std::cout << this->model << std::endl;
+    
+    };
     void Update(float deltaTime) override{};
     void OnDestroy() override{};
 

@@ -34,6 +34,7 @@ struct RenderPackage
 struct GlobalRenderPackage
 {
     glm::mat4 viewMatrix;
+    glm::mat4 projectionMatrix;
 
     std::vector<DirectionalLightInfo> directionalLights;
     std::vector<PointLightInfo> pointLights;
@@ -51,7 +52,7 @@ class PreRenderer : public Singleton<PreRenderer>
 
     void SortRenderPackages(std::vector<RenderPackage>* renderPackages);
     
-    std::vector<RenderPackage>* renderPackages;
+    std::vector<RenderPackage> renderPackages;
     GlobalRenderPackage* globalRenderPackage;
 
     private:

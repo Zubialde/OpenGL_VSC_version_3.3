@@ -1,10 +1,5 @@
 #include "renderer/PreRenderer.h"
 
-void PreRenderer::FetchGlobalRenderData(Scene& scene)
-{
-
-}
-
 void PreRenderer::FetchRenderData(Scene& scene)
 {
     for(const std::shared_ptr<GameObject>& gameObject : scene.gameObjects)
@@ -14,9 +9,16 @@ void PreRenderer::FetchRenderData(Scene& scene)
 
         GameObject* gameObjectPtr = gameObject.get();
         
-        ModelData* models = ResourceManager::GetInstance().GetModel(gameObjectPtr->GetComponent<Model>()->path).get();
+        ModelData* models = gameObjectPtr->GetComponent<Model>()->model.get();
         Material* material = gameObjectPtr->GetComponent<Material>();
         glm::mat4 modelMatrix = gameObjectPtr->transform.GetModelMatrix();
+
+        if (models == nullptr)
+        {
+            std::cout << "WARNING: PreRenderer skipped object '" << gameObjectPtr->name 
+                    << "' because its ModelData is null." << std::endl;
+            continue;
+        }
 
         for(const Mesh& mesh : models->mesh)
         {
@@ -29,16 +31,16 @@ void PreRenderer::FetchRenderData(Scene& scene)
 
             if(material != nullptr)
             {
-                renderPackage.shaderID = material->instanceData->shaderID;
-                renderPackage.textureID = material->instanceData->textures;
+                renderPackage.shaderID = material->instanceData.shaderID;
+                renderPackage.textureID = material->instanceData.textures;
             }
             else
             {
                 renderPackage.shaderID = mesh.materialData.shaderID;
                 renderPackage.textureID = mesh.materialData.textures;
             }
+            renderPackages.push_back(renderPackage);
 
-            renderPackages->push_back(renderPackage);
         }
     }
 }

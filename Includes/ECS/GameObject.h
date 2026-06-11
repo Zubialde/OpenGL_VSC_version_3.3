@@ -23,7 +23,6 @@ class GameObject{
 
     Transform transform;
 
-    //
     std::array<std::unique_ptr<Component>, MAX_COMPONENTS> components;
     
     static int n_Components;
@@ -67,7 +66,8 @@ class GameObject{
             return static_cast<T*>(components[GetID<T>()].get());
         else
         {
-            Debugger::Log("GameObject::GetComponent: Component not found");
+            Debugger::Log(typeid(T).name());
+
             return nullptr;
         }            
     }

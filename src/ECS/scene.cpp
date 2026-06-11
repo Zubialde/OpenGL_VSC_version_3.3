@@ -3,7 +3,7 @@
 Scene::Scene(std::string name)
 {
     this->name = name;
-}
+    }
 
 void Scene::Update(float deltaTime)
 {
@@ -25,18 +25,28 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
     return newObject;
 }
 
-//IMPORTANT: DO NOT USE THIS FUNCTION FOR ANY OTHER PURPOSE THAN LOADING OBJECTS AND ADDINGCOMPONENTS
+//IMPORTANT: DO NOT USE THIS FUNCTION FOR ANY OTHER PURPOSE THAN LOADING OBJECTS OR ADDING COMPONENTS
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
-    object->AddComponent<DirectionalLight>(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
     object->AddComponent<Model>("backpack.obj");
     object->AddComponent<Material>("Vertex.vs", "Fragment.fs");
-
     AddGameObject(object);
+
+    std::shared_ptr<GameObject> object2 = Instantiate("Directional Light");
+    object2->AddComponent<DirectionalLight>();
+    AddGameObject(object2);
+
+
+
 }
 
-//Unload all the gameObjects (this is probably not needed since the gameObject will be destroyed when the program ends anyway)
+void Scene::SetCurrentCamera(std::shared_ptr<GameObject> camera)
+{
+    currentCamera = camera;
+}
+
+//For destroying gameObjects never used it thought :P
 void Scene::Unload()
 {
 

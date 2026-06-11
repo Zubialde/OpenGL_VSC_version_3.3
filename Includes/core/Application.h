@@ -22,7 +22,7 @@ class Application
 {
     public:
 
-    Application();
+    Application() = default;
     ~Application();
 
     void Init();
@@ -32,8 +32,6 @@ class Application
     void Exit();
 
     private:
-    int SCR_WIDTH = 1920;
-    int SCR_HEIGHT = 1080;
 
     GLFWwindow* window;
     Window mainWindow;

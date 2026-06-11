@@ -81,7 +81,9 @@ std::shared_ptr<ModelData>ResourceManager::GetModel(const std::string& path)
     {
         std::shared_ptr<ModelData> modelData = loadedIt->second.lock();
         if(modelData)
+        {
             return modelData;
+        }
     }
 
     //If not, load the model

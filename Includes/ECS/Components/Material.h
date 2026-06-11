@@ -38,12 +38,13 @@ class Material : public Component{
     Material(const char* vertexPath, const char* fragmentPath){
         this->vertexPath = vertexPath;
         this->fragmentPath = fragmentPath;
+
     }
     
     std::string vertexPath;
     std::string fragmentPath;
 
-    std::unique_ptr<MaterialData> instanceData;
+    MaterialData instanceData;
     
     void Start() override {};
     void Update(float deltaTime) override{};

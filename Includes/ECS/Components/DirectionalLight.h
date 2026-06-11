@@ -6,9 +6,9 @@
 #include <ECS/Components/Component.h>
 
  struct DirectionalLightInfo{
-    glm::vec3 direction;
-    glm::vec3 color;
-    float intensity;
+    glm::vec3 direction {0.0f, 0.0f, 0.0f};
+    glm::vec3 color {1.0f, 1.0f, 1.0f};
+    float intensity {0.5f}; 
 };
 
 class DirectionalLight : public Component
@@ -17,11 +17,12 @@ class DirectionalLight : public Component
     
     DirectionalLightInfo info;
 
-    DirectionalLight(glm::vec3 direction, glm::vec3 color, float intensity);
+    DirectionalLight() = default;
 
     void Start() override {};
     void Update(float deltaTime) override {}
     void OnDestroy() override {}
+    
     private:
 };
 #endif

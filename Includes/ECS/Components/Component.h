@@ -14,6 +14,8 @@ class Component
 {
     public:   
     
+    Component() = default;
+
     //Virtual destructor so derived destructors are called correctly
     virtual ~Component() = default;
 

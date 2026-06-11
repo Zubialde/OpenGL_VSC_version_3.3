@@ -1,7 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <scene/CameraClass.h>
+#include <ECS/Components/CameraClass.h>
 #include <ECS/GameObject.h>
 #include <ECS/Components/Transform.h>
 #include <ECS/Components/Model.h>

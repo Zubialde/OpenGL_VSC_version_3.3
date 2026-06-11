@@ -10,9 +10,8 @@
 #include <ECS/Components/DirectionalLight.h>
 #include <ECS/Components/PointLight.h>
 #include <ECS/Components/SpotLight.h>
-#include <scene/CameraClass.h>
+#include <ECS/Components/CameraClass.h>
 
-#include <scene/CameraClass.h>
 
 #include <iostream>
 #include <vector>

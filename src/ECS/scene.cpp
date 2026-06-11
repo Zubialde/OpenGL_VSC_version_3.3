@@ -37,13 +37,19 @@ void Scene::Load()
     object2->AddComponent<DirectionalLight>();
     AddGameObject(object2);
 
-
-
+    std::shared_ptr<GameObject> object3 = Instantiate("MainCamera");
+    object3->AddComponent<Camera>();
+    SetCurrentCamera(object3);
 }
 
 void Scene::SetCurrentCamera(std::shared_ptr<GameObject> camera)
 {
     currentCamera = camera;
+}
+
+std::shared_ptr<GameObject> Scene::GetCurrentCamera()
+{
+    return currentCamera;
 }
 
 //For destroying gameObjects never used it thought :P

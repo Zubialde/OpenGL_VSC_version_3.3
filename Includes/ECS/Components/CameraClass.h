@@ -7,6 +7,7 @@
 
 #include <ECS/Components/Component.h>
 #include <ECS/Components/Transform.h>
+#include <utils/Input.h>
 
 const float YAW {-90.0f};
 const float PITCH {0.0f};

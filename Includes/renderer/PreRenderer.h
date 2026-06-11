@@ -33,6 +33,7 @@ struct RenderPackage
 
 struct GlobalRenderPackage
 {
+    glm::vec3 cameraPosition;
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
 
@@ -46,18 +47,19 @@ class PreRenderer : public Singleton<PreRenderer>
     friend class Singleton<PreRenderer>;
     public:
 
-    void FetchGlobalRenderData(Scene& scene);
-
     void FetchRenderData(Scene& scene);
 
-    void SortRenderPackages(std::vector<RenderPackage>* renderPackages);
-    
     std::vector<RenderPackage> renderPackages;
-    GlobalRenderPackage* globalRenderPackage;
+    GlobalRenderPackage globalRenderPackage;
 
     private:
     PreRenderer() = default;
     ~PreRenderer() = default;
+
+    void FetchGlobalRenderData(Scene& scene);
+
+    void SortRenderPackages(std::vector<RenderPackage>* renderPackages);
+
 };
 
 

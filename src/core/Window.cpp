@@ -1,12 +1,14 @@
 #include "core/Window.h"
 
-Window::Window()
+Window::Window(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT)
 {
     window = Init(SCR_WIDTH, SCR_HEIGHT);
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     glfwMakeContextCurrent(window);
+
+    glfwSwapInterval(0);
 
     Checker(window);
 }

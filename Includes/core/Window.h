@@ -14,10 +14,8 @@ class Window : public Singleton<Window>
     friend class Singleton<Window>;
 
     public: 
-    int SCR_WIDTH {960};
-    int SCR_HEIGHT {540};
 
-    Window();
+    Window(unsigned int SCR_WIDTH, unsigned int SCR_HEIGHT);
     GLFWwindow* window;
 
     private:

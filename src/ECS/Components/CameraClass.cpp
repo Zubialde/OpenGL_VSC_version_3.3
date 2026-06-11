@@ -1,4 +1,4 @@
-#include "scene/CameraClass.h"
+#include "ECS/Components/CameraClass.h"
 #include "ECS/GameObject.h"
 
 void Camera::Start()

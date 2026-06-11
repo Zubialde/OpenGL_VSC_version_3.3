@@ -7,7 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include <renderer/ShaderClass.h>
-#include <scene/CameraClass.h>
+#include <ECS/Components/CameraClass.h>
 #include <renderer/TextureClass.h>
 #include <renderer/Geometry.h>
 #include <renderer/Buffers/VBO.h>

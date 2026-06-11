@@ -66,8 +66,6 @@ class GameObject{
             return static_cast<T*>(components[GetID<T>()].get());
         else
         {
-            Debugger::Log(typeid(T).name());
-
             return nullptr;
         }            
     }

@@ -10,7 +10,7 @@
 
 #include <renderer/ShaderClass.h>
 #include <core/SceneManager.h>
-#include <scene/CameraClass.h>
+#include <ECS/Components/CameraClass.h>
 #include <core/Window.h>
 #include <ECS/Scene.h>
 #include <renderer/PreRenderer.h>
@@ -34,7 +34,6 @@ class Application
     private:
 
     GLFWwindow* window;
-    Window mainWindow;
 };
 
 #endif

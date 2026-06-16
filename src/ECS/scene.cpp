@@ -29,14 +29,11 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
+    object->transform.Translate(glm::vec3(0.0,0.0,10.0));
     object->AddComponent<Model>("backpack.obj");
     object->AddComponent<Material>("Vertex.vs", "Fragment.fs");
     AddGameObject(object);
-
-    std::shared_ptr<GameObject> object2 = Instantiate("Directional Light");
-    object2->AddComponent<DirectionalLight>();
-    AddGameObject(object2);
-
+    
     std::shared_ptr<GameObject> object3 = Instantiate("MainCamera");
     object3->AddComponent<Camera>();
     SetCurrentCamera(object3);

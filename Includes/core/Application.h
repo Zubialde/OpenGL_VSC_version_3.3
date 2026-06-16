@@ -13,8 +13,8 @@
 #include <ECS/Components/CameraClass.h>
 #include <core/Window.h>
 #include <ECS/Scene.h>
-#include <renderer/PreRenderer.h>
-
+#include <ECS/Systems/PreRenderer.h>
+#include <ECS/Systems/Renderer.h>
 
 #include <iostream>
 
@@ -23,11 +23,11 @@ class Application
     public:
 
     Application() = default;
-    ~Application();
+    ~Application() = default;
 
     void Init();
 
-    void Run();
+    int Run();
 
     void Exit();
 

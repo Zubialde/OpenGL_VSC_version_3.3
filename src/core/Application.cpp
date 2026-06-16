@@ -15,7 +15,7 @@ void Application::Init()
 }
 
 
-void Application::Run()
+int Application::Run()
 {
     float lastFrame = 0.0f;
 
@@ -37,13 +37,18 @@ void Application::Run()
 
         //Render
         PreRenderer::GetInstance().FetchRenderData(currentScene);
+        Renderer::GetInstance().Render(PreRenderer::GetInstance().renderPackages, PreRenderer::GetInstance().globalRenderPackage);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    Exit();
+    return 0;
 }
 
-Application::~Application()
+void Application::Exit()
 {
+    glfwDestroyWindow(window);
     glfwTerminate();
 }

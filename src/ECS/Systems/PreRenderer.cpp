@@ -1,4 +1,4 @@
-#include "renderer/PreRenderer.h"
+#include "ECS/Systems/PreRenderer.h"
 
 void PreRenderer::FetchRenderData(Scene& scene)
 {
@@ -14,7 +14,6 @@ void PreRenderer::FetchRenderData(Scene& scene)
         ModelData* models = gameObjectPtr->GetComponent<Model>()->model.get();
         Material* material = gameObjectPtr->GetComponent<Material>(); 
         glm::mat4 modelMatrix = gameObjectPtr->transform.GetModelMatrix();
-
 
         if (models == nullptr)
         {
@@ -47,7 +46,6 @@ void PreRenderer::FetchRenderData(Scene& scene)
                 renderPackage.textureID = mesh.materialData.textures;
             }
 
-
             uint64_t shader64 = static_cast<uint64_t>(renderPackage.shaderID);
             uint64_t texture64 = static_cast<uint64_t>(renderPackage.textureID[0]); 
 
@@ -59,7 +57,6 @@ void PreRenderer::FetchRenderData(Scene& scene)
             renderPackage.sortKey = (shader64 << 52) | (texture64 << 36) | depthInt;
 
             renderPackages.push_back(renderPackage);
-
         }
     }
 }

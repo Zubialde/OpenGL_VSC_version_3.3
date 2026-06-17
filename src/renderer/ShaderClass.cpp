@@ -58,6 +58,8 @@ ShaderClass::ShaderClass(const char* vertexPath, const char* fragmentPath)
     glDeleteShader(fragment);
 }
 
+#pragma region Obsolete functions
+
 void ShaderClass::use()
 {
     glUseProgram(ID);
@@ -125,3 +127,4 @@ void ShaderClass::checkCompileErrors(unsigned int shader, std::string type)
         }
     }
 }
+#pragma endregion

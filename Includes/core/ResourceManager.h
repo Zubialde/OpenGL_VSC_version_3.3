@@ -57,7 +57,6 @@ class ResourceManager: public Singleton<ResourceManager>{
     std::unordered_map<std::string, std::string> shaderPaths;
     std::unordered_map<std::string, std::string> modelPaths;
 
-    //
     std::unordered_map<std::string, std::unique_ptr<TextureClass>> loadedTextures;
     std::unordered_map<std::string, std::unique_ptr<ShaderClass>> loadedShaders;
     std::unordered_map<std::string, std::weak_ptr<ModelData>> loadedModels;

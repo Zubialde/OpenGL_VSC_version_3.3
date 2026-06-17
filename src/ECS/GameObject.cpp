@@ -4,6 +4,8 @@ int GameObject::n_Components = 0;
 
 void GameObject::Update(float deltaTime)
 {
+    transform.Update(deltaTime);
+
     if(components.size() <= 0)
         return;
 

@@ -1,11 +1,11 @@
 #include "utils/Input.h"
 
-bool Input::IsKeyPressed(Key key)
+bool Input::IsKeyPressed(int key)
 {
     return glfwGetKey(glfwGetCurrentContext(), key) == GLFW_PRESS;
 }
 
-bool Input::IsKeyReleased(Key key)
+bool Input::IsKeyReleased(int key)
 {
     return glfwGetKey(glfwGetCurrentContext(), key) == GLFW_RELEASE;
 }

@@ -35,10 +35,8 @@
 class Material : public Component{
     public:
 
-    Material(const char* vertexPath, const char* fragmentPath){
+    Material(const char* vertexPath){
         this->vertexPath = vertexPath;
-        this->fragmentPath = fragmentPath;
-
     }
     
     std::string vertexPath;

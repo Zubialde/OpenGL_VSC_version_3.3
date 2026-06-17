@@ -21,6 +21,9 @@ int Application::Run()
 
     while(!glfwWindowShouldClose(window))
     {
+        if(Input::IsKeyPressed(GLFW_KEY_ESCAPE))
+            glfwSetWindowShouldClose(window, true);
+            
         glClearColor(0.1f, 0.2f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -29,15 +32,15 @@ int Application::Run()
         lastFrame = currentframe;
         float frameRate = (deltaTime > 0.0f) ? 1.0f / deltaTime : 0.0f;
 
-        std::cout << "deltaTime: " << deltaTime << " | FrameRate: " << frameRate << " FPS" << std::endl;
 
         //Scene
         Scene& currentScene = SceneManager::GetInstance().GetCurrentScene();
-        currentScene.Update(static_cast<float>(glfwGetTime()));
+        currentScene.Update(deltaTime);
 
         //Render
         PreRenderer::GetInstance().FetchRenderData(currentScene);
         Renderer::GetInstance().Render(PreRenderer::GetInstance().renderPackages, PreRenderer::GetInstance().globalRenderPackage);
+        PreRenderer::GetInstance().ClearRenderPackages();
         
         glfwSwapBuffers(window);
         glfwPollEvents();

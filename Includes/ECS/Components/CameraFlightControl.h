@@ -2,6 +2,11 @@
 #define CAMERAFLIGHTCONTROL_H
 
 #include <ECS/Components/Component.h>
+#include <ECS/Components/CameraClass.h>
+#include <utils/Input.h>
+#include <ECS/GameObject.h>
+
+#include <glad/glad.h>
 
 enum Camera_Movement{
     FORWARD,
@@ -21,11 +26,11 @@ class CameraFlightControl : public Component
 {
     public:
 
-    CameraFlightControl();
+    CameraFlightControl() = default;
 
-    void Start() override;
+    void Start() override{};
     void Update(float deltaTime) override;
-    void OnDestroy() override;
+    void OnDestroy() override{};
 
     private:
 
@@ -37,7 +42,6 @@ class CameraFlightControl : public Component
     float MovementSpeed {0};
     float MouseSensitivity {0};
     float Zoom {0};
-
 };
 
 #endif

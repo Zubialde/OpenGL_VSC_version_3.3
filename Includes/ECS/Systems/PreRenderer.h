@@ -26,7 +26,7 @@ struct RenderPackage
     uint64_t sortKey;
     unsigned int vaoID;
     unsigned int indexCount;
-    int shaderID;
+    unsigned int shaderID;
     std::array<unsigned int, 16> textureID;
     glm::mat4 modelMatrix;
 };
@@ -49,6 +49,11 @@ class PreRenderer : public Singleton<PreRenderer>
 
     void FetchRenderData(Scene& scene);
 
+    void ClearRenderPackages() {renderPackages.clear();
+    globalRenderPackage.directionalLights.clear();
+    globalRenderPackage.pointLights.clear();
+    globalRenderPackage.spotLights.clear();}
+
     std::vector<RenderPackage> renderPackages;
     GlobalRenderPackage globalRenderPackage;
 
@@ -59,7 +64,6 @@ class PreRenderer : public Singleton<PreRenderer>
     void FetchGlobalRenderData(Scene& scene);
 
     void SortRenderPackages(std::vector<RenderPackage>* renderPackages);
-
 };
 
 

@@ -40,7 +40,7 @@ class Camera : public Component
 
     CameraInfo info;
 
-    Camera();
+    Camera() = default;
 
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ,float yaw, float pitch);
     

@@ -15,7 +15,7 @@
 #include <string>
 #include <filesystem>
 
-class   Model : public Component{
+class Model : public Component{
     public:
 
     /// @brief Initializes the model component
@@ -29,11 +29,7 @@ class   Model : public Component{
 
 
     void Start() override{
-    std::cout << "[DEBUG] Model Component requested: '" << path << "'" << std::endl;
     this->model = ResourceManager::GetInstance().GetModel(path);
-
-    std::cout << this->model << std::endl;
-    
     };
     void Update(float deltaTime) override{};
     void OnDestroy() override{};

@@ -20,11 +20,6 @@ void Camera::OnDestroy()
 
 }
 
-Camera::Camera()
-{
-
-}
-
 Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
 {
     info.position = glm::vec3(posX, posY, posZ);

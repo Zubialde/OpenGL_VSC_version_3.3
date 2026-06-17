@@ -43,8 +43,9 @@ void PreRenderer::FetchRenderData(Scene& scene)
             else
             {
                 renderPackage.shaderID = mesh.materialData.shaderID;
-                renderPackage.textureID = mesh.materialData.textures;
+                renderPackage.textureID = mesh.materialData.textures;                
             }
+
 
             uint64_t shader64 = static_cast<uint64_t>(renderPackage.shaderID);
             uint64_t texture64 = static_cast<uint64_t>(renderPackage.textureID[0]); 

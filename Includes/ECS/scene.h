@@ -9,6 +9,7 @@
 #include <ECS/Components/DirectionalLight.h>
 #include <ECS/Components/PointLight.h>
 #include <ECS/Components/SpotLight.h>
+#include <ECS/Components/CameraFlightControl.h>
 
 #include <iostream>
 #include <vector>

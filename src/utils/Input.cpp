@@ -44,3 +44,8 @@ static void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
     lastX = xpos;
     lastY = ypos;
 }
+
+bool Input::IsMouseButtonPressed(int button)
+{
+    return glfwGetMouseButton(glfwGetCurrentContext(), button) == GLFW_PRESS;
+}

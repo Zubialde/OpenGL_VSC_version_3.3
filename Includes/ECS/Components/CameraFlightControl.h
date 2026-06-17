@@ -36,12 +36,20 @@ class CameraFlightControl : public Component
 
     void processInput(GLFWwindow* window);
 
+    void cameraMovement(float velocity, Camera* camera);
+    void cameraRotation(float deltaTime, Camera* camera);
+
     float Yaw {0};
     float Pitch {0};
     // camera options
     float MovementSpeed {0};
     float MouseSensitivity {0};
     float Zoom {0};
+    private:
+    
+    bool firstMouse = true;
+    float lastX = 0.0f;
+    float lastY = 0.0f;
 };
 
 #endif

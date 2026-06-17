@@ -15,14 +15,9 @@ void PreRenderer::FetchRenderData(Scene& scene)
         Material* material = gameObjectPtr->GetComponent<Material>(); 
         glm::mat4 modelMatrix = gameObjectPtr->transform.GetModelMatrix();
 
-        std::cout << glm::to_string(globalRenderPackage.projectionMatrix) << std::endl;
 
         if (models == nullptr)
-        {
-            std::cout << "WARNING: PreRenderer skipped object '" << gameObjectPtr->name 
-                    << "' because its ModelData is null." << std::endl;
             continue;
-        }
 
         float distance = glm::distance(globalRenderPackage.cameraPosition, gameObjectPtr->transform.info.position);
 
@@ -44,6 +39,7 @@ void PreRenderer::FetchRenderData(Scene& scene)
             }
             else
             {
+                renderPackage.material = mesh.materialData;
                 renderPackage.shaderID = mesh.materialData.shaderID;
                 renderPackage.textureID = mesh.materialData.textures;                
             }

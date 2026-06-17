@@ -23,11 +23,12 @@ class Model : public Component{
     /// @param path Model path
     Model( const std::string path){
         this->path = path;
+
     };
 
     std::string path;
     std::shared_ptr<ModelData> model;
-
+    std::string texturePath;
 
     void Start() override{
     this->model = ResourceManager::GetInstance().GetModel(path);

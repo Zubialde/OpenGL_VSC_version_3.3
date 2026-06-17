@@ -11,6 +11,7 @@ void Scene::Update(float deltaTime)
     {
         i->Update(deltaTime);
     }
+    currentCamera->Update(deltaTime);
 }
 
 void Scene::AddGameObject(std::shared_ptr<GameObject>& gameObject)
@@ -29,9 +30,9 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
-    object->transform.Translate(glm::vec3(0.0f, 0.0f, 0.0f));
+    object->transform.info.position = glm::vec3(0.0f, 0.0f, 0.0f);
     object->AddComponent<Model>("backpack.obj");
-    object->AddComponent<Material>("BaseLit.vs");
+    object->AddComponent<Material>("BaseLit.vs", "diffuse.jpg");
     AddGameObject(object);
     
     std::shared_ptr<GameObject> object3 = Instantiate("MainCamera");

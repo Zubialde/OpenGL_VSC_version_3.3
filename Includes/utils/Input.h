@@ -30,6 +30,9 @@ class Input : public Singleton<Input>
 
     static void setCursorMode(CursorMode mode);
 
+    static bool IsMouseButtonPressed(int button);
+
+
     private:
 
     Input() = default;

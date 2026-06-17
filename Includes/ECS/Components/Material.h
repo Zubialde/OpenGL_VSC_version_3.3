@@ -36,18 +36,20 @@
 class Material : public Component{
     public:
 
-    Material(const char* vertexPath){
+    Material(const char* vertexPath, const char* texturePath){
         this->vertexPath = vertexPath;
+        this->texturePath = texturePath;
     }
     
     std::string vertexPath;
     std::string fragmentPath;
+    std::string texturePath;
 
     MaterialData instanceData;
     
-    
     void Start() override {        
         instanceData.shaderID = ResourceManager::GetInstance().GetShader(vertexPath)->ID;
+        instanceData.textures[0] = ResourceManager::GetInstance().GetTexture(texturePath)->ID;
     };
     void Update(float deltaTime) override{};
     void OnDestroy() override {};

@@ -1,6 +1,5 @@
 #include "ECS/GameObject.h"
 
-int GameObject::n_Components = 0;
 
 void GameObject::Update(float deltaTime)
 {
@@ -12,7 +11,7 @@ void GameObject::Update(float deltaTime)
     for(const std::unique_ptr<Component>& i : components)
     {
         if(i == nullptr)
-            continue;
+            continue;            
             
         i->Update(deltaTime);
     }

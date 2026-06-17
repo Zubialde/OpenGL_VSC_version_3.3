@@ -7,12 +7,14 @@ void Camera::Start()
     info.up = glm::vec3(0.0f, 1.0f, 0.0f);
     info.front = glm::vec3(0.0f, 0.0f, -1.0f);
     updateCameraVectors();
+    std::cout << info.position.x << std::endl;
 }
 
 void Camera::Update(float deltaTime)
 {
     info.position = parent->transform.info.position;
     updateCameraVectors();
+    std::cout << info.position.x << std::endl;
 }
 
 void Camera::OnDestroy()

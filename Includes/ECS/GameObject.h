@@ -25,7 +25,7 @@ class GameObject{
 
     std::array<std::unique_ptr<Component>, MAX_COMPONENTS> components;
     
-    static int n_Components;
+    int n_Components = 0;
     
     GameObject(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f) , glm::vec3 scale = glm::vec3(1.0f), glm::vec3 rotation = glm::vec3(0.0f)) 
     : transform(position, scale, rotation){};
@@ -38,7 +38,6 @@ class GameObject{
     requires std::is_base_of_v<Component, T>
     inline T* AddComponent(Args&&... args)
     {
-
         if(components[GetID<T>()] != nullptr)
             return nullptr;
 
@@ -54,7 +53,8 @@ class GameObject{
         T* newComponent = component.get();
 
         components[GetID<T>()] = std::move(component);
-        
+        std::cout << GetID<T>() << typeid(T).name() << std::endl;
+
         return newComponent;
     }
 

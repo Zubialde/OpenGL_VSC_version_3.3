@@ -52,6 +52,8 @@ uniform Material material;
 
 uniform float time;
 
+uniform vec3 ambient;
+
 //Input Vertex Data
 in vec3 Normal;
 in vec3 cameraPos;
@@ -68,14 +70,13 @@ void main()
     vec3 viewDir = normalize(cameraPos - fragmentPos);
     vec3 outputer = vec3(0.0);
 
-    //outputer += DirLightCalc(dirLight, Normal, viewDir);
+    outputer += DirLightCalc(dirLight, Normal, viewDir);
     for(int i = 0; i < n_point_lights; i++) outputer += PointLightCalc(pointLight[i], Normal, viewDir, fragmentPos);
 
     outputer += SpotLightCalc(spotLight, Normal, viewDir, fragmentPos);
 
-    FragColor = vec4 (outputer ,1.0);
+    FragColor = vec4 (vec3(texture(material.diffuse, uv)), 1.0);
 }
-
 
 vec3 DirLightCalc(DirLight light, vec3 normal, vec3 viewDir)
 {

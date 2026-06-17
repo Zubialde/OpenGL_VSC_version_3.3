@@ -30,6 +30,7 @@ struct RenderPackage
     unsigned int shaderID;
     std::array<unsigned int, 16> textureID;
     glm::mat4 modelMatrix;
+    MaterialData material;
 };
 
 struct GlobalRenderPackage

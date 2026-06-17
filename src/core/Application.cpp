@@ -18,7 +18,6 @@ void Application::Init()
 int Application::Run()
 {
     float lastFrame = 0.0f;
-
     while(!glfwWindowShouldClose(window))
     {
         if(Input::IsKeyPressed(GLFW_KEY_ESCAPE))
@@ -42,6 +41,7 @@ int Application::Run()
         Renderer::GetInstance().Render(PreRenderer::GetInstance().renderPackages, PreRenderer::GetInstance().globalRenderPackage);
         PreRenderer::GetInstance().ClearRenderPackages();
         
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

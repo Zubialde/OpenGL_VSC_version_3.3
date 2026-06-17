@@ -2,6 +2,7 @@
 
 void Renderer::Render(const std::vector<RenderPackage>& renderQueue, const GlobalRenderPackage& globalData)
 {
+    glEnable(GL_DEPTH_TEST);
     for(const RenderPackage& renderPackage : renderQueue)
     {
         glUseProgram(renderPackage.shaderID);

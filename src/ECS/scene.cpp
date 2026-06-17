@@ -29,12 +29,13 @@ std::shared_ptr<GameObject> Scene::Instantiate(std::string name)
 void Scene::Load()
 {
     std::shared_ptr<GameObject> object = Instantiate("Cube");
+    object->transform.Translate(glm::vec3(0.0f, 0.0f, 0.0f));
     object->AddComponent<Model>("backpack.obj");
-    object->AddComponent<Material>("BaseLit.vt");
+    object->AddComponent<Material>("BaseLit.vs");
     AddGameObject(object);
     
     std::shared_ptr<GameObject> object3 = Instantiate("MainCamera");
-    object3->transform.Translate(glm::vec3(0.0f, 0.0f, -10.0f));
+    object3->transform.info.position = glm::vec3(0.0f, 0.0f, 10.0f);
     object3->AddComponent<Camera>();
     object3->AddComponent<CameraFlightControl>();
     SetCurrentCamera(object3);

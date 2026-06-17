@@ -15,6 +15,8 @@ void PreRenderer::FetchRenderData(Scene& scene)
         Material* material = gameObjectPtr->GetComponent<Material>(); 
         glm::mat4 modelMatrix = gameObjectPtr->transform.GetModelMatrix();
 
+        std::cout << glm::to_string(globalRenderPackage.projectionMatrix) << std::endl;
+
         if (models == nullptr)
         {
             std::cout << "WARNING: PreRenderer skipped object '" << gameObjectPtr->name 
@@ -45,6 +47,7 @@ void PreRenderer::FetchRenderData(Scene& scene)
                 renderPackage.shaderID = mesh.materialData.shaderID;
                 renderPackage.textureID = mesh.materialData.textures;                
             }
+
 
 
             uint64_t shader64 = static_cast<uint64_t>(renderPackage.shaderID);

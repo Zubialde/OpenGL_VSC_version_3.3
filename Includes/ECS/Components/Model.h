@@ -9,6 +9,7 @@
 #include <renderer/ShaderClass.h>
 #include <ECS/Components/Component.h>
 #include <core/ResourceManager.h>
+#include <ECS/Components/Material.h>
 
 #include <iostream>
 #include <vector>
@@ -30,8 +31,11 @@ class Model : public Component{
 
     void Start() override{
     this->model = ResourceManager::GetInstance().GetModel(path);
+
     };
-    void Update(float deltaTime) override{};
+    void Update(float deltaTime) override{
+
+    };
     void OnDestroy() override{};
 
     private:

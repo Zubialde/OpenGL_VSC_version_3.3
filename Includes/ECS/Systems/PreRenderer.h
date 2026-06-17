@@ -5,6 +5,7 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 #include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include <core/ResourceManager.h>
 #include <ECS/GameObject.h>

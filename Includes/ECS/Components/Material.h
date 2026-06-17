@@ -8,6 +8,7 @@
 #include <ECS/Components/Transform.h>
 
 #include <renderer/MaterialData.h>
+#include <core/ResourceManager.h>
 
 #include <string>
 #include <vector>
@@ -44,7 +45,10 @@ class Material : public Component{
 
     MaterialData instanceData;
     
-    void Start() override {};
+    
+    void Start() override {        
+        instanceData.shaderID = ResourceManager::GetInstance().GetShader(vertexPath)->ID;
+    };
     void Update(float deltaTime) override{};
     void OnDestroy() override {};
 };
